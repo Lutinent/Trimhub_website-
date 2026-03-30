@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<meta name="theme-color" content="#0e0e0e"/>
+<title>GROOMED — Premium Barber Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,400;0,700;0,800;0,900;1,800;1,900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface":"#0a0a0a","surface-container-lowest":"#000000","surface-container-low":"#111111","surface-container":"#171717","surface-container-high":"#1e1e1e","surface-container-highest":"#252525","surface-bright":"#2a2a2a","surface-variant":"#242424","on-surface":"#f5f5f0","on-surface-variant":"#9a9890","outline":"#6b6a68","outline-variant":"#3a3a38","primary":"#e8ff87","primary-container":"#d4f520","primary-dim":"#b8d800","on-primary":"#1a2600","on-primary-container":"#1a2600","secondary-container":"#3d3d3b","secondary-fixed":"#d8d5d4","on-secondary-container":"#c8c5c4","error":"#ff6b47","inverse-surface":"#f5f2f1","on-background":"#f5f5f0","background":"#0a0a0a"},fontFamily:{"headline":["Epilogue"],"body":["Manrope"],"label":["Manrope"]},borderRadius:{"DEFAULT":"0.125rem","sm":"0.25rem","lg":"0.5rem","xl":"0.75rem","2xl":"1rem","full":"9999px"}}}}
+</script>
+<style>
+*{-webkit-tap-highlight-color:transparent}
+.mso{font-variation-settings:'FILL' 0,'wght' 200,'GRAD' 0,'opsz' 24;font-size:22px;line-height:1}
+.mso-fill{font-variation-settings:'FILL' 1,'wght' 300,'GRAD' 0,'opsz' 24}
+.page{display:none;animation:none}.page.active{display:block}
+.fade-in{animation:fadeUp .3s cubic-bezier(.16,1,.3,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.stagger-1{animation-delay:.05s}.stagger-2{animation-delay:.1s}.stagger-3{animation-delay:.15s}.stagger-4{animation-delay:.2s}.stagger-5{animation-delay:.25s}
+.tab-item{transition:color .2s,background .2s}
+.tab-item.active-tab{color:#d4f520}
+.tab-item:not(.active-tab){color:#6b6a68}
+.tonal{transition:background-color .25s ease}
+.press{transition:transform .15s ease}
+.press:active{transform:scale(.96)}
+/* grain overlay */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px}
+/* map grid */
+.map-grid{background-color:#101010;background-image:linear-gradient(rgba(212,245,32,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(212,245,32,.04) 1px,transparent 1px);background-size:36px 36px}
+/* scrollbar */
+::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
+.scroll-x{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}.scroll-x::-webkit-scrollbar{display:none}
+/* glassmorphism nav */
+.glass{background:rgba(10,10,10,.75);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%)}
+/* number badge */
+.badge{background:#d4f520;color:#1a2600;font-size:9px;font-weight:900;padding:1px 5px;border-radius:99px;position:absolute;top:-4px;right:-6px}
+/* rating stars */
+.stars::before{content:'★★★★★';color:#d4f520;letter-spacing:1px}
+/* shimmer for loading feel */
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.shimmer{background:linear-gradient(90deg,#171717 25%,#252525 50%,#171717 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+/* editorial tab underline */
+.etab{border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
+.etab.active{border-bottom-color:#d4f520;color:#d4f520}
+.etab:not(.active){color:#6b6a68}
+/* pulse dot */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.pulse-dot{animation:pulse 2s ease-in-out infinite}
+/* offer card gradient */
+.offer-gold{background:linear-gradient(135deg,#1a1600 0%,#2a2400 50%,#1a1600 100%);border:1px solid rgba(212,245,32,.2)}
+.offer-silver{background:linear-gradient(135deg,#0f1a1f 0%,#162530 50%,#0f1a1f 100%);border:1px solid rgba(100,200,255,.15)}
+/* hero lime glow */
+.lime-glow{box-shadow:0 0 80px rgba(212,245,32,.12),0 0 160px rgba(212,245,32,.05)}
+/* image hover zoom */
+.img-zoom{overflow:hidden}.img-zoom img{transition:transform .6s cubic-bezier(.16,1,.3,1)}.img-zoom:hover img{transform:scale(1.06)}
+/* service card selected */
+.svc-card.selected{border-color:#d4f520;background:rgba(212,245,32,.07)}
+/* time chip selected */
+.tchip.sel{background:#d4f520;color:#1a2600}
+.tchip:not(.sel):not(.disabled){background:#171717;cursor:pointer}
+.tchip.disabled{background:#0d0d0d;opacity:.35;cursor:not-allowed}
+/* payment option selected */
+.pay-opt.sel{border-color:#d4f520;background:rgba(212,245,32,.08)}
+.pay-opt:not(.sel){border-color:transparent;background:#111111}
+/* floating action */
+.fab{background:linear-gradient(135deg,#d4f520,#b8d800);box-shadow:0 8px 32px rgba(212,245,32,.3)}
+/* review stars */
+.rev-star{color:#d4f520;font-size:12px}
+</style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+
+<!-- ══════════ TOP NAV ══════════ -->
+<nav class="glass fixed top-0 inset-x-0 z-50 flex items-center px-4 h-14 border-b border-outline-variant/20">
+  <button id="back-btn" onclick="goBack()" class="hidden press mr-2 w-9 h-9 rounded-xl flex items-center justify-center hover:bg-surface-container">
+    <span class="mso">arrow_back</span>
+  </button>
+  <div id="nav-logo" class="font-headline font-black italic text-xl tracking-tighter" style="color:#d4f520;letter-spacing:-.03em">
+    GROOMED<span style="color:#f5f5f0;font-style:normal;font-weight:400;font-size:.65rem;letter-spacing:.15em;margin-left:6px;vertical-align:middle">STUDIO</span>
+  </div>
+  <div id="nav-title" class="hidden font-headline font-bold text-base absolute left-1/2 -translate-x-1/2 text-on-surface"></div>
+  <div class="ml-auto flex items-center gap-1">
+    <button class="press w-9 h-9 rounded-xl flex items-center justify-center hover:bg-surface-container relative">
+      <span class="mso text-on-surface-variant">notifications</span>
+      <span class="badge">2</span>
+    </button>
+    <button class="press w-9 h-9 rounded-xl flex items-center justify-center hover:bg-surface-container">
+      <span class="mso text-on-surface-variant">person_outline</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════ PAGES ══════════ -->
+<div class="pt-14 pb-20 min-h-screen" id="app">
+
+<!-- ━━━ PAGE: SERVICE (HOME) ━━━ -->
+<div id="page-home" class="page active">
+  <!-- Hero -->
+  <div class="relative overflow-hidden" style="min-height:420px">
+    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=900&auto=format&fit=crop&q=80" alt="Barber" class="absolute inset-0 w-full h-full object-cover object-center" style="filter:brightness(.45)"/>
+    <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(10,10,10,.2) 0%,rgba(10,10,10,.0) 40%,rgba(10,10,10,.95) 100%)"></div>
+    <!-- floating pill -->
+    <div class="absolute top-4 right-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1.5 border border-outline-variant/20">
+      <span class="pulse-dot w-1.5 h-1.5 rounded-full" style="background:#4ade80"></span>
+      <span class="text-[10px] font-bold uppercase tracking-widest text-white">Open Now</span>
+    </div>
+    <div class="relative z-10 px-5 pt-10 pb-8 flex flex-col justify-end" style="min-height:420px">
+      <p class="text-[10px] font-label font-bold uppercase tracking-[.22em] mb-2" style="color:#d4f520">India's Premium Barber Network</p>
+      <h1 class="font-headline font-black leading-[.92] mb-4" style="font-size:clamp(2.6rem,9vw,4rem)">
+        Where<br/>
+        <span style="color:#d4f520;font-style:italic">Precision</span><br/>
+        Meets Style
+      </h1>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6 max-w-[280px]">Master barbers. Curated grooming. An experience worth coming back for.</p>
+      <div class="flex gap-3">
+        <button onclick="goTo('page-editorial')" class="fab press flex-1 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest text-on-primary" style="color:#1a2600">Book Now</button>
+        <button onclick="goTo('page-editorial')" class="press flex-1 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest border" style="border-color:rgba(212,245,32,.3);color:#d4f520">View Lookbook</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-5 pb-8">
+    <!-- Quick stats -->
+    <div class="grid grid-cols-3 gap-2 -mt-1 mb-7 fade-in stagger-1">
+      <div class="bg-surface-container rounded-xl p-3 text-center tonal hover:bg-surface-container-high">
+        <p class="font-headline font-black text-xl" style="color:#d4f520">500+</p>
+        <p class="text-[10px] text-on-surface-variant mt-0.5 uppercase tracking-wider">Happy Clients</p>
+      </div>
+      <div class="bg-surface-container rounded-xl p-3 text-center tonal hover:bg-surface-container-high">
+        <p class="font-headline font-black text-xl" style="color:#d4f520">4.9★</p>
+        <p class="text-[10px] text-on-surface-variant mt-0.5 uppercase tracking-wider">Avg Rating</p>
+      </div>
+      <div class="bg-surface-container rounded-xl p-3 text-center tonal hover:bg-surface-container-high">
+        <p class="font-headline font-black text-xl" style="color:#d4f520">15+</p>
+        <p class="text-[10px] text-on-surface-variant mt-0.5 uppercase tracking-wider">Cities Live</p>
+      </div>
+    </div>
+
+    <!-- Section: Services -->
+    <div class="flex items-center justify-between mb-4 fade-in stagger-2">
+      <h2 class="font-headline font-bold text-lg">Our Services</h2>
+      <span class="text-[10px] uppercase tracking-widest" style="color:#d4f520">All Premium</span>
+    </div>
+    <div class="space-y-2 mb-7 fade-in stagger-2">
+      <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-4 tonal hover:bg-surface-container-high">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.1)">
+          <span class="mso" style="color:#d4f520">content_cut</span>
+        </div>
+        <div class="flex-1">
+          <p class="font-bold text-sm">Classic Haircut</p>
+          <p class="text-xs text-on-surface-variant mt-0.5">Precision cut · Finish · Styling</p>
+          <div class="flex items-center gap-1 mt-1"><span class="mso-fill rev-star mso" style="font-size:11px">star</span><span class="text-[10px] text-on-surface-variant">4.9 · 230 reviews</span></div>
+        </div>
+        <div class="text-right">
+          <p class="font-black text-sm" style="color:#d4f520">₹499</p>
+          <p class="text-[10px] text-on-surface-variant">40 min</p>
+        </div>
+      </div>
+      <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-4 tonal hover:bg-surface-container-high">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.1)">
+          <span class="mso" style="color:#d4f520">face_retouching_natural</span>
+        </div>
+        <div class="flex-1">
+          <p class="font-bold text-sm">Beard Sculpt</p>
+          <p class="text-xs text-on-surface-variant mt-0.5">Shape · Hot towel · Oil finish</p>
+          <div class="flex items-center gap-1 mt-1"><span class="mso-fill rev-star mso" style="font-size:11px">star</span><span class="text-[10px] text-on-surface-variant">4.8 · 180 reviews</span></div>
+        </div>
+        <div class="text-right">
+          <p class="font-black text-sm" style="color:#d4f520">₹349</p>
+          <p class="text-[10px] text-on-surface-variant">30 min</p>
+        </div>
+      </div>
+      <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-4 tonal hover:bg-surface-container-high relative overflow-hidden">
+        <div class="absolute top-2 right-2 bg-primary-container text-on-primary text-[9px] font-black uppercase px-2 py-0.5 rounded-full" style="color:#1a2600">Bestseller</div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.15)">
+          <span class="mso" style="color:#d4f520">auto_awesome</span>
+        </div>
+        <div class="flex-1">
+          <p class="font-bold text-sm">Royal Treatment</p>
+          <p class="text-xs text-on-surface-variant mt-0.5">Cut + Beard + Face Mask + Head Spa</p>
+          <div class="flex items-center gap-1 mt-1"><span class="mso-fill rev-star mso" style="font-size:11px">star</span><span class="text-[10px] text-on-surface-variant">5.0 · 95 reviews</span></div>
+        </div>
+        <div class="text-right">
+          <p class="font-black text-sm" style="color:#d4f520">₹999</p>
+          <p class="text-[10px] text-on-surface-variant">90 min</p>
+        </div>
+      </div>
+      <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-4 tonal hover:bg-surface-container-high">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.1)">
+          <span class="mso" style="color:#d4f520">spa</span>
+        </div>
+        <div class="flex-1">
+          <p class="font-bold text-sm">Skin Glow Facial</p>
+          <p class="text-xs text-on-surface-variant mt-0.5">Deep cleanse · Exfoliate · Hydrate</p>
+          <div class="flex items-center gap-1 mt-1"><span class="mso-fill rev-star mso" style="font-size:11px">star</span><span class="text-[10px] text-on-surface-variant">4.7 · 62 reviews</span></div>
+        </div>
+        <div class="text-right">
+          <p class="font-black text-sm" style="color:#d4f520">₹599</p>
+          <p class="text-[10px] text-on-surface-variant">45 min</p>
+        </div>
+      </div>
+      <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-4 tonal hover:bg-surface-container-high">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.1)">
+          <span class="mso" style="color:#d4f520">self_improvement</span>
+        </div>
+        <div class="flex-1">
+          <p class="font-bold text-sm">Head Massage + Wash</p>
+          <p class="text-xs text-on-surface-variant mt-0.5">Scalp treatment · Stress relief</p>
+          <div class="flex items-center gap-1 mt-1"><span class="mso-fill rev-star mso" style="font-size:11px">star</span><span class="text-[10px] text-on-surface-variant">4.9 · 140 reviews</span></div>
+        </div>
+        <div class="text-right">
+          <p class="font-black text-sm" style="color:#d4f520">₹299</p>
+          <p class="text-[10px] text-on-surface-variant">25 min</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Banner -->
+    <div onclick="goTo('page-editorial')" class="fade-in stagger-3 press cursor-pointer rounded-2xl p-5 mb-7 flex items-center gap-4 lime-glow" style="background:linear-gradient(135deg,#141e00,#1e2d00);border:1px solid rgba(212,245,32,.25)">
+      <div class="flex-1">
+        <p class="font-headline font-black text-lg leading-tight" style="color:#d4f520">First Visit Free?</p>
+        <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">New user pehli booking pe <strong style="color:#f5f5f0">20% off</strong> paaye. Code: <strong style="color:#d4f520">GROOMED20</strong></p>
+      </div>
+      <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background:#d4f520">
+        <span class="mso" style="color:#1a2600;font-size:18px">arrow_forward</span>
+      </div>
+    </div>
+
+    <!-- Review snippet -->
+    <div class="fade-in stagger-4">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-headline font-bold text-lg">What Clients Say</h2>
+        <span class="text-[10px] text-on-surface-variant uppercase tracking-widest">4.9 Overall</span>
+      </div>
+      <div class="scroll-x flex gap-3 pb-1">
+        <div class="flex-shrink-0 w-64 bg-surface-container-low rounded-2xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center"><span class="mso text-on-surface-variant" style="font-size:14px">person</span></div>
+            <div><p class="text-xs font-bold">Arjun M.</p><p class="stars text-[10px]"></p></div>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">"Best haircut I've ever had. The barber knew exactly what I wanted without me explaining much. Will definitely return."</p>
+        </div>
+        <div class="flex-shrink-0 w-64 bg-surface-container-low rounded-2xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center"><span class="mso text-on-surface-variant" style="font-size:14px">person</span></div>
+            <div><p class="text-xs font-bold">Rohan K.</p><p class="stars text-[10px]"></p></div>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">"Royal Treatment is worth every rupee. Face mask and head massage alone is elite. This is not your regular barber shop."</p>
+        </div>
+        <div class="flex-shrink-0 w-64 bg-surface-container-low rounded-2xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center"><span class="mso text-on-surface-variant" style="font-size:14px">person</span></div>
+            <div><p class="text-xs font-bold">Vikram S.</p><p class="stars text-[10px]"></p></div>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">"Booked online at midnight for the next morning. Super seamless. The barber was on time and the beard sculpt was perfect."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ━━━ PAGE: GALLERY ━━━ -->
+<div id="page-gallery" class="page">
+  <main class="px-5 py-6 max-w-2xl mx-auto">
+    <div class="mb-7 fade-in">
+      <p class="text-[10px] font-label font-bold uppercase tracking-[.22em] mb-1.5" style="color:#d4f520">Our Portfolio</p>
+      <h1 class="font-headline font-black text-4xl leading-none">The Work <span style="color:#d4f520;font-style:italic">Speaks.</span></h1>
+      <p class="text-sm text-on-surface-variant mt-2">Every cut is a canvas. Every client, a masterpiece.</p>
+    </div>
+    <!-- Filter chips -->
+    <div class="scroll-x flex gap-2 mb-5 fade-in stagger-1">
+      <button onclick="filterGallery(this,'all')" class="gchip flex-shrink-0 bg-primary-container text-on-primary px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider press" style="color:#1a2600">All Styles</button>
+      <button onclick="filterGallery(this,'fade')" class="gchip flex-shrink-0 bg-surface-container text-on-surface-variant px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider press">Fade</button>
+      <button onclick="filterGallery(this,'beard')" class="gchip flex-shrink-0 bg-surface-container text-on-surface-variant px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider press">Beard</button>
+      <button onclick="filterGallery(this,'texture')" class="gchip flex-shrink-0 bg-surface-container text-on-surface-variant px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider press">Texture</button>
+      <button onclick="filterGallery(this,'classic')" class="gchip flex-shrink-0 bg-surface-container text-on-surface-variant px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider press">Classic</button>
+    </div>
+    <!-- Grid -->
+    <div class="grid grid-cols-2 gap-2.5 mb-7 fade-in stagger-2" id="gallery-grid">
+      <div data-cat="fade" class="gallery-item relative rounded-2xl overflow-hidden img-zoom" style="aspect-ratio:4/5">
+        <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Fade Cut"/>
+        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%)"></div>
+        <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Skin Fade</p><p class="text-[10px]" style="color:#d4f520">by Rahul V.</p></div>
+      </div>
+      <div data-cat="texture" class="gallery-item relative rounded-2xl overflow-hidden img-zoom" style="aspect-ratio:4/5">
+        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Texture"/>
+        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%)"></div>
+        <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Textured Crop</p><p class="text-[10px]" style="color:#d4f520">by Aryan S.</p></div>
+      </div>
+      <div data-cat="beard" class="gallery-item relative rounded-2xl overflow-hidden img-zoom" style="aspect-ratio:4/5">
+        <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Beard"/>
+        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%)"></div>
+        <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Full Beard Sculpt</p><p class="text-[10px]" style="color:#d4f520">by Dev S.</p></div>
+      </div>
+      <div data-cat="classic" class="gallery-item relative rounded-2xl overflow-hidden img-zoom" style="aspect-ratio:4/5">
+        <img src="https://images.unsplash.com/photo-1593702288056-7cc6e62c2a4f?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Classic"/>
+        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%)"></div>
+        <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Classic Gentleman</p><p class="text-[10px]" style="color:#d4f520">by Rahul V.</p></div>
+      </div>
+      <div data-cat="fade" class="gallery-item relative rounded-2xl overflow-hidden img-zoom" style="aspect-ratio:4/5">
+        <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Fade 2"/>
+        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%)"></div>
+        <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">High Fade</p><p class="text-[10px]" style="color:#d4f520">by Aryan S.</p></div>
+      </div>
+      <div data-cat="texture" class="gallery-item relative rounded-2xl overflow-hidden img-zoom" style="aspect-ratio:4/5">
+        <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Style"/>
+        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%)"></div>
+        <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Modern Quiff</p><p class="text-[10px]" style="color:#d4f520">by Dev S.</p></div>
+      </div>
+    </div>
+    <!-- Stats bar -->
+    <div class="bg-surface-container rounded-2xl p-4 fade-in stagger-3">
+      <p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3 font-bold">Studio Numbers</p>
+      <div class="grid grid-cols-4 gap-2 text-center">
+        <div><p class="font-headline font-black" style="color:#d4f520">500+</p><p class="text-[9px] text-on-surface-variant mt-0.5">Cuts</p></div>
+        <div><p class="font-headline font-black" style="color:#d4f520">15+</p><p class="text-[9px] text-on-surface-variant mt-0.5">Cities</p></div>
+        <div><p class="font-headline font-black" style="color:#d4f520">12</p><p class="text-[9px] text-on-surface-variant mt-0.5">Artists</p></div>
+        <div><p class="font-headline font-black" style="color:#d4f520">3yr</p><p class="text-[9px] text-on-surface-variant mt-0.5">Legacy</p></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ━━━ PAGE: BARBER ━━━ -->
+<div id="page-barber" class="page">
+  <main class="px-5 py-6 max-w-2xl mx-auto">
+    <div class="mb-7 fade-in">
+      <p class="text-[10px] font-label font-bold uppercase tracking-[.22em] mb-1.5" style="color:#d4f520">The Artists</p>
+      <h1 class="font-headline font-black text-4xl leading-none">Meet the <span style="color:#d4f520;font-style:italic">Masters</span></h1>
+      <p class="text-sm text-on-surface-variant mt-2">Each artist is handpicked. Each cut, intentional.</p>
+    </div>
+    <!-- Featured barber -->
+    <div class="fade-in stagger-1 mb-4 rounded-2xl overflow-hidden bg-surface-container-low">
+      <div class="relative h-52 img-zoom">
+        <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&auto=format&fit=crop&q=80" class="w-full h-full object-cover object-top" alt="Barber 1"/>
+        <div class="absolute inset-0" style="background:linear-gradient(to bottom,transparent 40%,rgba(17,17,17,.97) 100%)"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-1"><span class="w-1.5 h-1.5 rounded-full bg-green-400 pulse-dot"></span><span class="text-[10px] text-green-400 font-bold uppercase tracking-wider">Available Today</span></div>
+            <h3 class="font-headline font-black text-xl text-white">Rahul Verma</h3>
+            <p class="text-xs" style="color:#d4f520">Master Barber · 8 Years</p>
+          </div>
+          <div class="flex flex-col items-end gap-1">
+            <div class="flex items-center gap-1 bg-black/50 px-2 py-1 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:13px">star</span><span class="text-xs font-black text-white">4.9</span></div>
+            <span class="text-[10px] text-on-surface-variant">230 reviews</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-4">
+        <p class="text-xs text-on-surface-variant leading-relaxed mb-3">London-trained precision barber specialising in skin fades, beard sculpting, and classic gentleman cuts. Known for listening before cutting.</p>
+        <div class="flex gap-2 flex-wrap mb-3">
+          <span class="bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">Skin Fade</span>
+          <span class="bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">Beard Art</span>
+          <span class="bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">Classic Cut</span>
+          <span class="bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">Hot Towel</span>
+        </div>
+        <button onclick="goTo('page-booknow')" class="w-full fab press py-3 rounded-full text-xs font-bold uppercase tracking-widest" style="color:#1a2600">Book with Rahul</button>
+      </div>
+    </div>
+    <!-- Other barbers -->
+    <div class="space-y-3 fade-in stagger-2">
+      <div class="bg-surface-container-low rounded-2xl p-4 flex gap-3">
+        <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 img-zoom">
+          <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=200&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Barber 2"/>
+        </div>
+        <div class="flex-1">
+          <div class="flex justify-between items-start"><div><h3 class="font-bold text-sm">Aryan Singh</h3><p class="text-[10px]" style="color:#d4f520">Senior Stylist · 5 Yrs</p></div><div class="flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:11px">star</span><span class="text-xs font-bold">4.8</span></div></div>
+          <p class="text-[11px] text-on-surface-variant mt-1.5 leading-relaxed">Expert in textured crops, hair color, and scalp health. Consultation-first approach.</p>
+          <div class="flex gap-1.5 mt-2 flex-wrap">
+            <span class="bg-surface-container text-on-surface-variant text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">Texture</span>
+            <span class="bg-surface-container text-on-surface-variant text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">Color</span>
+          </div>
+        </div>
+      </div>
+      <div class="bg-surface-container-low rounded-2xl p-4 flex gap-3">
+        <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 img-zoom">
+          <img src="https://images.unsplash.com/photo-1588776814546-1ffbb171e041?w=200&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Barber 3"/>
+        </div>
+        <div class="flex-1">
+          <div class="flex justify-between items-start"><div><h3 class="font-bold text-sm">Dev Sharma</h3><p class="text-[10px]" style="color:#d4f520">Grooming Specialist · 6 Yrs</p></div><div class="flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:11px">star</span><span class="text-xs font-bold">4.9</span></div></div>
+          <p class="text-[11px] text-on-surface-variant mt-1.5 leading-relaxed">Certified skin specialist. Facial treatments and scalp care are his forte.</p>
+          <div class="flex gap-1.5 mt-2 flex-wrap">
+            <span class="bg-surface-container text-on-surface-variant text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">Facials</span>
+            <span class="bg-surface-container text-on-surface-variant text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">Scalp</span>
+          </div>
+        </div>
+      </div>
+      <div class="bg-surface-container-low rounded-2xl p-4 flex gap-3">
+        <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 img-zoom">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Barber 4"/>
+        </div>
+        <div class="flex-1">
+          <div class="flex justify-between items-start"><div><h3 class="font-bold text-sm">Karan Mehta</h3><p class="text-[10px]" style="color:#d4f520">Style Director · 10 Yrs</p></div><div class="flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:11px">star</span><span class="text-xs font-bold">5.0</span></div></div>
+          <p class="text-[11px] text-on-surface-variant mt-1.5 leading-relaxed">International experience across Dubai & Singapore. Signature style transformations.</p>
+          <div class="flex gap-1.5 mt-2 flex-wrap">
+            <span class="bg-surface-container text-on-surface-variant text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">Luxury</span>
+            <span class="bg-surface-container text-on-surface-variant text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">Transform</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Join as barber CTA -->
+    <div class="fade-in stagger-3 mt-5 rounded-2xl p-4 border border-outline-variant/20 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center flex-shrink-0"><span class="mso" style="color:#d4f520">add_circle</span></div>
+      <div class="flex-1"><p class="font-bold text-sm">Are you a barber?</p><p class="text-xs text-on-surface-variant">Join Groomed and grow your clientele</p></div>
+      <button class="text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-full press" style="border:1px solid rgba(212,245,32,.3);color:#d4f520">Apply</button>
+    </div>
+  </main>
+</div>
+
+<!-- ━━━ PAGE: OFFERS (NEW!) ━━━ -->
+<div id="page-offers" class="page">
+  <main class="px-5 py-6 max-w-2xl mx-auto">
+    <div class="mb-7 fade-in">
+      <p class="text-[10px] font-label font-bold uppercase tracking-[.22em] mb-1.5" style="color:#d4f520">Exclusive Deals</p>
+      <h1 class="font-headline font-black text-4xl leading-none">Hot <span style="color:#d4f520;font-style:italic">Offers</span></h1>
+      <p class="text-sm text-on-surface-variant mt-2">Limited-time deals crafted just for you.</p>
+    </div>
+    <!-- Featured offer -->
+    <div class="fade-in stagger-1 offer-gold rounded-2xl p-5 mb-4">
+      <div class="flex items-start justify-between mb-3">
+        <div>
+          <span class="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full mb-2 inline-block" style="background:#d4f520;color:#1a2600">⭐ Premium Deal</span>
+          <h3 class="font-headline font-black text-2xl" style="color:#d4f520">GROOMED20</h3>
+          <p class="text-sm font-bold text-white mt-0.5">20% OFF — First Visit</p>
+        </div>
+        <div class="text-right"><p class="font-headline font-black text-3xl" style="color:#d4f520">20%</p><p class="text-[10px] text-on-surface-variant">off total</p></div>
+      </div>
+      <p class="text-xs text-on-surface-variant leading-relaxed mb-4">Pehli booking par poora 20% bachao. Kisi bhi service par valid. Koi minimum amount nahi.</p>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-1.5"><span class="mso text-on-surface-variant" style="font-size:14px">timer</span><span class="text-xs text-on-surface-variant">Expires: 30 Apr 2025</span></div>
+        <button onclick="copyCode('GROOMED20')" class="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase press" style="background:#d4f520;color:#1a2600">Copy Code</button>
+      </div>
+    </div>
+    <!-- Other offers -->
+    <div class="space-y-3 fade-in stagger-2">
+      <div class="offer-silver rounded-2xl p-4">
+        <div class="flex items-start justify-between mb-2">
+          <div><span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1.5 inline-block" style="background:rgba(100,200,255,.15);color:#64c8ff">Weekend Special</span><h3 class="font-headline font-bold text-lg">WEEKEND30</h3><p class="text-sm font-bold text-white">₹30 OFF — Sat & Sun</p></div>
+          <p class="font-headline font-black text-2xl" style="color:#64c8ff">₹30</p>
+        </div>
+        <p class="text-xs text-on-surface-variant mb-3">Har Saturday & Sunday ko apply hota hai. Min booking ₹300.</p>
+        <div class="flex justify-between items-center"><span class="text-xs text-on-surface-variant">Valid till: 15 Apr</span><button onclick="copyCode('WEEKEND30')" class="px-4 py-1.5 rounded-full text-xs font-bold uppercase press" style="border:1px solid rgba(100,200,255,.3);color:#64c8ff">Copy</button></div>
+      </div>
+      <div class="bg-surface-container-low rounded-2xl p-4" style="border:1px solid rgba(255,107,71,.2)">
+        <div class="flex items-start justify-between mb-2">
+          <div><span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1.5 inline-block" style="background:rgba(255,107,71,.15);color:#ff6b47">Combo Deal</span><h3 class="font-headline font-bold text-lg">ROYAL50</h3><p class="text-sm font-bold text-white">₹50 OFF — Royal Treatment</p></div>
+          <p class="font-headline font-black text-2xl" style="color:#ff6b47">₹50</p>
+        </div>
+        <p class="text-xs text-on-surface-variant mb-3">Sirf Royal Treatment booking par. Limited slots per day.</p>
+        <div class="flex justify-between items-center"><span class="text-xs text-on-surface-variant">Valid till: 10 Apr</span><button onclick="copyCode('ROYAL50')" class="px-4 py-1.5 rounded-full text-xs font-bold uppercase press" style="border:1px solid rgba(255,107,71,.3);color:#ff6b47">Copy</button></div>
+      </div>
+      <div class="bg-surface-container-low rounded-2xl p-4" style="border:1px solid rgba(212,245,32,.1)">
+        <div class="flex items-start justify-between mb-2">
+          <div><span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1.5 inline-block" style="background:rgba(212,245,32,.1);color:#d4f520">Referral</span><h3 class="font-headline font-bold text-lg">REFER & EARN</h3><p class="text-sm font-bold text-white">Dono ko ₹100 wallet cash</p></div>
+          <span class="mso text-on-surface-variant">group</span>
+        </div>
+        <p class="text-xs text-on-surface-variant mb-3">Apne dost ko invite karo. Dono ki pehli booking complete hone par ₹100 milega.</p>
+        <button class="w-full py-2.5 rounded-full text-xs font-bold uppercase press" style="border:1px solid rgba(212,245,32,.25);color:#d4f520">Share Referral Link</button>
+      </div>
+    </div>
+    <!-- Copied toast -->
+    <div id="copy-toast" class="hidden fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full text-xs font-bold" style="background:#d4f520;color:#1a2600">Code Copied!</div>
+  </main>
+</div>
+
+<!-- ━━━ PAGE: ABOUT ━━━ -->
+<div id="page-about" class="page">
+  <main class="max-w-2xl mx-auto">
+    <!-- Hero image -->
+    <div class="relative h-56 overflow-hidden">
+      <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=900&auto=format&fit=crop&q=80" class="w-full h-full object-cover" style="filter:brightness(.5)" alt="Salon"/>
+      <div class="absolute inset-0 flex flex-col justify-end p-5" style="background:linear-gradient(to top,rgba(10,10,10,.95),transparent)">
+        <p class="text-[10px] font-label font-bold uppercase tracking-[.22em] mb-1" style="color:#d4f520">Our Story</p>
+        <h1 class="font-headline font-black text-3xl leading-none text-white">Built for the <span style="color:#d4f520;font-style:italic">Modern Man</span></h1>
+      </div>
+    </div>
+    <div class="px-5 py-6">
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6 fade-in">Groomed ek aise sapne se janam liya jab ek barber ki kursi sirf baalon kaat ne ki jagah nahi, balki self-confidence aur self-expression ki jagah bani. Hum believe karte hain ki ek acha haircut insaan ka pura din badal sakta hai.</p>
+      <!-- Values -->
+      <div class="space-y-3 mb-7 fade-in stagger-1">
+        <div class="flex gap-3 items-start">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(212,245,32,.1)"><span class="mso" style="color:#d4f520;font-size:18px">verified</span></div>
+          <div><p class="font-bold text-sm">Precision Over Speed</p><p class="text-xs text-on-surface-variant mt-0.5">Har cut ke liye proper time diya jaata hai. Koi rush nahi.</p></div>
+        </div>
+        <div class="flex gap-3 items-start">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(212,245,32,.1)"><span class="mso" style="color:#d4f520;font-size:18px">workspace_premium</span></div>
+          <div><p class="font-bold text-sm">Premium Products Only</p><p class="text-xs text-on-surface-variant mt-0.5">Sirf international-grade grooming products. Skin-safe, always.</p></div>
+        </div>
+        <div class="flex gap-3 items-start">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(212,245,32,.1)"><span class="mso" style="color:#d4f520;font-size:18px">diversity_3</span></div>
+          <div><p class="font-bold text-sm">Artists, Not Just Barbers</p><p class="text-xs text-on-surface-variant mt-0.5">Har haath mein art hai. Hum barbers train karte hain, build karte hain.</p></div>
+        </div>
+        <div class="flex gap-3 items-start">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(212,245,32,.1)"><span class="mso" style="color:#d4f520;font-size:18px">rocket_launch</span></div>
+          <div><p class="font-bold text-sm">Startup with Soul</p><p class="text-xs text-on-surface-variant mt-0.5">India se shuru, world mein jaana hai. Ek booking ek kadam hai.</p></div>
+        </div>
+      </div>
+      <!-- Contact -->
+      <div class="bg-surface-container rounded-2xl p-4 mb-4 fade-in stagger-2">
+        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-3">Get in Touch</p>
+        <div class="space-y-2.5">
+          <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center"><span class="mso text-on-surface-variant" style="font-size:16px">mail</span></div><p class="text-sm">hello@groomed.studio</p></div>
+          <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center"><span class="mso text-on-surface-variant" style="font-size:16px">phone</span></div><p class="text-sm">+91 98765 43210</p></div>
+          <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center"><span class="mso text-on-surface-variant" style="font-size:16px">location_on</span></div><p class="text-sm">Bangalore, Mumbai, Delhi & 12 more cities</p></div>
+        </div>
+      </div>
+      <!-- Social -->
+      <div class="flex gap-3 fade-in stagger-3">
+        <button class="flex-1 flex items-center justify-center gap-2 bg-surface-container rounded-xl py-3 press hover:bg-surface-container-high">
+          <span class="mso text-on-surface-variant" style="font-size:18px">photo_camera</span><span class="text-xs font-bold">Instagram</span>
+        </button>
+        <button class="flex-1 flex items-center justify-center gap-2 bg-surface-container rounded-xl py-3 press hover:bg-surface-container-high">
+          <span class="mso text-on-surface-variant" style="font-size:18px">play_circle</span><span class="text-xs font-bold">YouTube</span>
+        </button>
+        <button class="flex-1 flex items-center justify-center gap-2 bg-surface-container rounded-xl py-3 press hover:bg-surface-container-high">
+          <span class="mso text-on-surface-variant" style="font-size:18px">alternate_email</span><span class="text-xs font-bold">Twitter</span>
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ━━━ PAGE: EDITORIAL ━━━ -->
+<div id="page-editorial" class="page">
+  <div class="glass sticky top-14 z-40 px-5 border-b border-outline-variant/15">
+    <div class="flex gap-5 overflow-x-auto scroll-x">
+      <button onclick="switchET('et-home')" id="etb-home" class="etab active flex-shrink-0 py-3 text-[11px] font-bold uppercase tracking-wider">Home</button>
+      <button onclick="switchET('et-nearme')" id="etb-nearme" class="etab flex-shrink-0 py-3 text-[11px] font-bold uppercase tracking-wider">Near Me</button>
+      <button onclick="switchET('et-salons')" id="etb-salons" class="etab flex-shrink-0 py-3 text-[11px] font-bold uppercase tracking-wider">Salons</button>
+      <button onclick="switchET('et-booking')" id="etb-booking" class="etab flex-shrink-0 py-3 text-[11px] font-bold uppercase tracking-wider">My Bookings</button>
+    </div>
+  </div>
+
+  <!-- ET: HOME -->
+  <div id="et-home" class="etpage">
+    <div class="relative overflow-hidden" style="height:300px">
+      <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=900&auto=format&fit=crop&q=80" class="w-full h-full object-cover" style="filter:brightness(.4)" alt="Editorial"/>
+      <div class="absolute inset-0" style="background:linear-gradient(to bottom,transparent 30%,rgba(10,10,10,.98))"></div>
+      <div class="absolute bottom-0 left-0 p-5">
+        <p class="text-[10px] font-bold uppercase tracking-[.22em] mb-1.5" style="color:#d4f520">Groomed Editorial</p>
+        <h1 class="font-headline font-black text-4xl leading-none text-white">Style is<br/><span style="color:#d4f520;font-style:italic">Currency.</span></h1>
+      </div>
+    </div>
+    <div class="px-5 py-5">
+      <div class="grid grid-cols-2 gap-3 mb-5">
+        <div class="relative rounded-2xl overflow-hidden img-zoom" style="height:180px">
+          <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="look1"/>
+          <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.8),transparent 55%)"></div>
+          <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Street Sharp</p></div>
+        </div>
+        <div class="relative rounded-2xl overflow-hidden img-zoom" style="height:180px">
+          <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="look2"/>
+          <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.8),transparent 55%)"></div>
+          <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Studio Cut</p></div>
+        </div>
+      </div>
+      <div class="relative rounded-2xl overflow-hidden img-zoom mb-5" style="height:200px">
+        <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=900&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Salon Interior"/>
+        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.85),transparent 55%)"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-4"><p class="text-[10px] uppercase tracking-wider mb-0.5" style="color:#d4f520">Studio Spotlight</p><p class="text-white font-bold text-sm">The Art of the Perfect Shave — Inside The Blade Room</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ET: NEAR ME -->
+  <div id="et-nearme" class="etpage hidden">
+    <main class="px-5 py-5 max-w-2xl mx-auto">
+      <div class="mb-4"><h2 class="font-headline font-black text-2xl">Your Home <span style="color:#d4f520">Service</span></h2><p class="text-xs text-on-surface-variant mt-1">Barbers who come to you</p></div>
+      <div class="map-grid rounded-2xl mb-5 relative overflow-hidden" style="height:220px">
+        <div class="absolute inset-0 z-10">
+          <div class="absolute" style="top:38%;left:46%">
+            <div class="flex flex-col items-center">
+              <div class="px-2 py-0.5 rounded-full text-[9px] font-black mb-1 shadow-lg" style="background:#d4f520;color:#1a2600">YOU</div>
+              <div class="w-4 h-4 rounded-full border-2 flex items-center justify-center" style="background:#d4f520;border-color:#d4f520;box-shadow:0 0 16px rgba(212,245,32,.6)"></div>
+            </div>
+          </div>
+          <div class="absolute" style="top:18%;left:22%"><div class="flex flex-col items-center"><div class="bg-surface-container text-white rounded-full px-2 py-0.5 text-[9px] font-bold mb-0.5 shadow-xl whitespace-nowrap border border-outline-variant/30">The Blade Room</div><div class="w-3 h-3 rounded-full" style="background:#fff;box-shadow:0 0 8px rgba(255,255,255,.4)"></div></div></div>
+          <div class="absolute" style="top:58%;left:68%"><div class="flex flex-col items-center"><div class="bg-surface-container text-white rounded-full px-2 py-0.5 text-[9px] font-bold mb-0.5 shadow-xl whitespace-nowrap border border-outline-variant/30">Studio 9</div><div class="w-3 h-3 rounded-full" style="background:#fff;box-shadow:0 0 8px rgba(255,255,255,.4)"></div></div></div>
+          <div class="absolute" style="top:72%;left:28%"><div class="flex flex-col items-center"><div class="bg-surface-container text-white rounded-full px-2 py-0.5 text-[9px] font-bold mb-0.5 shadow-xl whitespace-nowrap border border-outline-variant/30">Elite Cuts</div><div class="w-3 h-3 rounded-full" style="background:#fff;box-shadow:0 0 8px rgba(255,255,255,.4)"></div></div></div>
+        </div>
+        <div class="absolute bottom-3 right-3 z-20 glass rounded-xl px-3 py-1.5 flex items-center gap-1.5 border border-outline-variant/20"><span class="pulse-dot w-1.5 h-1.5 rounded-full bg-green-400"></span><span class="text-xs font-bold">3 Available</span></div>
+      </div>
+      <div class="space-y-2.5">
+        <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-3 tonal hover:bg-surface-container-high"><div class="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=100&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div><div class="flex-1"><p class="font-bold text-sm">Rahul Verma</p><p class="text-xs text-on-surface-variant">0.8 km · ₹499+ · Home Visit Available</p></div><button onclick="goTo('page-booknow')" class="fab press px-4 py-2 rounded-full text-xs font-bold uppercase" style="color:#1a2600">Book</button></div>
+        <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-3 tonal hover:bg-surface-container-high"><div class="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=100&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div><div class="flex-1"><p class="font-bold text-sm">Aryan Singh</p><p class="text-xs text-on-surface-variant">1.2 km · ₹349+ · Home Visit Available</p></div><button onclick="goTo('page-booknow')" class="fab press px-4 py-2 rounded-full text-xs font-bold uppercase" style="color:#1a2600">Book</button></div>
+        <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-3 tonal hover:bg-surface-container-high"><div class="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1588776814546-1ffbb171e041?w=100&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div><div class="flex-1"><p class="font-bold text-sm">Dev Sharma</p><p class="text-xs text-on-surface-variant">2.1 km · ₹299+ · Home Visit Available</p></div><button onclick="goTo('page-booknow')" class="fab press px-4 py-2 rounded-full text-xs font-bold uppercase" style="color:#1a2600">Book</button></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ET: SALONS -->
+  <div id="et-salons" class="etpage hidden">
+    <main class="px-5 py-5 max-w-2xl mx-auto">
+      <div class="relative mb-4"><span class="mso absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span><input class="w-full bg-surface-container rounded-full py-3 pl-11 pr-4 text-sm font-medium placeholder-on-surface-variant focus:outline-none focus:ring-1" style="focus:ring-color:#d4f520" placeholder="Search salons, areas..."/></div>
+      <h2 class="font-headline font-black text-2xl mb-4">Salons <span style="color:#d4f520;font-style:italic">Near You</span></h2>
+      <div class="space-y-3">
+        <div class="bg-surface-container-low rounded-2xl p-4 flex gap-3 tonal hover:bg-surface-container-high">
+          <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 img-zoom"><img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=300&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Salon"/></div>
+          <div class="flex-1 flex flex-col justify-between">
+            <div class="flex justify-between"><div><h3 class="font-headline font-bold text-base" style="color:#e8ff87">The Blade Room</h3><div class="flex items-center gap-1 text-on-surface-variant text-xs mt-0.5"><span class="mso" style="font-size:12px">location_on</span><span>42 MG Road, Bangalore</span></div></div><div class="flex items-center gap-0.5 bg-surface-container px-2 py-0.5 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:12px">star</span><span class="text-xs font-black">4.9</span></div></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-1 text-xs text-on-surface-variant"><span class="mso" style="font-size:12px">schedule</span><span>9AM–9PM</span><span class="mx-1">·</span><span class="font-semibold" style="color:#d4f520">Open</span></div><button onclick="goTo('page-booknow')" class="fab press px-5 py-1.5 rounded-full text-xs font-bold uppercase" style="color:#1a2600">Book</button></div>
+          </div>
+        </div>
+        <div class="bg-surface-container-low rounded-2xl p-4 flex gap-3 tonal hover:bg-surface-container-high">
+          <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 img-zoom"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=300&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Salon"/></div>
+          <div class="flex-1 flex flex-col justify-between">
+            <div class="flex justify-between"><div><h3 class="font-headline font-bold text-base" style="color:#e8ff87">Studio 9 Salon</h3><div class="flex items-center gap-1 text-on-surface-variant text-xs mt-0.5"><span class="mso" style="font-size:12px">location_on</span><span>15 Koramangala</span></div></div><div class="flex items-center gap-0.5 bg-surface-container px-2 py-0.5 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:12px">star</span><span class="text-xs font-black">4.7</span></div></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-1 text-xs text-on-surface-variant"><span class="mso" style="font-size:12px">schedule</span><span>10AM–8PM</span><span class="mx-1">·</span><span class="font-semibold text-error">Closing</span></div><button onclick="goTo('page-booknow')" class="fab press px-5 py-1.5 rounded-full text-xs font-bold uppercase" style="color:#1a2600">Book</button></div>
+          </div>
+        </div>
+        <div class="bg-surface-container-low rounded-2xl p-4 flex gap-3 tonal hover:bg-surface-container-high">
+          <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 img-zoom"><img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=300&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Salon"/></div>
+          <div class="flex-1 flex flex-col justify-between">
+            <div class="flex justify-between"><div><h3 class="font-headline font-bold text-base" style="color:#e8ff87">Elite Cuts Pro</h3><div class="flex items-center gap-1 text-on-surface-variant text-xs mt-0.5"><span class="mso" style="font-size:12px">location_on</span><span>88 Indiranagar</span></div></div><div class="flex items-center gap-0.5 bg-surface-container px-2 py-0.5 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:12px">star</span><span class="text-xs font-black">5.0</span></div></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-1 text-xs text-on-surface-variant"><span class="mso" style="font-size:12px">schedule</span><span>9AM–10PM</span><span class="mx-1">·</span><span class="font-semibold" style="color:#d4f520">Open</span></div><button onclick="goTo('page-booknow')" class="fab press px-5 py-1.5 rounded-full text-xs font-bold uppercase" style="color:#1a2600">Book</button></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ET: MY BOOKINGS -->
+  <div id="et-booking" class="etpage hidden">
+    <main class="px-5 py-5 max-w-2xl mx-auto">
+      <h2 class="font-headline font-black text-2xl mb-5">My <span style="color:#d4f520;font-style:italic">Bookings</span></h2>
+      <p class="text-[10px] uppercase tracking-widest font-bold mb-3" style="color:#d4f520">Upcoming</p>
+      <div class="bg-surface-container rounded-2xl p-5 mb-5" style="border:1px solid rgba(212,245,32,.15)">
+        <div class="flex items-start justify-between mb-4"><div><h3 class="font-headline font-bold text-lg">The Blade Room</h3><p class="text-xs text-on-surface-variant mt-1">Classic Haircut + Beard Sculpt</p></div><span class="text-[9px] font-black uppercase px-2 py-1 rounded-full" style="background:rgba(212,245,32,.15);color:#d4f520">Confirmed ✓</span></div>
+        <div class="flex flex-wrap gap-3 text-xs text-on-surface-variant mb-4">
+          <div class="flex items-center gap-1"><span class="mso" style="font-size:14px">calendar_today</span>Sat, 29 Mar</div>
+          <div class="flex items-center gap-1"><span class="mso" style="font-size:14px">schedule</span>11:00 AM</div>
+          <div class="flex items-center gap-1"><span class="mso" style="font-size:14px">person</span>Rahul Verma</div>
+        </div>
+        <div class="flex gap-2.5">
+          <button class="flex-1 border rounded-full py-2 text-xs font-bold uppercase tracking-wide press" style="border-color:rgba(255,255,255,.15);color:#f5f5f0">Reschedule</button>
+          <button class="flex-1 border rounded-full py-2 text-xs font-bold uppercase tracking-wide press" style="border-color:rgba(255,107,71,.3);color:#ff6b47">Cancel</button>
+        </div>
+      </div>
+      <p class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant mb-3">Past</p>
+      <div class="space-y-2.5">
+        <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=80&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div><div class="flex-1"><p class="font-bold text-sm">Studio 9 Salon</p><p class="text-xs text-on-surface-variant">Textured Crop · Mar 15</p></div><div class="flex items-center gap-0.5"><span class="mso-fill mso rev-star" style="font-size:14px">star</span><span class="text-xs font-black">4.9</span></div></div>
+        <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=80&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div><div class="flex-1"><p class="font-bold text-sm">The Blade Room</p><p class="text-xs text-on-surface-variant">Classic Fade · Feb 28</p></div><div class="flex items-center gap-0.5"><span class="mso-fill mso rev-star" style="font-size:14px">star</span><span class="text-xs font-black">5.0</span></div></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ━━━ PAGE: BOOK NOW ━━━ -->
+<div id="page-booknow" class="page">
+  <main class="px-5 py-5 max-w-2xl mx-auto">
+    <div class="flex items-center gap-3 bg-surface-container rounded-2xl p-4 mb-6">
+      <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 img-zoom"><img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=200&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Salon"/></div>
+      <div class="flex-1"><h3 class="font-headline font-bold text-lg">The Blade Room</h3><div class="flex items-center gap-1 text-xs text-on-surface-variant mt-0.5"><span class="mso" style="font-size:13px">location_on</span>42 MG Road, Bangalore</div><div class="flex items-center gap-1 mt-1"><span class="mso-fill mso rev-star" style="font-size:13px">star</span><span class="text-xs font-black" style="color:#d4f520">4.9</span><span class="text-xs text-on-surface-variant ml-1">· Open Now</span></div></div>
+    </div>
+    <!-- Barber select -->
+    <div class="mb-5">
+      <p class="text-[10px] uppercase tracking-widest font-bold mb-3" style="color:#d4f520">Choose Barber</p>
+      <div class="flex gap-3 overflow-x-auto scroll-x pb-1">
+        <div onclick="selBarber(this)" class="barb-chip flex-shrink-0 flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-primary-container press cursor-pointer" style="background:rgba(212,245,32,.12);border:2px solid #d4f520">
+          <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=80&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div>
+          <p class="text-[10px] font-bold whitespace-nowrap" style="color:#d4f520">Rahul V.</p>
+        </div>
+        <div onclick="selBarber(this)" class="barb-chip flex-shrink-0 flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-surface-container press cursor-pointer" style="border:2px solid transparent">
+          <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=80&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div>
+          <p class="text-[10px] font-bold text-on-surface-variant whitespace-nowrap">Aryan S.</p>
+        </div>
+        <div onclick="selBarber(this)" class="barb-chip flex-shrink-0 flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-surface-container press cursor-pointer" style="border:2px solid transparent">
+          <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://images.unsplash.com/photo-1588776814546-1ffbb171e041?w=80&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div>
+          <p class="text-[10px] font-bold text-on-surface-variant whitespace-nowrap">Dev S.</p>
+        </div>
+        <div onclick="selBarber(this)" class="barb-chip flex-shrink-0 flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-surface-container press cursor-pointer" style="border:2px solid transparent">
+          <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div>
+          <p class="text-[10px] font-bold text-on-surface-variant whitespace-nowrap">Karan M.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Service -->
+    <div class="mb-5">
+      <p class="text-[10px] uppercase tracking-widest font-bold mb-3" style="color:#d4f520">Select Service</p>
+      <div class="space-y-2">
+        <div onclick="selSvc(this)" class="svc-card selected rounded-2xl p-4 flex items-center gap-3 cursor-pointer press" style="border:2px solid #d4f520;background:rgba(212,245,32,.07)">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.15)"><span class="mso" style="color:#d4f520;font-size:17px">content_cut</span></div>
+          <div class="flex-1"><p class="font-bold text-sm">Classic Haircut</p><p class="text-xs text-on-surface-variant">40 min</p></div>
+          <p class="font-black text-sm" style="color:#d4f520">₹499</p>
+        </div>
+        <div onclick="selSvc(this)" class="svc-card rounded-2xl p-4 flex items-center gap-3 cursor-pointer press bg-surface-container-low" style="border:2px solid transparent">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-surface-container-high"><span class="mso text-on-surface-variant" style="font-size:17px">face_retouching_natural</span></div>
+          <div class="flex-1"><p class="font-bold text-sm">Beard Sculpt</p><p class="text-xs text-on-surface-variant">30 min</p></div>
+          <p class="font-black text-sm" style="color:#d4f520">₹349</p>
+        </div>
+        <div onclick="selSvc(this)" class="svc-card rounded-2xl p-4 flex items-center gap-3 cursor-pointer press bg-surface-container-low relative overflow-hidden" style="border:2px solid transparent">
+          <div class="absolute top-2 right-2 text-[8px] font-black uppercase px-1.5 py-0.5 rounded-full" style="background:#d4f520;color:#1a2600">Best</div>
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-surface-container-high"><span class="mso text-on-surface-variant" style="font-size:17px">auto_awesome</span></div>
+          <div class="flex-1"><p class="font-bold text-sm">Royal Treatment</p><p class="text-xs text-on-surface-variant">90 min</p></div>
+          <p class="font-black text-sm" style="color:#d4f520">₹999</p>
+        </div>
+        <div onclick="selSvc(this)" class="svc-card rounded-2xl p-4 flex items-center gap-3 cursor-pointer press bg-surface-container-low" style="border:2px solid transparent">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-surface-container-high"><span class="mso text-on-surface-variant" style="font-size:17px">spa</span></div>
+          <div class="flex-1"><p class="font-bold text-sm">Skin Glow Facial</p><p class="text-xs text-on-surface-variant">45 min</p></div>
+          <p class="font-black text-sm" style="color:#d4f520">₹599</p>
+        </div>
+      </div>
+    </div>
+    <!-- Date -->
+    <div class="mb-5">
+      <p class="text-[10px] uppercase tracking-widest font-bold mb-3" style="color:#d4f520">Select Date</p>
+      <div class="flex gap-2 overflow-x-auto scroll-x pb-1">
+        <div onclick="selDate(this)" class="dchip flex-shrink-0 flex flex-col items-center px-4 py-2.5 rounded-xl cursor-pointer press" style="background:#d4f520;color:#1a2600"><span class="text-[9px] font-black uppercase">Sat</span><span class="text-xl font-black font-headline leading-tight">29</span><span class="text-[9px]">Mar</span></div>
+        <div onclick="selDate(this)" class="dchip flex-shrink-0 flex flex-col items-center px-4 py-2.5 rounded-xl cursor-pointer press bg-surface-container text-on-surface-variant hover:bg-surface-container-high"><span class="text-[9px] font-black uppercase">Sun</span><span class="text-xl font-black font-headline leading-tight">30</span><span class="text-[9px]">Mar</span></div>
+        <div onclick="selDate(this)" class="dchip flex-shrink-0 flex flex-col items-center px-4 py-2.5 rounded-xl cursor-pointer press bg-surface-container text-on-surface-variant hover:bg-surface-container-high"><span class="text-[9px] font-black uppercase">Mon</span><span class="text-xl font-black font-headline leading-tight">31</span><span class="text-[9px]">Mar</span></div>
+        <div onclick="selDate(this)" class="dchip flex-shrink-0 flex flex-col items-center px-4 py-2.5 rounded-xl cursor-pointer press bg-surface-container text-on-surface-variant hover:bg-surface-container-high"><span class="text-[9px] font-black uppercase">Tue</span><span class="text-xl font-black font-headline leading-tight">01</span><span class="text-[9px]">Apr</span></div>
+        <div onclick="selDate(this)" class="dchip flex-shrink-0 flex flex-col items-center px-4 py-2.5 rounded-xl cursor-pointer press bg-surface-container text-on-surface-variant hover:bg-surface-container-high"><span class="text-[9px] font-black uppercase">Wed</span><span class="text-xl font-black font-headline leading-tight">02</span><span class="text-[9px]">Apr</span></div>
+        <div onclick="selDate(this)" class="dchip flex-shrink-0 flex flex-col items-center px-4 py-2.5 rounded-xl cursor-pointer press bg-surface-container text-on-surface-variant hover:bg-surface-container-high"><span class="text-[9px] font-black uppercase">Thu</span><span class="text-xl font-black font-headline leading-tight">03</span><span class="text-[9px]">Apr</span></div>
+      </div>
+    </div>
+    <!-- Time -->
+    <div class="mb-7">
+      <p class="text-[10px] uppercase tracking-widest font-bold mb-3" style="color:#d4f520">Select Time</p>
+      <div class="grid grid-cols-3 gap-2">
+        <div onclick="selTime(this)" class="tchip sel rounded-xl py-3 text-xs font-bold text-center press" style="background:#d4f520;color:#1a2600">9:00 AM</div>
+        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">10:00 AM</div>
+        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">11:00 AM</div>
+        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">12:00 PM</div>
+        <div class="tchip disabled rounded-xl py-3 text-xs font-bold text-center text-on-surface-variant">1:00 PM</div>
+        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">2:00 PM</div>
+        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">3:00 PM</div>
+        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">4:00 PM</div>
+        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">5:00 PM</div>
+      </div>
+    </div>
+    <button onclick="goTo('page-payment')" class="w-full fab press py-4 rounded-full font-bold text-sm uppercase tracking-widest" style="color:#1a2600">Next — Payment Mode</button>
+  </main>
+</div>
+
+<!-- ━━━ PAGE: PAYMENT ━━━ -->
+<div id="page-payment" class="page">
+  <main class="px-5 py-5 max-w-2xl mx-auto">
+    <!-- Summary -->
+    <div class="bg-surface-container rounded-2xl p-5 mb-6">
+      <p class="text-[10px] uppercase tracking-widest font-bold mb-4" style="color:#d4f520">Booking Summary</p>
+      <div class="space-y-2.5 text-sm">
+        <div class="flex justify-between"><span class="text-on-surface-variant">Salon</span><span class="font-bold">The Blade Room</span></div>
+        <div class="flex justify-between"><span class="text-on-surface-variant">Service</span><span class="font-bold">Classic Haircut</span></div>
+        <div class="flex justify-between"><span class="text-on-surface-variant">Barber</span><span class="font-bold">Rahul Verma</span></div>
+        <div class="flex justify-between"><span class="text-on-surface-variant">Date & Time</span><span class="font-bold">Sat 29 · 9:00 AM</span></div>
+        <div class="flex justify-between"><span class="text-on-surface-variant">Duration</span><span class="font-bold">40 mins</span></div>
+        <div class="h-px my-1" style="background:rgba(255,255,255,.06)"></div>
+        <div class="flex justify-between"><span class="text-on-surface-variant">Service Fee</span><span class="font-bold">₹499</span></div>
+        <div class="flex justify-between"><span class="text-on-surface-variant">Discount (GROOMED20)</span><span class="font-bold text-green-400">-₹100</span></div>
+        <div class="flex justify-between"><span class="text-on-surface-variant">Platform Fee</span><span class="font-bold">₹0</span></div>
+        <div class="h-px my-1" style="background:rgba(255,255,255,.06)"></div>
+        <div class="flex justify-between items-center"><span class="font-bold">Total Payable</span><span class="font-headline font-black text-xl" style="color:#d4f520">₹399</span></div>
+      </div>
+    </div>
+    <!-- Coupon -->
+    <div class="mb-5">
+      <p class="text-[10px] uppercase tracking-widest font-bold mb-3" style="color:#d4f520">Apply Coupon</p>
+      <div class="flex gap-2"><input class="flex-1 bg-surface-container rounded-xl px-4 py-3 text-sm font-medium placeholder-on-surface-variant focus:outline-none" placeholder="Enter promo code" value="GROOMED20"/><button class="px-5 py-3 rounded-xl text-xs font-bold uppercase press" style="background:rgba(212,245,32,.12);color:#d4f520">Apply</button></div>
+    </div>
+    <!-- Payment -->
+    <div class="mb-7">
+      <p class="text-[10px] uppercase tracking-widest font-bold mb-4" style="color:#d4f520">Payment Mode</p>
+      <div class="space-y-2.5">
+        <div id="pay-cash" onclick="selPay('pay-cash')" class="pay-opt sel rounded-2xl p-4 flex items-center gap-4 cursor-pointer press" style="border:2px solid #d4f520">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.15)"><span class="mso" style="color:#d4f520">payments</span></div>
+          <div class="flex-1"><p class="font-bold text-sm">Cash After Service</p><p class="text-xs text-on-surface-variant">Pay barber directly in cash</p></div>
+          <div class="pchk w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style="background:#d4f520"><span class="mso" style="color:#1a2600;font-size:13px;font-variation-settings:'FILL' 1,'wght' 400">check</span></div>
+        </div>
+        <div id="pay-upi" onclick="selPay('pay-upi')" class="pay-opt rounded-2xl p-4 flex items-center gap-4 cursor-pointer press" style="border:2px solid transparent">
+          <div class="w-11 h-11 rounded-xl bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="mso text-on-surface-variant">smartphone</span></div>
+          <div class="flex-1"><p class="font-bold text-sm">UPI</p><p class="text-xs text-on-surface-variant">GPay · PhonePe · Paytm</p></div>
+          <div class="pchk w-5 h-5 rounded-full flex-shrink-0" style="border:2px solid #3a3a38"></div>
+        </div>
+        <div id="pay-card" onclick="selPay('pay-card')" class="pay-opt rounded-2xl p-4 flex items-center gap-4 cursor-pointer press" style="border:2px solid transparent">
+          <div class="w-11 h-11 rounded-xl bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="mso text-on-surface-variant">credit_card</span></div>
+          <div class="flex-1"><p class="font-bold text-sm">Card</p><p class="text-xs text-on-surface-variant">Debit · Credit · NetBanking</p></div>
+          <div class="pchk w-5 h-5 rounded-full flex-shrink-0" style="border:2px solid #3a3a38"></div>
+        </div>
+        <div id="pay-wallet" onclick="selPay('pay-wallet')" class="pay-opt rounded-2xl p-4 flex items-center gap-4 cursor-pointer press" style="border:2px solid transparent">
+          <div class="w-11 h-11 rounded-xl bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="mso text-on-surface-variant">account_balance_wallet</span></div>
+          <div class="flex-1"><p class="font-bold text-sm">Groomed Wallet</p><p class="text-xs text-on-surface-variant">Balance: ₹150 available</p></div>
+          <div class="pchk w-5 h-5 rounded-full flex-shrink-0" style="border:2px solid #3a3a38"></div>
+        </div>
+      </div>
+    </div>
+    <button onclick="confirmBooking()" class="w-full fab press py-4 rounded-full font-bold text-sm uppercase tracking-widest" style="color:#1a2600">Confirm Booking</button>
+    <div id="bk-success" class="hidden mt-5 rounded-2xl p-6 text-center" style="background:linear-gradient(135deg,#0d1a00,#162500);border:1px solid rgba(212,245,32,.2)">
+      <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3" style="background:#d4f520"><span class="mso" style="color:#1a2600;font-size:28px;font-variation-settings:'FILL' 1,'wght' 400">check</span></div>
+      <h3 class="font-headline font-black text-2xl mb-1" style="color:#d4f520">Booked!</h3>
+      <p class="text-sm text-on-surface-variant mb-4">The Blade Room · Sat 29 Mar · 9:00 AM</p>
+      <p class="text-xs text-on-surface-variant mb-5">Confirmation sent to your number. Rahul will be ready for you.</p>
+      <button onclick="switchTab('home')" class="px-8 py-3 rounded-full text-xs font-bold uppercase press" style="background:rgba(212,245,32,.12);color:#d4f520">Back to Home</button>
+    </div>
+  </main>
+</div>
+
+</div><!-- end app -->
+
+<!-- ══════════ BOTTOM TAB BAR ══════════ -->
+<nav id="bottom-bar" class="glass fixed bottom-0 inset-x-0 z-50 flex justify-around items-center px-1 pt-2 pb-3 border-t border-outline-variant/15">
+  <button onclick="switchTab('home')" id="tb-home" class="tab-item active-tab flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl">
+    <span class="mso">storefront</span>
+    <span class="text-[9px] font-black uppercase tracking-wider">Service</span>
+  </button>
+  <button onclick="switchTab('gallery')" id="tb-gallery" class="tab-item flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl">
+    <span class="mso">photo_library</span>
+    <span class="text-[9px] font-black uppercase tracking-wider">Gallery</span>
+  </button>
+  <button onclick="switchTab('barber')" id="tb-barber" class="tab-item flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl">
+    <span class="mso">content_cut</span>
+    <span class="text-[9px] font-black uppercase tracking-wider">Barbers</span>
+  </button>
+  <button onclick="switchTab('offers')" id="tb-offers" class="tab-item flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl relative">
+    <span class="mso">local_offer</span>
+    <span class="text-[9px] font-black uppercase tracking-wider">Offers</span>
+    <span class="badge" style="top:-2px;right:2px">3</span>
+  </button>
+  <button onclick="switchTab('about')" id="tb-about" class="tab-item flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl">
+    <span class="mso">info</span>
+    <span class="text-[9px] font-black uppercase tracking-wider">About</span>
+  </button>
+</nav>
+
+<script>
+const TAB_PAGES={'home':'page-home','gallery':'page-gallery','barber':'page-barber','offers':'page-offers','about':'page-about'};
+const SUB_PAGES=['page-editorial','page-booknow','page-payment'];
+const SUB_TITLES={'page-editorial':'Groomed Editorial','page-booknow':'Book Now','page-payment':'Confirm & Pay'};
+let navStack=[];
+let curPage='page-home';
+
+function anim(el){el.classList.remove('fade-in');void el.offsetWidth;el.classList.add('fade-in')}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const t=document.getElementById(id);
+  if(t){t.classList.add('active');anim(t)}
+  curPage=id;
+  const isSub=SUB_PAGES.includes(id);
+  document.getElementById('back-btn').classList.toggle('hidden',!isSub);
+  document.getElementById('nav-logo').classList.toggle('hidden',isSub);
+  document.getElementById('nav-title').classList.toggle('hidden',!isSub);
+  if(isSub)document.getElementById('nav-title').textContent=SUB_TITLES[id]||'';
+  document.getElementById('bottom-bar').classList.toggle('hidden',isSub&&id!=='page-editorial');
+  window.scrollTo(0,0);
+}
+
+function goTo(id){navStack.push(curPage);showPage(id)}
+function goBack(){if(navStack.length>0)showPage(navStack.pop())}
+
+function switchTab(tab){
+  navStack=[];
+  document.querySelectorAll('.tab-item').forEach(b=>b.classList.remove('active-tab'));
+  document.getElementById('tb-'+tab).classList.add('active-tab');
+  showPage(TAB_PAGES[tab]);
+}
+
+function switchET(id){
+  document.querySelectorAll('.etpage').forEach(p=>p.classList.add('hidden'));
+  const t=document.getElementById(id);
+  if(t){t.classList.remove('hidden');anim(t)}
+  document.querySelectorAll('.etab').forEach(b=>{b.classList.remove('active');});
+  const key=id.replace('et-','');
+  const btn=document.getElementById('etb-'+key);
+  if(btn)btn.classList.add('active');
+}
+
+function filterGallery(btn,cat){
+  document.querySelectorAll('.gchip').forEach(b=>{b.style.background='#171717';b.style.color='#9a9890'});
+  btn.style.background='#d4f520';btn.style.color='#1a2600';
+  document.querySelectorAll('.gallery-item').forEach(item=>{
+    const show=cat==='all'||item.dataset.cat===cat;
+    item.style.display=show?'block':'none';
+    if(show)anim(item);
+  });
+}
+
+function selBarber(el){
+  document.querySelectorAll('.barb-chip').forEach(e=>{e.style.borderColor='transparent';e.style.background='#171717';e.querySelector('p').style.color='#9a9890'});
+  el.style.borderColor='#d4f520';el.style.background='rgba(212,245,32,.12)';el.querySelector('p').style.color='#d4f520';
+}
+
+function selSvc(el){
+  document.querySelectorAll('.svc-card').forEach(e=>{e.classList.remove('selected');e.style.borderColor='transparent';e.style.background='#111111'});
+  el.classList.add('selected');el.style.borderColor='#d4f520';el.style.background='rgba(212,245,32,.07)';
+}
+
+function selDate(el){
+  document.querySelectorAll('.dchip').forEach(e=>{e.style.background='#171717';e.style.color='#9a9890'});
+  el.style.background='#d4f520';el.style.color='#1a2600';
+}
+
+function selTime(el){
+  document.querySelectorAll('.tchip:not(.disabled)').forEach(e=>{e.classList.remove('sel');e.style.background='#171717';e.style.color='#f5f5f0'});
+  el.classList.add('sel');el.style.background='#d4f520';el.style.color='#1a2600';
+}
+
+function selPay(id){
+  ['pay-cash','pay-upi','pay-card','pay-wallet'].forEach(pid=>{
+    const el=document.getElementById(pid);
+    const chk=el.querySelector('.pchk');
+    el.classList.remove('sel');el.style.borderColor='transparent';el.style.background='#111111';
+    chk.style.background='';chk.innerHTML='';chk.style.border='2px solid #3a3a38';
+  });
+  const sel=document.getElementById(id);
+  const chk=sel.querySelector('.pchk');
+  sel.classList.add('sel');sel.style.borderColor='#d4f520';sel.style.background='rgba(212,245,32,.08)';
+  chk.style.background='#d4f520';chk.style.border='none';
+  chk.innerHTML='<span class="mso" style="color:#1a2600;font-size:13px;font-variation-settings:\'FILL\' 1,\'wght\' 400">check</span>';
+}
+
+function confirmBooking(){
+  const s=document.getElementById('bk-success');
+  s.classList.remove('hidden');
+  anim(s);
+  s.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function copyCode(code){
+  const toast=document.getElementById('copy-toast');
+  toast.textContent=code+' Copied!';
+  toast.classList.remove('hidden');
+  setTimeout(()=>toast.classList.add('hidden'),2000);
+}
+</script>
+</body>
+</html>
