@@ -1,937 +1,1272 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
-<meta name="theme-color" content="#0e0e0e"/>
-<title>GROOMED — Premium Barber Studio</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,400;0,700;0,800;0,900;1,800;1,900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface":"#0a0a0a","surface-container-lowest":"#000000","surface-container-low":"#111111","surface-container":"#171717","surface-container-high":"#1e1e1e","surface-container-highest":"#252525","surface-bright":"#2a2a2a","surface-variant":"#242424","on-surface":"#f5f5f0","on-surface-variant":"#9a9890","outline":"#6b6a68","outline-variant":"#3a3a38","primary":"#e8ff87","primary-container":"#d4f520","primary-dim":"#b8d800","on-primary":"#1a2600","on-primary-container":"#1a2600","secondary-container":"#3d3d3b","secondary-fixed":"#d8d5d4","on-secondary-container":"#c8c5c4","error":"#ff6b47","inverse-surface":"#f5f2f1","on-background":"#f5f5f0","background":"#0a0a0a"},fontFamily:{"headline":["Epilogue"],"body":["Manrope"],"label":["Manrope"]},borderRadius:{"DEFAULT":"0.125rem","sm":"0.25rem","lg":"0.5rem","xl":"0.75rem","2xl":"1rem","full":"9999px"}}}}
-</script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>TrimHub — World Class Grooming</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style>
-*{-webkit-tap-highlight-color:transparent}
-.mso {
-  font-family: 'Material Symbols Outlined'; /* <-- Yeh add kiya gaya hai */
-  font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
-  font-size: 22px;
-  line-height: 1;
+:root{
+  --ink:#0d0a07;
+  --ink2:#1a1510;
+  --ink3:#2a2118;
+  --paper:#f5f0e8;
+  --paper2:#ede6d6;
+  --paper3:#e4dbc8;
+  --gold:#c9a84c;
+  --gold2:#e8c96a;
+  --gold3:#f0d98a;
+  --warm:#8b6f47;
+  --cream:#faf6ee;
+  --muted:#9a8a78;
+  --red:#c0392b;
 }
-.mso-fill {
-  font-family: 'Material Symbols Outlined'; /* <-- Yeh add kiya gaya hai */
-  font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--paper);overflow-x:hidden;cursor:none}
+
+/* CUSTOM CURSOR */
+#cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .15s ease,width .3s ease,height .3s ease;mix-blend-mode:difference}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(201,168,76,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .35s cubic-bezier(.16,1,.3,1),width .3s ease,height .3s ease,opacity .3s}
+body:hover #cursor-ring{opacity:1}
+
+/* NOISE TEXTURE */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9997;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
+
+/* ─── VIEWS ─── */
+.view{display:none;min-height:100vh}
+.view.active{display:block}
+
+/* ════════════════════════════════
+   LANDING PAGE
+════════════════════════════════ */
+#landing{background:var(--ink);position:relative;overflow:hidden}
+
+/* Gold line decoration */
+.gold-line{position:absolute;background:linear-gradient(90deg,transparent,var(--gold),transparent);height:1px;opacity:.3}
+
+/* NAV */
+.ln-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 40px;background:linear-gradient(to bottom,rgba(13,10,7,.9),transparent)}
+.ln-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;letter-spacing:.06em;color:var(--paper)}
+.ln-logo span{color:var(--gold)}
+.ln-nav-links{display:flex;align-items:center;gap:8px}
+.ln-nav-links button{font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.18em;padding:10px 22px;border-radius:2px;cursor:none;transition:all .3s ease}
+.btn-ghost{background:transparent;border:1px solid rgba(201,168,76,.35);color:var(--paper)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn-gold{background:var(--gold);border:1px solid var(--gold);color:var(--ink);font-weight:700}
+.btn-gold:hover{background:var(--gold2);border-color:var(--gold2)}
+
+/* HERO */
+.ln-hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:0 20px;text-align:center}
+
+/* BACKGROUND SVG ANIMATION SCENE */
+.scene-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.18}
+.scene-wrap svg{width:min(700px,95vw);height:auto}
+
+/* Animated barber scene */
+@keyframes scissors-snip{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@keyframes hair-fall{0%{opacity:0;transform:translateY(-5px) rotate(0deg)}100%{opacity:1;transform:translateY(40px) rotate(20deg)}}
+@keyframes comb-move{0%,100%{transform:translateX(-8px)}50%{transform:translateX(8px)}}
+@keyframes barber-sway{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
+@keyframes client-breathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.008)}}
+@keyframes pulse-glow{0%,100%{opacity:.4;r:28}50%{opacity:.7;r:32}}
+@keyframes float-up{0%{opacity:.8;transform:translateY(0) rotate(var(--rot))}100%{opacity:0;transform:translateY(-60px) rotate(var(--rot))}}
+
+.scissors-anim{animation:scissors-snip 1.2s ease-in-out infinite;transform-origin:50% 90%}
+.comb-anim{animation:comb-move 2s ease-in-out infinite}
+.barber-anim{animation:barber-sway 3s ease-in-out infinite;transform-origin:50% 100%}
+.client-anim{animation:client-breathe 4s ease-in-out infinite;transform-origin:50% 100%}
+.hair-strand{animation:float-up 2s ease-out infinite;--rot:10deg}
+.hair-strand:nth-child(2){animation-delay:.4s;--rot:-15deg}
+.hair-strand:nth-child(3){animation-delay:.8s;--rot:5deg}
+.hair-strand:nth-child(4){animation-delay:1.2s;--rot:-8deg}
+
+/* HERO TEXT */
+.hero-eyebrow{font-size:.65rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:0;animation:fadeUp .8s ease .3s forwards}
+.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,9vw,7rem);font-weight:300;line-height:.95;letter-spacing:-.01em;color:var(--paper);margin-bottom:12px;opacity:0;animation:fadeUp .9s ease .5s forwards}
+.hero-h1 em{font-style:italic;color:var(--gold2)}
+.hero-h1 strong{font-weight:700;display:block}
+.hero-sub{font-size:.85rem;color:var(--muted);max-width:380px;margin:0 auto 40px;line-height:1.7;opacity:0;animation:fadeUp .9s ease .7s forwards}
+.hero-btns{display:flex;gap:14px;justify-content:center;opacity:0;animation:fadeUp .9s ease .9s forwards}
+.hero-btns button{font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;padding:16px 36px;border-radius:2px;cursor:none;transition:all .35s ease}
+.hero-divider{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to bottom,transparent,var(--ink))}
+
+/* SCROLL INDICATOR */
+.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp .9s ease 1.3s forwards}
+.scroll-hint span{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scroll-grow 2s ease-in-out infinite}
+@keyframes scroll-grow{0%,100%{height:24px;opacity:.4}50%{height:48px;opacity:.9}}
+
+/* ABOUT STRIP */
+.about-strip{background:var(--ink2);padding:80px 40px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.about-strip h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;line-height:1.1;color:var(--paper)}
+.about-strip h2 em{color:var(--gold);font-style:italic}
+.about-strip p{color:var(--muted);font-size:.875rem;line-height:1.8;max-width:440px}
+.about-strip p + p{margin-top:14px}
+
+/* STATS ROW */
+.stats-row{background:var(--ink3);padding:48px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:linear-gradient(to bottom,var(--ink2),var(--ink3))}
+.stat-item{text-align:center;padding:32px 20px;border-right:1px solid rgba(201,168,76,.08)}
+.stat-item:last-child{border:none}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:var(--gold);line-height:1}
+.stat-label{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+/* FEATURES GRID */
+.features{padding:80px 40px;background:var(--ink)}
+.features-title{text-align:center;margin-bottom:60px}
+.features-title h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--paper);margin-bottom:10px}
+.features-title h2 em{color:var(--gold);font-style:italic}
+.features-title p{color:var(--muted);font-size:.85rem}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:900px;margin:0 auto}
+.feat-card{background:var(--ink2);padding:36px 28px;border:1px solid rgba(201,168,76,.06);transition:all .4s ease;position:relative;overflow:hidden}
+.feat-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0;transition:opacity .4s}
+.feat-card:hover{background:var(--ink3);border-color:rgba(201,168,76,.2)}
+.feat-card:hover::before{opacity:1}
+.feat-icon{width:40px;height:40px;border:1px solid rgba(201,168,76,.3);border-radius:2px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.feat-icon .mso{font-variation-settings:'FILL' 0,'wght' 200,'GRAD' 0,'opsz' 24;font-size:20px;color:var(--gold)}
+.feat-card h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--paper);margin-bottom:8px}
+.feat-card p{font-size:.78rem;color:var(--muted);line-height:1.7}
+
+/* TESTIMONIAL */
+.testimonial{background:var(--ink2);padding:80px 40px;text-align:center;position:relative;overflow:hidden}
+.testimonial::before{content:'❝';font-family:'Cormorant Garamond',serif;font-size:12rem;color:rgba(201,168,76,.06);position:absolute;top:-20px;left:50%;transform:translateX(-50%);line-height:1}
+.testi-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.5vw,1.9rem);font-weight:300;font-style:italic;color:var(--paper);max-width:640px;margin:0 auto 24px;line-height:1.5;position:relative}
+.testi-author{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+
+/* CTA SECTION */
+.cta-section{background:var(--ink);padding:100px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(201,168,76,.07),transparent 70%);pointer-events:none}
+.cta-section h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:300;color:var(--paper);margin-bottom:20px;line-height:1.05}
+.cta-section h2 em{color:var(--gold);font-style:italic}
+.cta-section p{color:var(--muted);font-size:.9rem;margin-bottom:40px;max-width:400px;margin-left:auto;margin-right:auto}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+.footer{background:var(--ink2);padding:40px;border-top:1px solid rgba(201,168,76,.1);display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--paper)}
+.footer-logo span{color:var(--gold)}
+.footer p{font-size:.7rem;color:var(--muted);letter-spacing:.08em}
+
+/* ════════════════════════════════
+   AUTH PAGES
+════════════════════════════════ */
+.auth-wrap{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+.auth-left{background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 40px;position:relative;overflow:hidden}
+.auth-left::before{content:'';position:absolute;top:0;bottom:0;right:0;width:1px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);opacity:.3}
+.auth-scene{width:280px;height:280px;margin-bottom:32px;position:relative}
+.auth-tagline{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--paper);text-align:center;line-height:1.2;margin-bottom:12px}
+.auth-tagline em{color:var(--gold);font-style:italic}
+.auth-sub{font-size:.78rem;color:var(--muted);text-align:center;line-height:1.7}
+.auth-right{background:var(--ink2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 40px}
+.auth-card{width:100%;max-width:380px}
+.auth-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--paper);margin-bottom:32px;text-align:center}
+.auth-logo span{color:var(--gold)}
+.auth-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--paper);margin-bottom:6px}
+.auth-sub2{font-size:.78rem;color:var(--muted);margin-bottom:32px}
+.auth-sub2 a{color:var(--gold);text-decoration:none;cursor:none}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:600}
+.form-input{width:100%;background:var(--ink3);border:1px solid rgba(201,168,76,.15);border-radius:2px;padding:13px 16px;font-family:'DM Sans',sans-serif;font-size:.875rem;color:var(--paper);outline:none;transition:border-color .3s}
+.form-input::placeholder{color:rgba(154,138,120,.5)}
+.form-input:focus{border-color:rgba(201,168,76,.5)}
+.form-divider{display:flex;align-items:center;gap:12px;margin:20px 0}
+.form-divider::before,.form-divider::after{content:'';flex:1;height:1px;background:rgba(201,168,76,.12)}
+.form-divider span{font-size:.65rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.social-btn{width:100%;background:var(--ink3);border:1px solid rgba(201,168,76,.15);border-radius:2px;padding:13px;font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--paper);cursor:none;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px}
+.social-btn:hover{border-color:rgba(201,168,76,.4);background:var(--ink)}
+.btn-submit{width:100%;background:var(--gold);border:none;border-radius:2px;padding:15px;font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink);cursor:none;transition:all .3s;margin-top:20px}
+.btn-submit:hover{background:var(--gold2)}
+.auth-switch{text-align:center;margin-top:24px;font-size:.78rem;color:var(--muted)}
+.auth-switch a{color:var(--gold);text-decoration:none;cursor:none}
+
+/* ════════════════════════════════
+   DASHBOARD (POST-LOGIN)
+════════════════════════════════ */
+#dashboard{background:var(--paper);color:var(--ink)}
+
+/* DASHBOARD NAV */
+.dash-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:56px;background:rgba(245,240,232,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(13,10,7,.08);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.dash-logo{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--ink)}
+.dash-logo span{color:var(--gold)}
+.dash-nav-right{display:flex;align-items:center;gap:8px}
+.dash-icon-btn{width:36px;height:36px;border-radius:8px;background:rgba(13,10,7,.05);border:none;cursor:none;display:flex;align-items:center;justify-content:center;transition:background .2s;position:relative}
+.dash-icon-btn:hover{background:rgba(13,10,7,.1)}
+.dash-icon-btn .mso{font-variation-settings:'FILL' 0,'wght' 200,'GRAD' 0,'opsz' 24;font-size:20px;color:var(--ink)}
+.dash-badge{position:absolute;top:-2px;right:-2px;width:14px;height:14px;background:var(--gold);border-radius:50%;font-size:8px;font-weight:900;color:var(--ink);display:flex;align-items:center;justify-content:center}
+.dash-avatar{width:34px;height:34px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--ink);border:none;cursor:none}
+
+/* DASH BOTTOM NAV */
+.dash-bottom{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(245,240,232,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(13,10,7,.08);display:flex;justify-content:space-around;padding:8px 0 max(8px,env(safe-area-inset-bottom))}
+.dash-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 16px;border:none;background:none;cursor:none;transition:color .2s;border-radius:8px}
+.dash-tab .mso{font-variation-settings:'FILL' 0,'wght' 200,'GRAD' 0,'opsz' 24;font-size:22px;transition:all .2s}
+.dash-tab span:last-child{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.dash-tab.active{color:var(--ink)}
+.dash-tab.active .mso{font-variation-settings:'FILL' 1,'wght' 300,'GRAD' 0,'opsz' 24;color:var(--gold)}
+.dash-tab:not(.active){color:rgba(13,10,7,.35)}
+
+/* DASH PAGES */
+.dash-page{display:none;padding:72px 0 80px}
+.dash-page.active{display:block;animation:fadeUp .4s cubic-bezier(.16,1,.3,1)}
+
+/* ── SCROLL SCENE (3D Barber Animation) ── */
+.scroll-scene{height:100vh;position:sticky;top:0;overflow:hidden;background:var(--ink);display:flex;align-items:center;justify-content:center}
+.scroll-stage{width:min(500px,90vw);height:min(500px,90vw);position:relative}
+
+/* Circular track */
+.orbit-track{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(201,168,76,.12)}
+.orbit-track::before{content:'';position:absolute;inset:20px;border-radius:50%;border:1px solid rgba(201,168,76,.07)}
+
+/* Barber orbits around client */
+@keyframes orbit-barber{from{transform:rotate(0deg) translateX(140px) rotate(0deg)}to{transform:rotate(360deg) translateX(140px) rotate(-360deg)}}
+@keyframes scissors-spin{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(15deg)}}
+@keyframes hair-grow{0%{clip-path:ellipse(28px 10px at 50% 100%)}100%{clip-path:ellipse(28px 35px at 50% 60%)}}
+@keyframes hair-trim{0%{clip-path:ellipse(28px 35px at 50% 60%)}100%{clip-path:ellipse(28px 10px at 50% 100%)}}
+@keyframes sparkle{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}
+@keyframes done-glow{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+
+.client-figure{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.barber-orbiter{position:absolute;top:50%;left:50%;animation:orbit-barber 6s linear infinite}
+.scene-scissors{animation:scissors-spin 1s ease-in-out infinite}
+.sparkle-dot{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--gold);animation:sparkle 1.5s ease-in-out infinite}
+.sparkle-dot:nth-child(2){animation-delay:.5s;top:-20px;right:-10px}
+.sparkle-dot:nth-child(3){animation-delay:1s;top:10px;right:-25px}
+
+/* scroll text overlay */
+.scroll-text-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.scroll-text-line{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:300;color:var(--paper);opacity:0;transform:translateY(20px);transition:all .6s cubic-bezier(.16,1,.3,1);position:absolute;text-align:center;padding:0 40px}
+.scroll-text-line.visible{opacity:1;transform:translateY(0)}
+.scroll-text-line em{color:var(--gold);font-style:italic}
+
+/* ── SERVICE PAGE ── */
+.page-hero{position:relative;height:220px;overflow:hidden;margin-bottom:0}
+.page-hero img{width:100%;height:100%;object-fit:cover;filter:brightness(.35)}
+.page-hero-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
+.page-hero-content h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--paper);line-height:1}
+.page-hero-content h1 em{color:var(--gold2);font-style:italic}
+.page-hero-content p{font-size:.75rem;color:rgba(245,240,232,.6);letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+
+.section-pad{padding:24px}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:var(--ink);margin-bottom:16px}
+.section-title span{color:var(--warm)}
+
+/* SERVICE CARDS */
+.svc-list{display:flex;flex-direction:column;gap:10px}
+.svc-item{background:var(--cream);border:1px solid rgba(13,10,7,.07);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;cursor:none;transition:all .3s ease;position:relative;overflow:hidden}
+.svc-item::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),var(--gold3));transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+.svc-item:hover::after{transform:scaleX(1)}
+.svc-item:hover{border-color:rgba(201,168,76,.3);background:var(--paper2);transform:translateY(-1px)}
+.svc-icon{width:44px;height:44px;border-radius:10px;background:var(--ink);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.svc-icon .mso{font-variation-settings:'FILL' 0,'wght' 200,'GRAD' 0,'opsz' 24;font-size:20px;color:var(--gold)}
+.svc-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--ink)}
+.svc-desc{font-size:.72rem;color:var(--warm);margin-top:1px}
+.svc-meta{display:flex;align-items:center;gap:6px;margin-top:3px}
+.svc-meta span{font-size:.65rem;color:var(--muted);display:flex;align-items:center;gap:3px}
+.svc-price{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--ink);margin-left:auto;flex-shrink:0}
+.svc-price small{font-size:.6rem;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400;display:block;text-align:right}
+
+/* REVIEW CARDS */
+.review-scroll{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.review-scroll::-webkit-scrollbar{display:none}
+.review-card{flex-shrink:0;width:240px;background:var(--cream);border:1px solid rgba(13,10,7,.07);border-radius:12px;padding:16px}
+.review-stars{color:var(--gold);font-size:11px;letter-spacing:2px;margin-bottom:8px}
+.review-text{font-size:.78rem;color:var(--ink);line-height:1.6;font-style:italic}
+.review-author{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+
+/* GALLERY GRID */
+.gallery-wrap{padding:0 16px 24px}
+.gallery-masonry{columns:2;gap:10px}
+.gallery-item{break-inside:avoid;border-radius:10px;overflow:hidden;margin-bottom:10px;position:relative;cursor:none}
+.gallery-item img{width:100%;display:block;transition:transform .6s cubic-bezier(.16,1,.3,1);filter:brightness(.85)}
+.gallery-item:hover img{transform:scale(1.04);filter:brightness(1)}
+.gallery-item-label{position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:linear-gradient(transparent,rgba(13,10,7,.8));opacity:0;transition:opacity .3s}
+.gallery-item:hover .gallery-item-label{opacity:1}
+.gallery-item-label p{font-size:.7rem;color:var(--paper);font-weight:600}
+.gallery-item-label span{font-size:.6rem;color:var(--gold)}
+
+/* BARBERS */
+.barber-cards{display:flex;flex-direction:column;gap:12px}
+.barber-card{background:var(--cream);border:1px solid rgba(13,10,7,.07);border-radius:14px;overflow:hidden;cursor:none;transition:all .3s}
+.barber-card:hover{border-color:rgba(201,168,76,.3);transform:translateY(-2px);box-shadow:0 8px 30px rgba(13,10,7,.08)}
+.barber-card-img{height:160px;overflow:hidden;position:relative}
+.barber-card-img img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.barber-card:hover .barber-card-img img{transform:scale(1.04)}
+.barber-card-body{padding:14px 16px}
+.barber-card-body h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--ink)}
+.barber-card-body p{font-size:.72rem;color:var(--gold);letter-spacing:.08em;margin-top:2px}
+.barber-card-body .bio{font-size:.75rem;color:var(--warm);line-height:1.6;margin-top:6px}
+.barber-rating{display:flex;align-items:center;gap:4px;margin-top:6px}
+.barber-rating .star{color:var(--gold);font-size:12px}
+.barber-rating span{font-size:.75rem;color:var(--ink);font-weight:600}
+.barber-rating small{font-size:.68rem;color:var(--muted)}
+.barber-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.barber-chip{font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:4px;background:rgba(13,10,7,.06);color:var(--warm);border:1px solid rgba(13,10,7,.07)}
+.barber-book-btn{width:100%;background:var(--ink);color:var(--paper);border:none;border-radius:8px;padding:11px;font-family:'DM Sans',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:none;margin-top:12px;transition:background .3s}
+.barber-book-btn:hover{background:var(--ink3)}
+
+/* OFFERS */
+.offer-hero{background:var(--ink);padding:24px;margin-bottom:0}
+.offer-hero h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--paper);margin-bottom:6px}
+.offer-hero h2 em{color:var(--gold2);font-style:italic}
+.offer-hero p{font-size:.78rem;color:var(--muted)}
+.offer-cards{display:flex;flex-direction:column;gap:12px}
+.offer-card{border-radius:12px;padding:20px;position:relative;overflow:hidden}
+.offer-gold-bg{background:linear-gradient(135deg,#1a1600,#2d2400);border:1px solid rgba(201,168,76,.25)}
+.offer-blue-bg{background:linear-gradient(135deg,#0a1220,#0f1e35);border:1px solid rgba(100,180,255,.15)}
+.offer-red-bg{background:linear-gradient(135deg,#1a0a08,#2d1208);border:1px solid rgba(192,57,43,.2)}
+.offer-tag{font-size:.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-bottom:10px;display:inline-block}
+.offer-code{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:var(--gold2);line-height:1;margin-bottom:4px}
+.offer-title{font-size:.9rem;font-weight:600;color:var(--paper);margin-bottom:6px}
+.offer-desc{font-size:.72rem;color:rgba(245,240,232,.5);line-height:1.6;margin-bottom:14px}
+.offer-footer{display:flex;align-items:center;justify-content:space-between}
+.offer-expiry{font-size:.65rem;color:rgba(245,240,232,.4);letter-spacing:.08em}
+.copy-btn{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:8px 18px;border-radius:4px;background:var(--gold);color:var(--ink);border:none;cursor:none;transition:background .3s}
+.copy-btn:hover{background:var(--gold2)}
+
+/* ABOUT */
+.about-hero-img{height:200px;overflow:hidden;position:relative}
+.about-hero-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.4)}
+.about-hero-text{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
+.about-hero-text h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--paper);line-height:1.1}
+.about-hero-text h2 em{color:var(--gold2);font-style:italic}
+.about-body{padding:24px}
+.about-body p{font-size:.85rem;color:var(--warm);line-height:1.85;margin-bottom:14px}
+.value-list{display:flex;flex-direction:column;gap:12px;margin:20px 0}
+.value-item{display:flex;gap:14px;align-items:flex-start}
+.value-icon{width:36px;height:36px;border:1px solid rgba(201,168,76,.3);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.value-icon .mso{font-variation-settings:'FILL' 0,'wght' 200,'GRAD' 0,'opsz' 24;font-size:17px;color:var(--gold)}
+.value-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:2px}
+.value-desc{font-size:.75rem;color:var(--warm);line-height:1.6}
+.contact-grid{display:flex;flex-direction:column;gap:10px}
+.contact-row{display:flex;align-items:center;gap:12px;background:var(--cream);border-radius:10px;padding:14px}
+.contact-row .mso{font-variation-settings:'FILL' 0,'wght' 200,'GRAD' 0,'opsz' 24;font-size:19px;color:var(--gold)}
+.contact-row p{font-size:.82rem;color:var(--ink);font-weight:500}
+.social-row{display:flex;gap:10px;margin-top:16px}
+.social-pill{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ink);color:var(--paper);border-radius:8px;padding:12px;cursor:none;transition:background .3s;border:none;font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:600}
+.social-pill:hover{background:var(--ink2)}
+.social-pill .mso{font-variation-settings:'FILL' 0,'wght' 200,'GRAD' 0,'opsz' 24;font-size:18px}
+
+/* BOOKING FLOW */
+#booking-modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(13,10,7,.85);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center}
+#booking-modal.open{display:flex}
+.booking-sheet{background:var(--paper);width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:24px;max-height:90vh;overflow-y:auto;animation:slideUp .4s cubic-bezier(.16,1,.3,1)}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sheet-handle{width:40px;height:4px;background:rgba(13,10,7,.15);border-radius:2px;margin:0 auto 20px}
+.sheet-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--ink);margin-bottom:20px}
+.sheet-label{font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:block}
+.date-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:20px}
+.date-chips::-webkit-scrollbar{display:none}
+.dchip{flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:10px 14px;border-radius:10px;cursor:none;transition:all .25s;border:1px solid rgba(13,10,7,.08)}
+.dchip.sel{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.dchip:not(.sel){background:var(--cream);color:var(--warm)}
+.dchip .day{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.dchip .num{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;line-height:1.1}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.tchip{padding:10px;border-radius:8px;border:1px solid rgba(13,10,7,.08);background:var(--cream);font-size:.75rem;font-weight:600;text-align:center;cursor:none;transition:all .25s;color:var(--ink)}
+.tchip.sel{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tchip.off{opacity:.35;cursor:not-allowed;background:var(--paper3)}
+.pay-methods{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.pay-opt{display:flex;align-items:center;gap:14px;padding:14px;border-radius:10px;border:1px solid rgba(13,10,7,.08);background:var(--cream);cursor:none;transition:all .25s}
+.pay-opt.sel{border-color:var(--gold);background:rgba(201,168,76,.05)}
+.pay-opt-icon{width:36px;height:36px;border-radius:8px;background:var(--ink);display:flex;align-items:center;justify-content:center}
+.pay-opt-icon .mso{font-variation-settings:'FILL' 0,'wght' 200,'GRAD' 0,'opsz' 24;font-size:18px;color:var(--gold)}
+.pay-opt-title{font-size:.82rem;font-weight:600;color:var(--ink)}
+.pay-opt-sub{font-size:.7rem;color:var(--muted)}
+.pay-radio{width:18px;height:18px;border-radius:50%;border:2px solid rgba(13,10,7,.2);margin-left:auto;transition:all .25s;position:relative}
+.pay-opt.sel .pay-radio{border-color:var(--gold);background:var(--gold)}
+.pay-opt.sel .pay-radio::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;background:var(--ink)}
+.confirm-btn{width:100%;background:var(--ink);color:var(--paper);border:none;border-radius:10px;padding:16px;font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:none;transition:background .3s}
+.confirm-btn:hover{background:var(--ink2)}
+
+/* SUCCESS SCREEN */
+#success-view{display:none;position:fixed;inset:0;z-index:300;background:var(--ink);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px}
+#success-view.show{display:flex;animation:fadeUp .6s ease}
+.success-mark{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold3));display:flex;align-items:center;justify-content:center;margin:0 auto 28px;animation:done-glow .6s ease}
+.success-mark .mso{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;font-size:40px;color:var(--ink)}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--paper);margin-bottom:10px;line-height:1.1}
+.success-title em{color:var(--gold);font-style:italic}
+.success-sub{font-size:.85rem;color:var(--muted);line-height:1.7;max-width:300px;margin:0 auto 32px}
+
+/* TOAST */
+#toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);padding:12px 24px;border-radius:8px;font-size:.75rem;font-weight:600;z-index:500;opacity:0;transition:all .3s;pointer-events:none;border:1px solid rgba(201,168,76,.2);white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* UTILITY */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.mso{font-family:'Material Symbols Outlined';font-style:normal;font-weight:normal;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .auth-wrap{grid-template-columns:1fr}
+  .auth-left{display:none}
+  .about-strip{grid-template-columns:1fr;gap:32px;padding:48px 24px}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .feat-grid{grid-template-columns:1fr}
+  .ln-nav{padding:16px 20px}
+  .cta-section{padding:64px 24px}
+  .footer{flex-direction:column;gap:16px;text-align:center}
 }
-.page{display:none;animation:none}.page.active{display:block}
-.fade-in{animation:fadeUp .3s cubic-bezier(.16,1,.3,1) both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.stagger-1{animation-delay:.05s}.stagger-2{animation-delay:.1s}.stagger-3{animation-delay:.15s}.stagger-4{animation-delay:.2s}.stagger-5{animation-delay:.25s}
-.tab-item{transition:color .2s,background .2s}
-.tab-item.active-tab{color:#d4f520}
-.tab-item:not(.active-tab){color:#6b6a68}
-.tonal{transition:background-color .25s ease}
-.press{transition:transform .15s ease}
-.press:active{transform:scale(.96)}
-/* grain overlay */
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px}
-/* map grid */
-.map-grid{background-color:#101010;background-image:linear-gradient(rgba(212,245,32,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(212,245,32,.04) 1px,transparent 1px);background-size:36px 36px}
-/* scrollbar */
-::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
-.scroll-x{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}.scroll-x::-webkit-scrollbar{display:none}
-/* glassmorphism nav */
-.glass{background:rgba(10,10,10,.75);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%)}
-/* number badge */
-.badge{background:#d4f520;color:#1a2600;font-size:9px;font-weight:900;padding:1px 5px;border-radius:99px;position:absolute;top:-4px;right:-6px}
-/* rating stars */
-.stars::before{content:'★★★★★';color:#d4f520;letter-spacing:1px}
-/* shimmer for loading feel */
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-.shimmer{background:linear-gradient(90deg,#171717 25%,#252525 50%,#171717 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-/* editorial tab underline */
-.etab{border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
-.etab.active{border-bottom-color:#d4f520;color:#d4f520}
-.etab:not(.active){color:#6b6a68}
-/* pulse dot */
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.pulse-dot{animation:pulse 2s ease-in-out infinite}
-/* offer card gradient */
-.offer-gold{background:linear-gradient(135deg,#1a1600 0%,#2a2400 50%,#1a1600 100%);border:1px solid rgba(212,245,32,.2)}
-.offer-silver{background:linear-gradient(135deg,#0f1a1f 0%,#162530 50%,#0f1a1f 100%);border:1px solid rgba(100,200,255,.15)}
-/* hero lime glow */
-.lime-glow{box-shadow:0 0 80px rgba(212,245,32,.12),0 0 160px rgba(212,245,32,.05)}
-/* image hover zoom */
-.img-zoom{overflow:hidden}.img-zoom img{transition:transform .6s cubic-bezier(.16,1,.3,1)}.img-zoom:hover img{transform:scale(1.06)}
-/* service card selected */
-.svc-card.selected{border-color:#d4f520;background:rgba(212,245,32,.07)}
-/* time chip selected */
-.tchip.sel{background:#d4f520;color:#1a2600}
-.tchip:not(.sel):not(.disabled){background:#171717;cursor:pointer}
-.tchip.disabled{background:#0d0d0d;opacity:.35;cursor:not-allowed}
-/* payment option selected */
-.pay-opt.sel{border-color:#d4f520;background:rgba(212,245,32,.08)}
-.pay-opt:not(.sel){border-color:transparent;background:#111111}
-/* floating action */
-.fab{background:linear-gradient(135deg,#d4f520,#b8d800);box-shadow:0 8px 32px rgba(212,245,32,.3)}
-/* review stars */
-.rev-star{color:#d4f520;font-size:12px}
+
+/* Welcome email badge on dashboard */
+.welcome-badge{background:linear-gradient(135deg,var(--gold),var(--gold3));border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin:0 16px 20px;cursor:none}
+.welcome-badge .mso{font-variation-settings:'FILL' 1,'wght' 300,'GRAD' 0,'opsz' 24;font-size:24px;color:var(--ink)}
+.welcome-badge-text h4{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--ink)}
+.welcome-badge-text p{font-size:.72rem;color:rgba(13,10,7,.65)}
+.welcome-badge-close{margin-left:auto;background:rgba(13,10,7,.15);border:none;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:none}
+.welcome-badge-close .mso{font-size:14px;color:var(--ink)}
 </style>
 </head>
-<body class="bg-surface text-on-surface font-body antialiased selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+<body>
 
-<!-- ══════════ TOP NAV ══════════ -->
-<nav class="glass fixed top-0 inset-x-0 z-50 flex items-center px-4 h-14 border-b border-outline-variant/20">
-  <button id="back-btn" onclick="goBack()" class="hidden press mr-2 w-9 h-9 rounded-xl flex items-center justify-center hover:bg-surface-container">
-    <span class="mso">arrow_back</span>
-  </button>
-  <div id="nav-logo" class="font-headline font-black italic text-xl tracking-tighter" style="color:#d4f520;letter-spacing:-.03em">
-    TrimHub<span style="color:#f5f5f0;font-style:normal;font-weight:400;font-size:.65rem;letter-spacing:.15em;margin-left:6px;vertical-align:middle">STUDIO</span>
-  </div>
-  <div id="nav-title" class="hidden font-headline font-bold text-base absolute left-1/2 -translate-x-1/2 text-on-surface"></div>
-  <div class="ml-auto flex items-center gap-1">
-    <button class="press w-9 h-9 rounded-xl flex items-center justify-center hover:bg-surface-container relative">
-      <span class="mso text-on-surface-variant">notifications</span>
-      <span class="badge">2</span>
-    </button>
-    <button class="press w-9 h-9 rounded-xl flex items-center justify-center hover:bg-surface-container">
-      <span class="mso text-on-surface-variant">person_outline</span>
-    </button>
-  </div>
-</nav>
+<!-- CUSTOM CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-<!-- ══════════ PAGES ══════════ -->
-<div class="pt-14 pb-20 min-h-screen" id="app">
+<!-- TOAST -->
+<div id="toast"></div>
 
-<!-- ━━━ PAGE: SERVICE (HOME) ━━━ -->
-<div id="page-home" class="page active">
-  <!-- Hero -->
-  <div class="relative overflow-hidden" style="min-height:420px">
-    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=900&auto=format&fit=crop&q=80" alt="Barber" class="absolute inset-0 w-full h-full object-cover object-center" style="filter:brightness(.45)"/>
-    <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(10,10,10,.2) 0%,rgba(10,10,10,.0) 40%,rgba(10,10,10,.95) 100%)"></div>
-    <!-- floating pill -->
-    <div class="absolute top-4 right-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1.5 border border-outline-variant/20">
-      <span class="pulse-dot w-1.5 h-1.5 rounded-full" style="background:#4ade80"></span>
-      <span class="text-[10px] font-bold uppercase tracking-widest text-white">Open Now</span>
-    </div>
-    <div class="relative z-10 px-5 pt-10 pb-8 flex flex-col justify-end" style="min-height:420px">
-      <p class="text-[10px] font-label font-bold uppercase tracking-[.22em] mb-2" style="color:#d4f520">India's Premium Barber Network</p>
-      <h1 class="font-headline font-black leading-[.92] mb-4" style="font-size:clamp(2.6rem,9vw,4rem)">
-        Where<br/>
-        <span style="color:#d4f520;font-style:italic">Precision</span><br/>
-        Meets Style
-      </h1>
-      <p class="text-sm text-on-surface-variant leading-relaxed mb-6 max-w-[280px]">Master barbers. Curated grooming. An experience worth coming back for.</p>
-      <div class="flex gap-3">
-        <button onclick="goTo('page-editorial')" class="fab press flex-1 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest text-on-primary" style="color:#1a2600">Book Now</button>
-        <button onclick="goTo('page-editorial')" class="press flex-1 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest border" style="border-color:rgba(212,245,32,.3);color:#d4f520">View Lookbook</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="px-5 pb-8">
-    <!-- Quick stats -->
-    <div class="grid grid-cols-3 gap-2 -mt-1 mb-7 fade-in stagger-1">
-      <div class="bg-surface-container rounded-xl p-3 text-center tonal hover:bg-surface-container-high">
-        <p class="font-headline font-black text-xl" style="color:#d4f520">500+</p>
-        <p class="text-[10px] text-on-surface-variant mt-0.5 uppercase tracking-wider">Happy Clients</p>
-      </div>
-      <div class="bg-surface-container rounded-xl p-3 text-center tonal hover:bg-surface-container-high">
-        <p class="font-headline font-black text-xl" style="color:#d4f520">4.9★</p>
-        <p class="text-[10px] text-on-surface-variant mt-0.5 uppercase tracking-wider">Avg Rating</p>
-      </div>
-      <div class="bg-surface-container rounded-xl p-3 text-center tonal hover:bg-surface-container-high">
-        <p class="font-headline font-black text-xl" style="color:#d4f520">15+</p>
-        <p class="text-[10px] text-on-surface-variant mt-0.5 uppercase tracking-wider">Cities Live</p>
-      </div>
-    </div>
-
-    <!-- Section: Services -->
-    <div class="flex items-center justify-between mb-4 fade-in stagger-2">
-      <h2 class="font-headline font-bold text-lg">Our Services</h2>
-      <span class="text-[10px] uppercase tracking-widest" style="color:#d4f520">All Premium</span>
-    </div>
-    <div class="space-y-2 mb-7 fade-in stagger-2">
-      <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-4 tonal hover:bg-surface-container-high">
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.1)">
-          <span class="mso" style="color:#d4f520">content_cut</span>
-        </div>
-        <div class="flex-1">
-          <p class="font-bold text-sm">Classic Haircut</p>
-          <p class="text-xs text-on-surface-variant mt-0.5">Precision cut · Finish · Styling</p>
-          <div class="flex items-center gap-1 mt-1"><span class="mso-fill rev-star mso" style="font-size:11px">star</span><span class="text-[10px] text-on-surface-variant">4.9 · 230 reviews</span></div>
-        </div>
-        <div class="text-right">
-          <p class="font-black text-sm" style="color:#d4f520">₹499</p>
-          <p class="text-[10px] text-on-surface-variant">40 min</p>
-        </div>
-      </div>
-      <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-4 tonal hover:bg-surface-container-high">
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.1)">
-          <span class="mso" style="color:#d4f520">face_retouching_natural</span>
-        </div>
-        <div class="flex-1">
-          <p class="font-bold text-sm">Beard Sculpt</p>
-          <p class="text-xs text-on-surface-variant mt-0.5">Shape · Hot towel · Oil finish</p>
-          <div class="flex items-center gap-1 mt-1"><span class="mso-fill rev-star mso" style="font-size:11px">star</span><span class="text-[10px] text-on-surface-variant">4.8 · 180 reviews</span></div>
-        </div>
-        <div class="text-right">
-          <p class="font-black text-sm" style="color:#d4f520">₹349</p>
-          <p class="text-[10px] text-on-surface-variant">30 min</p>
-        </div>
-      </div>
-      <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-4 tonal hover:bg-surface-container-high relative overflow-hidden">
-        <div class="absolute top-2 right-2 bg-primary-container text-on-primary text-[9px] font-black uppercase px-2 py-0.5 rounded-full" style="color:#1a2600">Bestseller</div>
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.15)">
-          <span class="mso" style="color:#d4f520">auto_awesome</span>
-        </div>
-        <div class="flex-1">
-          <p class="font-bold text-sm">Royal Treatment</p>
-          <p class="text-xs text-on-surface-variant mt-0.5">Cut + Beard + Face Mask + Head Spa</p>
-          <div class="flex items-center gap-1 mt-1"><span class="mso-fill rev-star mso" style="font-size:11px">star</span><span class="text-[10px] text-on-surface-variant">5.0 · 95 reviews</span></div>
-        </div>
-        <div class="text-right">
-          <p class="font-black text-sm" style="color:#d4f520">₹999</p>
-          <p class="text-[10px] text-on-surface-variant">90 min</p>
-        </div>
-      </div>
-      <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-4 tonal hover:bg-surface-container-high">
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.1)">
-          <span class="mso" style="color:#d4f520">spa</span>
-        </div>
-        <div class="flex-1">
-          <p class="font-bold text-sm">Skin Glow Facial</p>
-          <p class="text-xs text-on-surface-variant mt-0.5">Deep cleanse · Exfoliate · Hydrate</p>
-          <div class="flex items-center gap-1 mt-1"><span class="mso-fill rev-star mso" style="font-size:11px">star</span><span class="text-[10px] text-on-surface-variant">4.7 · 62 reviews</span></div>
-        </div>
-        <div class="text-right">
-          <p class="font-black text-sm" style="color:#d4f520">₹599</p>
-          <p class="text-[10px] text-on-surface-variant">45 min</p>
-        </div>
-      </div>
-      <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-4 tonal hover:bg-surface-container-high">
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.1)">
-          <span class="mso" style="color:#d4f520">self_improvement</span>
-        </div>
-        <div class="flex-1">
-          <p class="font-bold text-sm">Head Massage + Wash</p>
-          <p class="text-xs text-on-surface-variant mt-0.5">Scalp treatment · Stress relief</p>
-          <div class="flex items-center gap-1 mt-1"><span class="mso-fill rev-star mso" style="font-size:11px">star</span><span class="text-[10px] text-on-surface-variant">4.9 · 140 reviews</span></div>
-        </div>
-        <div class="text-right">
-          <p class="font-black text-sm" style="color:#d4f520">₹299</p>
-          <p class="text-[10px] text-on-surface-variant">25 min</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- CTA Banner -->
-    <div onclick="goTo('page-editorial')" class="fade-in stagger-3 press cursor-pointer rounded-2xl p-5 mb-7 flex items-center gap-4 lime-glow" style="background:linear-gradient(135deg,#141e00,#1e2d00);border:1px solid rgba(212,245,32,.25)">
-      <div class="flex-1">
-        <p class="font-headline font-black text-lg leading-tight" style="color:#d4f520">First Visit Free?</p>
-        <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">New user pehli booking pe <strong style="color:#f5f5f0">20% off</strong> paaye. Code: <strong style="color:#d4f520">GROOMED20</strong></p>
-      </div>
-      <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background:#d4f520">
-        <span class="mso" style="color:#1a2600;font-size:18px">arrow_forward</span>
-      </div>
-    </div>
-
-    <!-- Review snippet -->
-    <div class="fade-in stagger-4">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="font-headline font-bold text-lg">What Clients Say</h2>
-        <span class="text-[10px] text-on-surface-variant uppercase tracking-widest">4.9 Overall</span>
-      </div>
-      <div class="scroll-x flex gap-3 pb-1">
-        <div class="flex-shrink-0 w-64 bg-surface-container-low rounded-2xl p-4">
-          <div class="flex items-center gap-2 mb-2">
-            <div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center"><span class="mso text-on-surface-variant" style="font-size:14px">person</span></div>
-            <div><p class="text-xs font-bold">Arjun M.</p><p class="stars text-[10px]"></p></div>
-          </div>
-          <p class="text-xs text-on-surface-variant leading-relaxed">"Best haircut I've ever had. The barber knew exactly what I wanted without me explaining much. Will definitely return."</p>
-        </div>
-        <div class="flex-shrink-0 w-64 bg-surface-container-low rounded-2xl p-4">
-          <div class="flex items-center gap-2 mb-2">
-            <div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center"><span class="mso text-on-surface-variant" style="font-size:14px">person</span></div>
-            <div><p class="text-xs font-bold">Rohan K.</p><p class="stars text-[10px]"></p></div>
-          </div>
-          <p class="text-xs text-on-surface-variant leading-relaxed">"Royal Treatment is worth every rupee. Face mask and head massage alone is elite. This is not your regular barber shop."</p>
-        </div>
-        <div class="flex-shrink-0 w-64 bg-surface-container-low rounded-2xl p-4">
-          <div class="flex items-center gap-2 mb-2">
-            <div class="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center"><span class="mso text-on-surface-variant" style="font-size:14px">person</span></div>
-            <div><p class="text-xs font-bold">Vikram S.</p><p class="stars text-[10px]"></p></div>
-          </div>
-          <p class="text-xs text-on-surface-variant leading-relaxed">"Booked online at midnight for the next morning. Super seamless. The barber was on time and the beard sculpt was perfect."</p>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- SUCCESS SCREEN -->
+<div id="success-view">
+  <div class="success-mark"><span class="mso">check</span></div>
+  <h2 class="success-title">Booking<br/><em>Confirmed.</em></h2>
+  <p class="success-sub">Your slot is locked in. A confirmation has been sent to your email. We'll see you at the chair.</p>
+  <button class="btn-gold" style="padding:14px 36px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:none;border:none" onclick="showDash()">Back to Dashboard</button>
 </div>
 
-<!-- ━━━ PAGE: GALLERY ━━━ -->
-<div id="page-gallery" class="page">
-  <main class="px-5 py-6 max-w-2xl mx-auto">
-    <div class="mb-7 fade-in">
-      <p class="text-[10px] font-label font-bold uppercase tracking-[.22em] mb-1.5" style="color:#d4f520">Our Portfolio</p>
-      <h1 class="font-headline font-black text-4xl leading-none">The Work <span style="color:#d4f520;font-style:italic">Speaks.</span></h1>
-      <p class="text-sm text-on-surface-variant mt-2">Every cut is a canvas. Every client, a masterpiece.</p>
-    </div>
-    <!-- Filter chips -->
-    <div class="scroll-x flex gap-2 mb-5 fade-in stagger-1">
-      <button onclick="filterGallery(this,'all')" class="gchip flex-shrink-0 bg-primary-container text-on-primary px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider press" style="color:#1a2600">All Styles</button>
-      <button onclick="filterGallery(this,'fade')" class="gchip flex-shrink-0 bg-surface-container text-on-surface-variant px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider press">Fade</button>
-      <button onclick="filterGallery(this,'beard')" class="gchip flex-shrink-0 bg-surface-container text-on-surface-variant px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider press">Beard</button>
-      <button onclick="filterGallery(this,'texture')" class="gchip flex-shrink-0 bg-surface-container text-on-surface-variant px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider press">Texture</button>
-      <button onclick="filterGallery(this,'classic')" class="gchip flex-shrink-0 bg-surface-container text-on-surface-variant px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider press">Classic</button>
-    </div>
-    <!-- Grid -->
-    <div class="grid grid-cols-2 gap-2.5 mb-7 fade-in stagger-2" id="gallery-grid">
-      <div data-cat="fade" class="gallery-item relative rounded-2xl overflow-hidden img-zoom" style="aspect-ratio:4/5">
-        <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Fade Cut"/>
-        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%)"></div>
-        <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Skin Fade</p><p class="text-[10px]" style="color:#d4f520">by Rahul V.</p></div>
-      </div>
-      <div data-cat="texture" class="gallery-item relative rounded-2xl overflow-hidden img-zoom" style="aspect-ratio:4/5">
-        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Texture"/>
-        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%)"></div>
-        <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Textured Crop</p><p class="text-[10px]" style="color:#d4f520">by Aryan S.</p></div>
-      </div>
-      <div data-cat="beard" class="gallery-item relative rounded-2xl overflow-hidden img-zoom" style="aspect-ratio:4/5">
-        <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Beard"/>
-        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%)"></div>
-        <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Full Beard Sculpt</p><p class="text-[10px]" style="color:#d4f520">by Dev S.</p></div>
-      </div>
-      <div data-cat="classic" class="gallery-item relative rounded-2xl overflow-hidden img-zoom" style="aspect-ratio:4/5">
-        <img src="https://images.unsplash.com/photo-1593702288056-7cc6e62c2a4f?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Classic"/>
-        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%)"></div>
-        <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Classic Gentleman</p><p class="text-[10px]" style="color:#d4f520">by Rahul V.</p></div>
-      </div>
-      <div data-cat="fade" class="gallery-item relative rounded-2xl overflow-hidden img-zoom" style="aspect-ratio:4/5">
-        <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Fade 2"/>
-        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%)"></div>
-        <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">High Fade</p><p class="text-[10px]" style="color:#d4f520">by Aryan S.</p></div>
-      </div>
-      <div data-cat="texture" class="gallery-item relative rounded-2xl overflow-hidden img-zoom" style="aspect-ratio:4/5">
-        <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Style"/>
-        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.75) 0%,transparent 55%)"></div>
-        <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Modern Quiff</p><p class="text-[10px]" style="color:#d4f520">by Dev S.</p></div>
-      </div>
-    </div>
-    <!-- Stats bar -->
-    <div class="bg-surface-container rounded-2xl p-4 fade-in stagger-3">
-      <p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-3 font-bold">Studio Numbers</p>
-      <div class="grid grid-cols-4 gap-2 text-center">
-        <div><p class="font-headline font-black" style="color:#d4f520">500+</p><p class="text-[9px] text-on-surface-variant mt-0.5">Cuts</p></div>
-        <div><p class="font-headline font-black" style="color:#d4f520">15+</p><p class="text-[9px] text-on-surface-variant mt-0.5">Cities</p></div>
-        <div><p class="font-headline font-black" style="color:#d4f520">12</p><p class="text-[9px] text-on-surface-variant mt-0.5">Artists</p></div>
-        <div><p class="font-headline font-black" style="color:#d4f520">3yr</p><p class="text-[9px] text-on-surface-variant mt-0.5">Legacy</p></div>
-      </div>
-    </div>
-  </main>
-</div>
+<!-- ══════════ LANDING PAGE ══════════ -->
+<div id="landing" class="view active">
 
-<!-- ━━━ PAGE: BARBER ━━━ -->
-<div id="page-barber" class="page">
-  <main class="px-5 py-6 max-w-2xl mx-auto">
-    <div class="mb-7 fade-in">
-      <p class="text-[10px] font-label font-bold uppercase tracking-[.22em] mb-1.5" style="color:#d4f520">The Artists</p>
-      <h1 class="font-headline font-black text-4xl leading-none">Meet the <span style="color:#d4f520;font-style:italic">Masters</span></h1>
-      <p class="text-sm text-on-surface-variant mt-2">Each artist is handpicked. Each cut, intentional.</p>
+  <!-- NAV -->
+  <nav class="ln-nav">
+    <div class="ln-logo">TRIM<span>HUB</span></div>
+    <div class="ln-nav-links">
+      <button class="btn-ghost" onclick="showAuth('signin')">Sign In</button>
+      <button class="btn-gold" onclick="showAuth('login')">Login</button>
     </div>
-    <!-- Featured barber -->
-    <div class="fade-in stagger-1 mb-4 rounded-2xl overflow-hidden bg-surface-container-low">
-      <div class="relative h-52 img-zoom">
-        <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&auto=format&fit=crop&q=80" class="w-full h-full object-cover object-top" alt="Barber 1"/>
-        <div class="absolute inset-0" style="background:linear-gradient(to bottom,transparent 40%,rgba(17,17,17,.97) 100%)"></div>
-        <div class="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-between">
-          <div>
-            <div class="flex items-center gap-2 mb-1"><span class="w-1.5 h-1.5 rounded-full bg-green-400 pulse-dot"></span><span class="text-[10px] text-green-400 font-bold uppercase tracking-wider">Available Today</span></div>
-            <h3 class="font-headline font-black text-xl text-white">Rahul Verma</h3>
-            <p class="text-xs" style="color:#d4f520">Master Barber · 8 Years</p>
-          </div>
-          <div class="flex flex-col items-end gap-1">
-            <div class="flex items-center gap-1 bg-black/50 px-2 py-1 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:13px">star</span><span class="text-xs font-black text-white">4.9</span></div>
-            <span class="text-[10px] text-on-surface-variant">230 reviews</span>
-          </div>
-        </div>
-      </div>
-      <div class="p-4">
-        <p class="text-xs text-on-surface-variant leading-relaxed mb-3">London-trained precision barber specialising in skin fades, beard sculpting, and classic gentleman cuts. Known for listening before cutting.</p>
-        <div class="flex gap-2 flex-wrap mb-3">
-          <span class="bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">Skin Fade</span>
-          <span class="bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">Beard Art</span>
-          <span class="bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">Classic Cut</span>
-          <span class="bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">Hot Towel</span>
-        </div>
-        <button onclick="goTo('page-booknow')" class="w-full fab press py-3 rounded-full text-xs font-bold uppercase tracking-widest" style="color:#1a2600">Book with Rahul</button>
-      </div>
-    </div>
-    <!-- Other barbers -->
-    <div class="space-y-3 fade-in stagger-2">
-      <div class="bg-surface-container-low rounded-2xl p-4 flex gap-3">
-        <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 img-zoom">
-          <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=200&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Barber 2"/>
-        </div>
-        <div class="flex-1">
-          <div class="flex justify-between items-start"><div><h3 class="font-bold text-sm">Aryan Singh</h3><p class="text-[10px]" style="color:#d4f520">Senior Stylist · 5 Yrs</p></div><div class="flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:11px">star</span><span class="text-xs font-bold">4.8</span></div></div>
-          <p class="text-[11px] text-on-surface-variant mt-1.5 leading-relaxed">Expert in textured crops, hair color, and scalp health. Consultation-first approach.</p>
-          <div class="flex gap-1.5 mt-2 flex-wrap">
-            <span class="bg-surface-container text-on-surface-variant text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">Texture</span>
-            <span class="bg-surface-container text-on-surface-variant text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">Color</span>
-          </div>
-        </div>
-      </div>
-      <div class="bg-surface-container-low rounded-2xl p-4 flex gap-3">
-        <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 img-zoom">
-          <img src="https://images.unsplash.com/photo-1588776814546-1ffbb171e041?w=200&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Barber 3"/>
-        </div>
-        <div class="flex-1">
-          <div class="flex justify-between items-start"><div><h3 class="font-bold text-sm">Dev Sharma</h3><p class="text-[10px]" style="color:#d4f520">Grooming Specialist · 6 Yrs</p></div><div class="flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:11px">star</span><span class="text-xs font-bold">4.9</span></div></div>
-          <p class="text-[11px] text-on-surface-variant mt-1.5 leading-relaxed">Certified skin specialist. Facial treatments and scalp care are his forte.</p>
-          <div class="flex gap-1.5 mt-2 flex-wrap">
-            <span class="bg-surface-container text-on-surface-variant text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">Facials</span>
-            <span class="bg-surface-container text-on-surface-variant text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">Scalp</span>
-          </div>
-        </div>
-      </div>
-      <div class="bg-surface-container-low rounded-2xl p-4 flex gap-3">
-        <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 img-zoom">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Barber 4"/>
-        </div>
-        <div class="flex-1">
-          <div class="flex justify-between items-start"><div><h3 class="font-bold text-sm">Karan Mehta</h3><p class="text-[10px]" style="color:#d4f520">Style Director · 10 Yrs</p></div><div class="flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:11px">star</span><span class="text-xs font-bold">5.0</span></div></div>
-          <p class="text-[11px] text-on-surface-variant mt-1.5 leading-relaxed">International experience across Dubai & Singapore. Signature style transformations.</p>
-          <div class="flex gap-1.5 mt-2 flex-wrap">
-            <span class="bg-surface-container text-on-surface-variant text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">Luxury</span>
-            <span class="bg-surface-container text-on-surface-variant text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">Transform</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Join as barber CTA -->
-    <div class="fade-in stagger-3 mt-5 rounded-2xl p-4 border border-outline-variant/20 flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center flex-shrink-0"><span class="mso" style="color:#d4f520">add_circle</span></div>
-      <div class="flex-1"><p class="font-bold text-sm">Are you a barber?</p><p class="text-xs text-on-surface-variant">Join Groomed and grow your clientele</p></div>
-      <button class="text-[10px] font-bold uppercase tracking-wider px-3 py-2 rounded-full press" style="border:1px solid rgba(212,245,32,.3);color:#d4f520">Apply</button>
-    </div>
-  </main>
-</div>
+  </nav>
 
-<!-- ━━━ PAGE: OFFERS (NEW!) ━━━ -->
-<div id="page-offers" class="page">
-  <main class="px-5 py-6 max-w-2xl mx-auto">
-    <div class="mb-7 fade-in">
-      <p class="text-[10px] font-label font-bold uppercase tracking-[.22em] mb-1.5" style="color:#d4f520">Exclusive Deals</p>
-      <h1 class="font-headline font-black text-4xl leading-none">Hot <span style="color:#d4f520;font-style:italic">Offers</span></h1>
-      <p class="text-sm text-on-surface-variant mt-2">Limited-time deals crafted just for you.</p>
+  <!-- HERO -->
+  <div class="ln-hero">
+    <!-- ANIMATED BARBER SCENE (SVG) -->
+    <div class="scene-wrap">
+      <svg viewBox="0 0 700 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background circle rings -->
+        <circle cx="350" cy="250" r="210" stroke="rgba(201,168,76,0.08)" stroke-width="1"/>
+        <circle cx="350" cy="250" r="160" stroke="rgba(201,168,76,0.06)" stroke-width="1"/>
+        <circle cx="350" cy="250" r="110" stroke="rgba(201,168,76,0.05)" stroke-width="1"/>
+        <!-- Barber Chair base -->
+        <rect x="310" y="310" width="80" height="12" rx="6" fill="rgba(201,168,76,0.3)"/>
+        <rect x="330" y="322" width="40" height="30" rx="2" fill="rgba(201,168,76,0.2)"/>
+        <!-- CLIENT - seated figure -->
+        <g class="client-anim">
+          <!-- Body/Cape -->
+          <ellipse cx="350" cy="295" rx="42" ry="55" fill="rgba(245,240,232,0.12)"/>
+          <!-- Head -->
+          <circle cx="350" cy="225" r="32" fill="rgba(245,240,232,0.25)"/>
+          <!-- Hair before cut - flowing -->
+          <g style="clip-path:ellipse(30px 40px at 50% 40%)">
+            <ellipse cx="350" cy="210" rx="30" ry="38" fill="rgba(139,111,71,0.6)"/>
+          </g>
+          <!-- Face features -->
+          <ellipse cx="342" cy="228" rx="3" ry="4" fill="rgba(13,10,7,0.5)"/>
+          <ellipse cx="358" cy="228" rx="3" ry="4" fill="rgba(13,10,7,0.5)"/>
+          <path d="M344 238 Q350 244 356 238" stroke="rgba(13,10,7,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        </g>
+        <!-- BARBER - orbiting figure -->
+        <g class="barber-anim" style="transform-origin:350px 250px">
+          <!-- Barber body (standing right side) -->
+          <g transform="translate(490,200)">
+            <!-- Body -->
+            <rect x="-15" y="20" width="30" height="55" rx="8" fill="rgba(201,168,76,0.35)"/>
+            <!-- Head -->
+            <circle cx="0" cy="12" r="18" fill="rgba(245,240,232,0.3)"/>
+            <!-- Arm with scissors -->
+            <g class="scene-scissors" style="transform-origin:0px 30px">
+              <path d="M-5 30 L-35 55" stroke="rgba(245,240,232,0.6)" stroke-width="3" stroke-linecap="round"/>
+              <!-- Scissors -->
+              <g transform="translate(-42,58)">
+                <path d="M0 0 L14 -12" stroke="rgba(201,168,76,0.9)" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M0 0 L14 12" stroke="rgba(201,168,76,0.9)" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="0" cy="0" r="3" fill="rgba(201,168,76,0.9)"/>
+              </g>
+            </g>
+            <!-- Other arm with comb -->
+            <g class="comb-anim" style="transform-origin:5px 30px">
+              <path d="M5 30 L-20 50" stroke="rgba(245,240,232,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Comb -->
+              <g transform="translate(-24,52)">
+                <rect x="-8" y="-2" width="16" height="6" rx="2" fill="rgba(245,240,232,0.7)"/>
+                <line x1="-5" y1="4" x2="-5" y2="10" stroke="rgba(245,240,232,0.7)" stroke-width="1.5"/>
+                <line x1="-2" y1="4" x2="-2" y2="10" stroke="rgba(245,240,232,0.7)" stroke-width="1.5"/>
+                <line x1="1" y1="4" x2="1" y2="10" stroke="rgba(245,240,232,0.7)" stroke-width="1.5"/>
+                <line x1="4" y1="4" x2="4" y2="10" stroke="rgba(245,240,232,0.7)" stroke-width="1.5"/>
+              </g>
+            </g>
+          </g>
+        </g>
+        <!-- Hair strands falling (animated) -->
+        <g class="hair-strand" style="transform-origin:340px 215px;--rot:12deg">
+          <path d="M340 215 Q344 225 338 235" stroke="rgba(139,111,71,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        </g>
+        <g class="hair-strand" style="transform-origin:355px 210px;--rot:-8deg;animation-delay:.4s">
+          <path d="M355 210 Q360 222 356 232" stroke="rgba(139,111,71,0.6)" stroke-width="1.5" stroke-linecap="round"/>
+        </g>
+        <g class="hair-strand" style="transform-origin:347px 208px;--rot:5deg;animation-delay:.8s">
+          <path d="M347 208 Q352 218 346 228" stroke="rgba(139,111,71,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        </g>
+        <!-- Gold sparkles -->
+        <circle cx="390" cy="185" r="2.5" fill="rgba(201,168,76,0.8)" style="animation:sparkle 2s ease-in-out infinite"/>
+        <circle cx="400" cy="200" r="1.5" fill="rgba(201,168,76,0.6)" style="animation:sparkle 2s ease-in-out .6s infinite"/>
+        <circle cx="395" cy="175" r="2" fill="rgba(201,168,76,0.7)" style="animation:sparkle 2s ease-in-out 1.2s infinite"/>
+        <!-- Mirror on left wall -->
+        <rect x="120" y="150" width="60" height="80" rx="4" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="1.5"/>
+        <rect x="128" y="158" width="44" height="64" rx="2" fill="rgba(201,168,76,0.04)"/>
+        <!-- Shelf with products -->
+        <rect x="100" y="240" width="90" height="6" rx="3" fill="rgba(201,168,76,0.2)"/>
+        <rect x="108" y="220" width="10" height="20" rx="3" fill="rgba(201,168,76,0.3)"/>
+        <rect x="122" y="215" width="12" height="25" rx="3" fill="rgba(201,168,76,0.25)"/>
+        <rect x="138" y="222" width="8" height="18" rx="3" fill="rgba(201,168,76,0.2)"/>
+        <!-- TRIMHUB text watermark -->
+        <text x="350" y="470" font-family="'Cormorant Garamond', serif" font-size="28" font-weight="300" fill="rgba(201,168,76,0.12)" text-anchor="middle" letter-spacing="8">TRIMHUB</text>
+      </svg>
     </div>
-    <!-- Featured offer -->
-    <div class="fade-in stagger-1 offer-gold rounded-2xl p-5 mb-4">
-      <div class="flex items-start justify-between mb-3">
-        <div>
-          <span class="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full mb-2 inline-block" style="background:#d4f520;color:#1a2600">⭐ Premium Deal</span>
-          <h3 class="font-headline font-black text-2xl" style="color:#d4f520">GROOMED20</h3>
-          <p class="text-sm font-bold text-white mt-0.5">20% OFF — First Visit</p>
-        </div>
-        <div class="text-right"><p class="font-headline font-black text-3xl" style="color:#d4f520">20%</p><p class="text-[10px] text-on-surface-variant">off total</p></div>
-      </div>
-      <p class="text-xs text-on-surface-variant leading-relaxed mb-4">Pehli booking par poora 20% bachao. Kisi bhi service par valid. Koi minimum amount nahi.</p>
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-1.5"><span class="mso text-on-surface-variant" style="font-size:14px">timer</span><span class="text-xs text-on-surface-variant">Expires: 30 Apr 2025</span></div>
-        <button onclick="copyCode('GROOMED20')" class="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase press" style="background:#d4f520;color:#1a2600">Copy Code</button>
-      </div>
-    </div>
-    <!-- Other offers -->
-    <div class="space-y-3 fade-in stagger-2">
-      <div class="offer-silver rounded-2xl p-4">
-        <div class="flex items-start justify-between mb-2">
-          <div><span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1.5 inline-block" style="background:rgba(100,200,255,.15);color:#64c8ff">Weekend Special</span><h3 class="font-headline font-bold text-lg">WEEKEND30</h3><p class="text-sm font-bold text-white">₹30 OFF — Sat & Sun</p></div>
-          <p class="font-headline font-black text-2xl" style="color:#64c8ff">₹30</p>
-        </div>
-        <p class="text-xs text-on-surface-variant mb-3">Har Saturday & Sunday ko apply hota hai. Min booking ₹300.</p>
-        <div class="flex justify-between items-center"><span class="text-xs text-on-surface-variant">Valid till: 15 Apr</span><button onclick="copyCode('WEEKEND30')" class="px-4 py-1.5 rounded-full text-xs font-bold uppercase press" style="border:1px solid rgba(100,200,255,.3);color:#64c8ff">Copy</button></div>
-      </div>
-      <div class="bg-surface-container-low rounded-2xl p-4" style="border:1px solid rgba(255,107,71,.2)">
-        <div class="flex items-start justify-between mb-2">
-          <div><span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1.5 inline-block" style="background:rgba(255,107,71,.15);color:#ff6b47">Combo Deal</span><h3 class="font-headline font-bold text-lg">ROYAL50</h3><p class="text-sm font-bold text-white">₹50 OFF — Royal Treatment</p></div>
-          <p class="font-headline font-black text-2xl" style="color:#ff6b47">₹50</p>
-        </div>
-        <p class="text-xs text-on-surface-variant mb-3">Sirf Royal Treatment booking par. Limited slots per day.</p>
-        <div class="flex justify-between items-center"><span class="text-xs text-on-surface-variant">Valid till: 10 Apr</span><button onclick="copyCode('ROYAL50')" class="px-4 py-1.5 rounded-full text-xs font-bold uppercase press" style="border:1px solid rgba(255,107,71,.3);color:#ff6b47">Copy</button></div>
-      </div>
-      <div class="bg-surface-container-low rounded-2xl p-4" style="border:1px solid rgba(212,245,32,.1)">
-        <div class="flex items-start justify-between mb-2">
-          <div><span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1.5 inline-block" style="background:rgba(212,245,32,.1);color:#d4f520">Referral</span><h3 class="font-headline font-bold text-lg">REFER & EARN</h3><p class="text-sm font-bold text-white">Dono ko ₹100 wallet cash</p></div>
-          <span class="mso text-on-surface-variant">group</span>
-        </div>
-        <p class="text-xs text-on-surface-variant mb-3">Apne dost ko invite karo. Dono ki pehli booking complete hone par ₹100 milega.</p>
-        <button class="w-full py-2.5 rounded-full text-xs font-bold uppercase press" style="border:1px solid rgba(212,245,32,.25);color:#d4f520">Share Referral Link</button>
-      </div>
-    </div>
-    <!-- Copied toast -->
-    <div id="copy-toast" class="hidden fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full text-xs font-bold" style="background:#d4f520;color:#1a2600">Code Copied!</div>
-  </main>
-</div>
 
-<!-- ━━━ PAGE: ABOUT ━━━ -->
-<div id="page-about" class="page">
-  <main class="max-w-2xl mx-auto">
-    <!-- Hero image -->
-    <div class="relative h-56 overflow-hidden">
-      <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=900&auto=format&fit=crop&q=80" class="w-full h-full object-cover" style="filter:brightness(.5)" alt="Salon"/>
-      <div class="absolute inset-0 flex flex-col justify-end p-5" style="background:linear-gradient(to top,rgba(10,10,10,.95),transparent)">
-        <p class="text-[10px] font-label font-bold uppercase tracking-[.22em] mb-1" style="color:#d4f520">Our Story</p>
-        <h1 class="font-headline font-black text-3xl leading-none text-white">Built for the <span style="color:#d4f520;font-style:italic">Modern Man</span></h1>
-      </div>
+    <!-- HERO TEXT -->
+    <div class="hero-eyebrow">The Future of Premium Grooming</div>
+    <h1 class="hero-h1">
+      Crafted for<br/>
+      <em>The</em>
+      <strong>Discerning</strong>
+      <em>Man</em>
+    </h1>
+    <p class="hero-sub">TrimHub connects you with India's finest barber artists. Book a seat. Transform your look. Own your confidence.</p>
+    <div class="hero-btns">
+      <button class="btn-gold" onclick="showAuth('signin')">Get Started Free</button>
+      <button class="btn-ghost" onclick="showAuth('login')">I Have an Account</button>
     </div>
-    <div class="px-5 py-6">
-      <p class="text-sm text-on-surface-variant leading-relaxed mb-6 fade-in">Groomed ek aise sapne se janam liya jab ek barber ki kursi sirf baalon kaat ne ki jagah nahi, balki self-confidence aur self-expression ki jagah bani. Hum believe karte hain ki ek acha haircut insaan ka pura din badal sakta hai.</p>
-      <!-- Values -->
-      <div class="space-y-3 mb-7 fade-in stagger-1">
-        <div class="flex gap-3 items-start">
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(212,245,32,.1)"><span class="mso" style="color:#d4f520;font-size:18px">verified</span></div>
-          <div><p class="font-bold text-sm">Precision Over Speed</p><p class="text-xs text-on-surface-variant mt-0.5">Har cut ke liye proper time diya jaata hai. Koi rush nahi.</p></div>
-        </div>
-        <div class="flex gap-3 items-start">
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(212,245,32,.1)"><span class="mso" style="color:#d4f520;font-size:18px">workspace_premium</span></div>
-          <div><p class="font-bold text-sm">Premium Products Only</p><p class="text-xs text-on-surface-variant mt-0.5">Sirf international-grade grooming products. Skin-safe, always.</p></div>
-        </div>
-        <div class="flex gap-3 items-start">
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(212,245,32,.1)"><span class="mso" style="color:#d4f520;font-size:18px">diversity_3</span></div>
-          <div><p class="font-bold text-sm">Artists, Not Just Barbers</p><p class="text-xs text-on-surface-variant mt-0.5">Har haath mein art hai. Hum barbers train karte hain, build karte hain.</p></div>
-        </div>
-        <div class="flex gap-3 items-start">
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(212,245,32,.1)"><span class="mso" style="color:#d4f520;font-size:18px">rocket_launch</span></div>
-          <div><p class="font-bold text-sm">Startup with Soul</p><p class="text-xs text-on-surface-variant mt-0.5">India se shuru, world mein jaana hai. Ek booking ek kadam hai.</p></div>
-        </div>
-      </div>
-      <!-- Contact -->
-      <div class="bg-surface-container rounded-2xl p-4 mb-4 fade-in stagger-2">
-        <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-3">Get in Touch</p>
-        <div class="space-y-2.5">
-          <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center"><span class="mso text-on-surface-variant" style="font-size:16px">mail</span></div><p class="text-sm">hello@groomed.studio</p></div>
-          <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center"><span class="mso text-on-surface-variant" style="font-size:16px">phone</span></div><p class="text-sm">+91 98765 43210</p></div>
-          <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center"><span class="mso text-on-surface-variant" style="font-size:16px">location_on</span></div><p class="text-sm">Bangalore, Mumbai, Delhi & 12 more cities</p></div>
-        </div>
-      </div>
-      <!-- Social -->
-      <div class="flex gap-3 fade-in stagger-3">
-        <button class="flex-1 flex items-center justify-center gap-2 bg-surface-container rounded-xl py-3 press hover:bg-surface-container-high">
-          <span class="mso text-on-surface-variant" style="font-size:18px">photo_camera</span><span class="text-xs font-bold">Instagram</span>
-        </button>
-        <button class="flex-1 flex items-center justify-center gap-2 bg-surface-container rounded-xl py-3 press hover:bg-surface-container-high">
-          <span class="mso text-on-surface-variant" style="font-size:18px">play_circle</span><span class="text-xs font-bold">YouTube</span>
-        </button>
-        <button class="flex-1 flex items-center justify-center gap-2 bg-surface-container rounded-xl py-3 press hover:bg-surface-container-high">
-          <span class="mso text-on-surface-variant" style="font-size:18px">alternate_email</span><span class="text-xs font-bold">Twitter</span>
-        </button>
-      </div>
-    </div>
-  </main>
-</div>
 
-<!-- ━━━ PAGE: EDITORIAL ━━━ -->
-<div id="page-editorial" class="page">
-  <div class="glass sticky top-14 z-40 px-5 border-b border-outline-variant/15">
-    <div class="flex gap-5 overflow-x-auto scroll-x">
-      <button onclick="switchET('et-home')" id="etb-home" class="etab active flex-shrink-0 py-3 text-[11px] font-bold uppercase tracking-wider">Home</button>
-      <button onclick="switchET('et-nearme')" id="etb-nearme" class="etab flex-shrink-0 py-3 text-[11px] font-bold uppercase tracking-wider">Near Me</button>
-      <button onclick="switchET('et-salons')" id="etb-salons" class="etab flex-shrink-0 py-3 text-[11px] font-bold uppercase tracking-wider">Salons</button>
-      <button onclick="switchET('et-booking')" id="etb-booking" class="etab flex-shrink-0 py-3 text-[11px] font-bold uppercase tracking-wider">My Bookings</button>
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll to explore</span>
+    </div>
+    <div class="hero-divider"></div>
+  </div>
+
+  <!-- ABOUT STRIP -->
+  <div class="about-strip">
+    <div>
+      <h2>Not just a haircut.<br/><em>An experience</em><br/>worth remembering.</h2>
+    </div>
+    <div>
+      <p>TrimHub was born from a single belief — that every man deserves to walk out of a barber's chair feeling like the best version of himself. We curate only the finest grooming artists, verify their craft, and give you the tools to book them in seconds.</p>
+      <p>From classic gentleman cuts to modern textured styles, beard sculpture to scalp therapy — our network spans 15+ cities and grows every week.</p>
     </div>
   </div>
 
-  <!-- ET: HOME -->
-  <div id="et-home" class="etpage">
-    <div class="relative overflow-hidden" style="height:300px">
-      <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=900&auto=format&fit=crop&q=80" class="w-full h-full object-cover" style="filter:brightness(.4)" alt="Editorial"/>
-      <div class="absolute inset-0" style="background:linear-gradient(to bottom,transparent 30%,rgba(10,10,10,.98))"></div>
-      <div class="absolute bottom-0 left-0 p-5">
-        <p class="text-[10px] font-bold uppercase tracking-[.22em] mb-1.5" style="color:#d4f520">Groomed Editorial</p>
-        <h1 class="font-headline font-black text-4xl leading-none text-white">Style is<br/><span style="color:#d4f520;font-style:italic">Currency.</span></h1>
-      </div>
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Happy Clients</div></div>
+    <div class="stat-item"><div class="stat-num">15+</div><div class="stat-label">Cities Live</div></div>
+    <div class="stat-item"><div class="stat-num">12</div><div class="stat-label">Master Artists</div></div>
+    <div class="stat-item"><div class="stat-num">4.9★</div><div class="stat-label">Avg Rating</div></div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features">
+    <div class="features-title">
+      <h2>Why choose <em>TrimHub?</em></h2>
+      <p>Built for those who refuse to settle for ordinary</p>
     </div>
-    <div class="px-5 py-5">
-      <div class="grid grid-cols-2 gap-3 mb-5">
-        <div class="relative rounded-2xl overflow-hidden img-zoom" style="height:180px">
-          <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="look1"/>
-          <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.8),transparent 55%)"></div>
-          <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Street Sharp</p></div>
-        </div>
-        <div class="relative rounded-2xl overflow-hidden img-zoom" style="height:180px">
-          <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=500&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="look2"/>
-          <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.8),transparent 55%)"></div>
-          <div class="absolute bottom-0 left-0 p-3"><p class="text-white text-xs font-bold">Studio Cut</p></div>
-        </div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-icon"><span class="mso">verified</span></div>
+        <h3>Verified Artists Only</h3>
+        <p>Every barber is personally screened, skill-tested, and certified before joining our network.</p>
       </div>
-      <div class="relative rounded-2xl overflow-hidden img-zoom mb-5" style="height:200px">
-        <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=900&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Salon Interior"/>
-        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,.85),transparent 55%)"></div>
-        <div class="absolute bottom-0 left-0 right-0 p-4"><p class="text-[10px] uppercase tracking-wider mb-0.5" style="color:#d4f520">Studio Spotlight</p><p class="text-white font-bold text-sm">The Art of the Perfect Shave — Inside The Blade Room</p></div>
+      <div class="feat-card">
+        <div class="feat-icon"><span class="mso">bolt</span></div>
+        <h3>Instant Booking</h3>
+        <p>Real-time slot availability. No calls, no waiting. Book your session in under 30 seconds.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><span class="mso">home_pin</span></div>
+        <h3>Home Service</h3>
+        <p>Prefer your space? Our premium barbers come to you. Same quality, zero commute.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><span class="mso">workspace_premium</span></div>
+        <h3>Premium Products</h3>
+        <p>We use only internationally certified, skin-safe grooming products. Nothing less.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><span class="mso">lock</span></div>
+        <h3>Secure Payments</h3>
+        <p>Stripe-powered checkout. Your card data is never stored. Pay with confidence every time.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><span class="mso">local_offer</span></div>
+        <h3>Exclusive Offers</h3>
+        <p>Members-only deals, referral bonuses, and seasonal promotions — only on TrimHub.</p>
       </div>
     </div>
   </div>
 
-  <!-- ET: NEAR ME -->
-  <div id="et-nearme" class="etpage hidden">
-    <main class="px-5 py-5 max-w-2xl mx-auto">
-      <div class="mb-4"><h2 class="font-headline font-black text-2xl">Your Home <span style="color:#d4f520">Service</span></h2><p class="text-xs text-on-surface-variant mt-1">Barbers who come to you</p></div>
-      <div class="map-grid rounded-2xl mb-5 relative overflow-hidden" style="height:220px">
-        <div class="absolute inset-0 z-10">
-          <div class="absolute" style="top:38%;left:46%">
-            <div class="flex flex-col items-center">
-              <div class="px-2 py-0.5 rounded-full text-[9px] font-black mb-1 shadow-lg" style="background:#d4f520;color:#1a2600">YOU</div>
-              <div class="w-4 h-4 rounded-full border-2 flex items-center justify-center" style="background:#d4f520;border-color:#d4f520;box-shadow:0 0 16px rgba(212,245,32,.6)"></div>
+  <!-- TESTIMONIAL -->
+  <div class="testimonial">
+    <p class="testi-text">"TrimHub completely changed how I think about grooming. The barber arrived on time, knew exactly what I wanted, and the Royal Treatment was genuinely the best 90 minutes of my week."</p>
+    <div class="testi-author">— Vikram S., Bangalore · Verified Client</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Your chair<br/><em>awaits.</em></h2>
+    <p>Join thousands of men who've already discovered the TrimHub difference. It starts with one booking.</p>
+    <div class="cta-btns">
+      <button class="btn-gold" onclick="showAuth('signin')" style="padding:16px 40px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:none;border:none">Create Free Account</button>
+      <button class="btn-ghost" onclick="showAuth('login')" style="padding:16px 40px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:none">Sign In</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo">TRIM<span>HUB</span></div>
+    <p>© 2025 TrimHub. Built with craft & care in India.</p>
+    <p>hello@trimhub.in · +91 98765 43210</p>
+  </div>
+
+</div><!-- /landing -->
+
+<!-- ══════════ AUTH PAGES ══════════ -->
+<div id="auth-page" class="view">
+  <div class="auth-wrap">
+    <!-- LEFT: decorative -->
+    <div class="auth-left">
+      <div class="auth-scene">
+        <svg viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg" width="280" height="280">
+          <circle cx="140" cy="140" r="120" stroke="rgba(201,168,76,0.1)" stroke-width="1"/>
+          <circle cx="140" cy="140" r="90" stroke="rgba(201,168,76,0.08)" stroke-width="1"/>
+          <circle cx="140" cy="140" r="60" stroke="rgba(201,168,76,0.06)" stroke-width="1"/>
+          <!-- Chair -->
+          <rect x="110" y="175" width="60" height="8" rx="4" fill="rgba(201,168,76,0.3)"/>
+          <rect x="125" y="183" width="30" height="22" rx="2" fill="rgba(201,168,76,0.2)"/>
+          <!-- Client -->
+          <circle cx="140" cy="118" r="22" fill="rgba(245,240,232,0.2)"/>
+          <ellipse cx="140" cy="105" rx="18" ry="22" fill="rgba(139,111,71,0.4)"/>
+          <ellipse cx="140" cy="160" rx="28" ry="35" fill="rgba(245,240,232,0.1)"/>
+          <!-- Scissors floating -->
+          <g class="scissors-anim" style="transform-origin:185px 95px">
+            <path d="M185 95 L200 78" stroke="rgba(201,168,76,0.8)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M185 95 L200 112" stroke="rgba(201,168,76,0.8)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="185" cy="95" r="3.5" fill="rgba(201,168,76,0.8)"/>
+          </g>
+          <!-- Sparkles -->
+          <circle cx="175" cy="80" r="2" fill="rgba(201,168,76,0.7)" style="animation:sparkle 2s ease-in-out infinite"/>
+          <circle cx="192" cy="70" r="1.5" fill="rgba(201,168,76,0.5)" style="animation:sparkle 2s ease-in-out .5s infinite"/>
+          <circle cx="200" cy="88" r="2.5" fill="rgba(201,168,76,0.6)" style="animation:sparkle 2s ease-in-out 1s infinite"/>
+          <!-- Comb -->
+          <g class="comb-anim" style="transform-origin:95px 120px">
+            <rect x="82" y="116" width="26" height="8" rx="3" fill="rgba(245,240,232,0.5)"/>
+            <line x1="87" y1="124" x2="87" y2="134" stroke="rgba(245,240,232,0.5)" stroke-width="1.5"/>
+            <line x1="92" y1="124" x2="92" y2="134" stroke="rgba(245,240,232,0.5)" stroke-width="1.5"/>
+            <line x1="97" y1="124" x2="97" y2="134" stroke="rgba(245,240,232,0.5)" stroke-width="1.5"/>
+            <line x1="102" y1="124" x2="102" y2="134" stroke="rgba(245,240,232,0.5)" stroke-width="1.5"/>
+          </g>
+          <text x="140" y="265" font-family="'Cormorant Garamond',serif" font-size="14" fill="rgba(201,168,76,0.2)" text-anchor="middle" letter-spacing="5">TRIMHUB</text>
+        </svg>
+      </div>
+      <div class="auth-tagline">Where <em>craft</em> meets<br/>precision.</div>
+      <p class="auth-sub">India's most trusted premium grooming network. Your transformation starts here.</p>
+    </div>
+    <!-- RIGHT: form -->
+    <div class="auth-right">
+      <div class="auth-card">
+        <div class="auth-logo">TRIM<span>HUB</span></div>
+        <!-- SIGN IN FORM -->
+        <div id="form-signin">
+          <h2 class="auth-title">Create Account</h2>
+          <p class="auth-sub2">Already have one? <a onclick="toggleForm('login')">Log in →</a></p>
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-input" placeholder="Your full name"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" placeholder="you@email.com"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" placeholder="Create a strong password"/>
+          </div>
+          <button class="btn-submit" onclick="doLogin()">Create My Account</button>
+          <div class="form-divider"><span>or continue with</span></div>
+          <button class="social-btn" onclick="doLogin()">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Continue with Google
+          </button>
+          <button class="social-btn" onclick="doLogin()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--paper)"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"/></svg>
+            Continue with GitHub
+          </button>
+        </div>
+        <!-- LOGIN FORM -->
+        <div id="form-login" style="display:none">
+          <h2 class="auth-title">Welcome Back</h2>
+          <p class="auth-sub2">New here? <a onclick="toggleForm('signin')">Create account →</a></p>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" placeholder="you@email.com"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" placeholder="Your password"/>
+          </div>
+          <button class="btn-submit" onclick="doLogin()">Sign In to TrimHub</button>
+          <div class="form-divider"><span>or continue with</span></div>
+          <button class="social-btn" onclick="doLogin()">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Continue with Google
+          </button>
+          <button class="social-btn" onclick="doLogin()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--paper)"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"/></svg>
+            Continue with GitHub
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /auth -->
+
+<!-- ══════════ DASHBOARD ══════════ -->
+<div id="dashboard" class="view">
+  <!-- TOP NAV -->
+  <nav class="dash-nav">
+    <div class="dash-logo">TRIM<span>HUB</span></div>
+    <div class="dash-nav-right">
+      <button class="dash-icon-btn" onclick="showToast('Search coming soon')"><span class="mso">search</span></button>
+      <button class="dash-icon-btn" onclick="showToast('2 new notifications')"><span class="mso">notifications</span><div class="dash-badge">2</div></button>
+      <button class="dash-avatar" onclick="showToast('Profile settings coming soon')">A</button>
+    </div>
+  </nav>
+
+  <!-- SCROLL SCENE (sticky 3D barber animation section) -->
+  <div id="scroll-scene-wrap" class="scroll-scene" style="height:100vh">
+    <!-- Orbit tracks -->
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none">
+      <div style="width:320px;height:320px;border-radius:50%;border:1px solid rgba(201,168,76,0.1);position:absolute"></div>
+      <div style="width:240px;height:240px;border-radius:50%;border:1px solid rgba(201,168,76,0.07);position:absolute"></div>
+    </div>
+    <!-- Client figure at center -->
+    <div style="position:relative;z-index:2">
+      <svg id="main-scene-svg" viewBox="0 0 340 340" width="340" height="340">
+        <!-- Glow -->
+        <circle cx="170" cy="170" r="80" fill="rgba(201,168,76,0.04)"/>
+        <!-- Chair -->
+        <rect x="136" y="230" width="68" height="10" rx="5" fill="rgba(201,168,76,0.25)"/>
+        <rect x="152" y="240" width="36" height="26" rx="3" fill="rgba(201,168,76,0.15)"/>
+        <!-- Cape -->
+        <ellipse cx="170" cy="210" rx="44" ry="52" fill="rgba(245,240,232,0.1)" class="client-anim"/>
+        <!-- Client head -->
+        <circle cx="170" cy="148" r="34" fill="rgba(245,240,232,0.18)" class="client-anim"/>
+        <!-- Hair (will animate) -->
+        <g id="hair-group">
+          <ellipse cx="170" cy="132" rx="28" ry="32" fill="rgba(139,111,71,0.55)" id="hair-before"/>
+          <ellipse cx="170" cy="140" rx="22" ry="14" fill="rgba(139,111,71,0.35)" id="hair-after" style="opacity:0"/>
+        </g>
+        <!-- Face -->
+        <ellipse cx="163" cy="151" rx="3" ry="3.5" fill="rgba(13,10,7,0.5)"/>
+        <ellipse cx="177" cy="151" rx="3" ry="3.5" fill="rgba(13,10,7,0.5)"/>
+        <path d="M165 162 Q170 168 175 162" stroke="rgba(13,10,7,0.35)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <!-- ORBITING BARBER -->
+        <g id="barber-orbit" style="transform-origin:170px 170px">
+          <g style="transform:rotate(0deg) translateX(115px)">
+            <!-- Barber body -->
+            <circle cx="0" cy="-10" r="16" fill="rgba(245,240,232,0.2)"/>
+            <ellipse cx="0" cy="16" rx="12" ry="20" fill="rgba(201,168,76,0.25)"/>
+            <!-- Tool arm -->
+            <g class="scene-scissors">
+              <line x1="4" y1="2" x2="22" y2="-14" stroke="rgba(245,240,232,0.6)" stroke-width="2" stroke-linecap="round"/>
+              <path d="M22 -14 L32 -24" stroke="rgba(201,168,76,0.9)" stroke-width="2" stroke-linecap="round"/>
+              <path d="M22 -14 L32 -4" stroke="rgba(201,168,76,0.9)" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="22" cy="-14" r="2.5" fill="rgba(201,168,76,0.9)"/>
+            </g>
+          </g>
+        </g>
+        <!-- Sparkles around scene -->
+        <circle cx="230" cy="100" r="2.5" fill="rgba(201,168,76,0.7)" style="animation:sparkle 2s ease-in-out infinite"/>
+        <circle cx="245" cy="120" r="1.5" fill="rgba(201,168,76,0.5)" style="animation:sparkle 2s ease-in-out .5s infinite"/>
+        <circle cx="222" cy="88" r="2" fill="rgba(201,168,76,0.6)" style="animation:sparkle 2s ease-in-out 1s infinite"/>
+        <circle cx="110" cy="110" r="2" fill="rgba(201,168,76,0.5)" style="animation:sparkle 2s ease-in-out 1.5s infinite"/>
+      </svg>
+    </div>
+    <!-- Scroll text -->
+    <div class="scroll-text-overlay">
+      <div id="st1" class="scroll-text-line" style="top:15%">Book in <em>seconds.</em></div>
+      <div id="st2" class="scroll-text-line" style="top:15%">Master <em>artisans.</em></div>
+      <div id="st3" class="scroll-text-line" style="top:15%">Your look. <em>Elevated.</em></div>
+      <div id="st4" class="scroll-text-line" style="bottom:12%;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(201,168,76,0.7)">Scroll to browse services ↓</div>
+    </div>
+  </div>
+
+  <!-- WELCOME BADGE (simulates Resend email) -->
+  <div id="welcome-badge" class="welcome-badge" style="margin-top:0">
+    <span class="mso">mark_email_read</span>
+    <div class="welcome-badge-text">
+      <h4>Welcome to TrimHub, Arjun! 👋</h4>
+      <p>A welcome email has been sent to your inbox via Resend.</p>
+    </div>
+    <button class="welcome-badge-close" onclick="this.parentElement.style.display='none'"><span class="mso">close</span></button>
+  </div>
+
+  <!-- DASH PAGES -->
+  <!-- SERVICE PAGE -->
+  <div id="dp-service" class="dash-page active">
+    <div class="page-hero">
+      <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=900&auto=format&fit=crop&q=80" alt="Barber"/>
+      <div class="page-hero-content">
+        <h1>Our <em>Services</em></h1>
+        <p>Precision grooming · Premium care</p>
+      </div>
+    </div>
+    <div class="section-pad">
+      <div class="section-title">Choose Your <span>Treatment</span></div>
+      <div class="svc-list">
+        <div class="svc-item" onclick="openBooking()">
+          <div class="svc-icon"><span class="mso">content_cut</span></div>
+          <div class="flex-1" style="flex:1">
+            <div class="svc-name">Classic Haircut</div>
+            <div class="svc-desc">Precision cut · Finish · Styling</div>
+            <div class="svc-meta">
+              <span class="mso" style="font-size:13px;color:var(--muted)">schedule</span>
+              <span>40 min</span>
+              <span style="margin:0 4px;color:var(--muted)">·</span>
+              <span style="color:var(--gold)">★ 4.9</span>
             </div>
           </div>
-          <div class="absolute" style="top:18%;left:22%"><div class="flex flex-col items-center"><div class="bg-surface-container text-white rounded-full px-2 py-0.5 text-[9px] font-bold mb-0.5 shadow-xl whitespace-nowrap border border-outline-variant/30">The Blade Room</div><div class="w-3 h-3 rounded-full" style="background:#fff;box-shadow:0 0 8px rgba(255,255,255,.4)"></div></div></div>
-          <div class="absolute" style="top:58%;left:68%"><div class="flex flex-col items-center"><div class="bg-surface-container text-white rounded-full px-2 py-0.5 text-[9px] font-bold mb-0.5 shadow-xl whitespace-nowrap border border-outline-variant/30">Studio 9</div><div class="w-3 h-3 rounded-full" style="background:#fff;box-shadow:0 0 8px rgba(255,255,255,.4)"></div></div></div>
-          <div class="absolute" style="top:72%;left:28%"><div class="flex flex-col items-center"><div class="bg-surface-container text-white rounded-full px-2 py-0.5 text-[9px] font-bold mb-0.5 shadow-xl whitespace-nowrap border border-outline-variant/30">Elite Cuts</div><div class="w-3 h-3 rounded-full" style="background:#fff;box-shadow:0 0 8px rgba(255,255,255,.4)"></div></div></div>
+          <div class="svc-price">₹499<small>from</small></div>
         </div>
-        <div class="absolute bottom-3 right-3 z-20 glass rounded-xl px-3 py-1.5 flex items-center gap-1.5 border border-outline-variant/20"><span class="pulse-dot w-1.5 h-1.5 rounded-full bg-green-400"></span><span class="text-xs font-bold">3 Available</span></div>
+        <div class="svc-item" onclick="openBooking()">
+          <div class="svc-icon"><span class="mso">face_retouching_natural</span></div>
+          <div style="flex:1">
+            <div class="svc-name">Beard Sculpt</div>
+            <div class="svc-desc">Shape · Hot towel · Oil finish</div>
+            <div class="svc-meta">
+              <span class="mso" style="font-size:13px;color:var(--muted)">schedule</span>
+              <span>30 min</span>
+              <span style="margin:0 4px;color:var(--muted)">·</span>
+              <span style="color:var(--gold)">★ 4.8</span>
+            </div>
+          </div>
+          <div class="svc-price">₹349<small>from</small></div>
+        </div>
+        <div class="svc-item" onclick="openBooking()" style="border-color:rgba(201,168,76,0.25);background:rgba(201,168,76,0.03)">
+          <div class="svc-icon"><span class="mso">auto_awesome</span></div>
+          <div style="flex:1;position:relative">
+            <div style="position:absolute;top:-4px;right:0;background:var(--gold);color:var(--ink);font-size:8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:2px">Bestseller</div>
+            <div class="svc-name">Royal Treatment</div>
+            <div class="svc-desc">Cut + Beard + Face Mask + Head Spa</div>
+            <div class="svc-meta">
+              <span class="mso" style="font-size:13px;color:var(--muted)">schedule</span>
+              <span>90 min</span>
+              <span style="margin:0 4px;color:var(--muted)">·</span>
+              <span style="color:var(--gold)">★ 5.0</span>
+            </div>
+          </div>
+          <div class="svc-price">₹999<small>from</small></div>
+        </div>
+        <div class="svc-item" onclick="openBooking()">
+          <div class="svc-icon"><span class="mso">spa</span></div>
+          <div style="flex:1">
+            <div class="svc-name">Skin Glow Facial</div>
+            <div class="svc-desc">Cleanse · Exfoliate · Hydrate</div>
+            <div class="svc-meta">
+              <span class="mso" style="font-size:13px;color:var(--muted)">schedule</span>
+              <span>45 min</span>
+              <span style="margin:0 4px;color:var(--muted)">·</span>
+              <span style="color:var(--gold)">★ 4.7</span>
+            </div>
+          </div>
+          <div class="svc-price">₹599<small>from</small></div>
+        </div>
+        <div class="svc-item" onclick="openBooking()">
+          <div class="svc-icon"><span class="mso">self_improvement</span></div>
+          <div style="flex:1">
+            <div class="svc-name">Head Massage + Wash</div>
+            <div class="svc-desc">Scalp therapy · Deep relaxation</div>
+            <div class="svc-meta">
+              <span class="mso" style="font-size:13px;color:var(--muted)">schedule</span>
+              <span>25 min</span>
+              <span style="margin:0 4px;color:var(--muted)">·</span>
+              <span style="color:var(--gold)">★ 4.9</span>
+            </div>
+          </div>
+          <div class="svc-price">₹299<small>from</small></div>
+        </div>
       </div>
-      <div class="space-y-2.5">
-        <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-3 tonal hover:bg-surface-container-high"><div class="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=100&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div><div class="flex-1"><p class="font-bold text-sm">Rahul Verma</p><p class="text-xs text-on-surface-variant">0.8 km · ₹499+ · Home Visit Available</p></div><button onclick="goTo('page-booknow')" class="fab press px-4 py-2 rounded-full text-xs font-bold uppercase" style="color:#1a2600">Book</button></div>
-        <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-3 tonal hover:bg-surface-container-high"><div class="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=100&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div><div class="flex-1"><p class="font-bold text-sm">Aryan Singh</p><p class="text-xs text-on-surface-variant">1.2 km · ₹349+ · Home Visit Available</p></div><button onclick="goTo('page-booknow')" class="fab press px-4 py-2 rounded-full text-xs font-bold uppercase" style="color:#1a2600">Book</button></div>
-        <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-3 tonal hover:bg-surface-container-high"><div class="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1588776814546-1ffbb171e041?w=100&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div><div class="flex-1"><p class="font-bold text-sm">Dev Sharma</p><p class="text-xs text-on-surface-variant">2.1 km · ₹299+ · Home Visit Available</p></div><button onclick="goTo('page-booknow')" class="fab press px-4 py-2 rounded-full text-xs font-bold uppercase" style="color:#1a2600">Book</button></div>
+    </div>
+    <div class="section-pad" style="padding-top:0">
+      <div class="section-title">Client <span>Reviews</span></div>
+      <div class="review-scroll">
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">"Best haircut in Bangalore. Rahul listened, understood, delivered. Will never go elsewhere."</div>
+          <div class="review-author">Arjun M. · Verified</div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">"Royal Treatment is 90 minutes of pure luxury. The face mask and head spa alone are worth it."</div>
+          <div class="review-author">Rohan K. · Verified</div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">"Booked at midnight, barber at my door by 9 AM. On time, professional, exceptional result."</div>
+          <div class="review-author">Vikram S. · Verified</div>
+        </div>
       </div>
-    </main>
+    </div>
   </div>
 
-  <!-- ET: SALONS -->
-  <div id="et-salons" class="etpage hidden">
-    <main class="px-5 py-5 max-w-2xl mx-auto">
-      <div class="relative mb-4"><span class="mso absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span><input class="w-full bg-surface-container rounded-full py-3 pl-11 pr-4 text-sm font-medium placeholder-on-surface-variant focus:outline-none focus:ring-1" style="focus:ring-color:#d4f520" placeholder="Search salons, areas..."/></div>
-      <h2 class="font-headline font-black text-2xl mb-4">Salons <span style="color:#d4f520;font-style:italic">Near You</span></h2>
-      <div class="space-y-3">
-        <div class="bg-surface-container-low rounded-2xl p-4 flex gap-3 tonal hover:bg-surface-container-high">
-          <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 img-zoom"><img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=300&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Salon"/></div>
-          <div class="flex-1 flex flex-col justify-between">
-            <div class="flex justify-between"><div><h3 class="font-headline font-bold text-base" style="color:#e8ff87">The Blade Room</h3><div class="flex items-center gap-1 text-on-surface-variant text-xs mt-0.5"><span class="mso" style="font-size:12px">location_on</span><span>42 MG Road, Bangalore</span></div></div><div class="flex items-center gap-0.5 bg-surface-container px-2 py-0.5 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:12px">star</span><span class="text-xs font-black">4.9</span></div></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-1 text-xs text-on-surface-variant"><span class="mso" style="font-size:12px">schedule</span><span>9AM–9PM</span><span class="mx-1">·</span><span class="font-semibold" style="color:#d4f520">Open</span></div><button onclick="goTo('page-booknow')" class="fab press px-5 py-1.5 rounded-full text-xs font-bold uppercase" style="color:#1a2600">Book</button></div>
-          </div>
-        </div>
-        <div class="bg-surface-container-low rounded-2xl p-4 flex gap-3 tonal hover:bg-surface-container-high">
-          <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 img-zoom"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=300&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Salon"/></div>
-          <div class="flex-1 flex flex-col justify-between">
-            <div class="flex justify-between"><div><h3 class="font-headline font-bold text-base" style="color:#e8ff87">Studio 9 Salon</h3><div class="flex items-center gap-1 text-on-surface-variant text-xs mt-0.5"><span class="mso" style="font-size:12px">location_on</span><span>15 Koramangala</span></div></div><div class="flex items-center gap-0.5 bg-surface-container px-2 py-0.5 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:12px">star</span><span class="text-xs font-black">4.7</span></div></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-1 text-xs text-on-surface-variant"><span class="mso" style="font-size:12px">schedule</span><span>10AM–8PM</span><span class="mx-1">·</span><span class="font-semibold text-error">Closing</span></div><button onclick="goTo('page-booknow')" class="fab press px-5 py-1.5 rounded-full text-xs font-bold uppercase" style="color:#1a2600">Book</button></div>
-          </div>
-        </div>
-        <div class="bg-surface-container-low rounded-2xl p-4 flex gap-3 tonal hover:bg-surface-container-high">
-          <div class="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 img-zoom"><img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=300&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Salon"/></div>
-          <div class="flex-1 flex flex-col justify-between">
-            <div class="flex justify-between"><div><h3 class="font-headline font-bold text-base" style="color:#e8ff87">Elite Cuts Pro</h3><div class="flex items-center gap-1 text-on-surface-variant text-xs mt-0.5"><span class="mso" style="font-size:12px">location_on</span><span>88 Indiranagar</span></div></div><div class="flex items-center gap-0.5 bg-surface-container px-2 py-0.5 rounded-lg"><span class="mso-fill mso rev-star" style="font-size:12px">star</span><span class="text-xs font-black">5.0</span></div></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-1 text-xs text-on-surface-variant"><span class="mso" style="font-size:12px">schedule</span><span>9AM–10PM</span><span class="mx-1">·</span><span class="font-semibold" style="color:#d4f520">Open</span></div><button onclick="goTo('page-booknow')" class="fab press px-5 py-1.5 rounded-full text-xs font-bold uppercase" style="color:#1a2600">Book</button></div>
-          </div>
-        </div>
+  <!-- GALLERY PAGE -->
+  <div id="dp-gallery" class="dash-page">
+    <div class="page-hero">
+      <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=900&auto=format&fit=crop&q=80" alt="Gallery"/>
+      <div class="page-hero-content">
+        <h1>The <em>Work</em></h1>
+        <p>Portfolio · Before & After · Style Guide</p>
       </div>
-    </main>
+    </div>
+    <div style="padding:16px 16px 8px">
+      <div class="review-scroll" style="margin-bottom:0;padding-bottom:0">
+        <button onclick="filterG(this,'all')" class="gfbtn" style="flex-shrink:0;background:var(--ink);color:var(--paper);border:none;border-radius:4px;padding:8px 18px;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:none">All</button>
+        <button onclick="filterG(this,'fade')" class="gfbtn" style="flex-shrink:0;background:var(--paper2);color:var(--warm);border:1px solid rgba(13,10,7,.08);border-radius:4px;padding:8px 18px;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:none">Fade</button>
+        <button onclick="filterG(this,'beard')" class="gfbtn" style="flex-shrink:0;background:var(--paper2);color:var(--warm);border:1px solid rgba(13,10,7,.08);border-radius:4px;padding:8px 18px;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:none">Beard</button>
+        <button onclick="filterG(this,'texture')" class="gfbtn" style="flex-shrink:0;background:var(--paper2);color:var(--warm);border:1px solid rgba(13,10,7,.08);border-radius:4px;padding:8px 18px;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:none">Texture</button>
+        <button onclick="filterG(this,'classic')" class="gfbtn" style="flex-shrink:0;background:var(--paper2);color:var(--warm);border:1px solid rgba(13,10,7,.08);border-radius:4px;padding:8px 18px;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:none">Classic</button>
+      </div>
+    </div>
+    <div class="gallery-wrap">
+      <div class="gallery-masonry" id="gallery-grid">
+        <div class="gallery-item" data-cat="fade"><img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400&auto=format&fit=crop&q=80" alt="Fade"/><div class="gallery-item-label"><p>Skin Fade</p><span>by Rahul V.</span></div></div>
+        <div class="gallery-item" data-cat="texture" style="margin-top:20px"><img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=400&auto=format&fit=crop&q=80" alt="Texture"/><div class="gallery-item-label"><p>Textured Crop</p><span>by Aryan S.</span></div></div>
+        <div class="gallery-item" data-cat="beard"><img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=400&auto=format&fit=crop&q=80" alt="Beard"/><div class="gallery-item-label"><p>Full Beard Sculpt</p><span>by Dev S.</span></div></div>
+        <div class="gallery-item" data-cat="classic"><img src="https://images.unsplash.com/photo-1593702288056-7cc6e62c2a4f?w=400&auto=format&fit=crop&q=80" alt="Classic"/><div class="gallery-item-label"><p>Classic Gentleman</p><span>by Karan M.</span></div></div>
+        <div class="gallery-item" data-cat="fade"><img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&auto=format&fit=crop&q=80" alt="High Fade"/><div class="gallery-item-label"><p>High Fade</p><span>by Rahul V.</span></div></div>
+        <div class="gallery-item" data-cat="texture" style="margin-top:16px"><img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=400&auto=format&fit=crop&q=80" alt="Modern"/><div class="gallery-item-label"><p>Modern Quiff</p><span>by Aryan S.</span></div></div>
+      </div>
+    </div>
   </div>
 
-  <!-- ET: MY BOOKINGS -->
-  <div id="et-booking" class="etpage hidden">
-    <main class="px-5 py-5 max-w-2xl mx-auto">
-      <h2 class="font-headline font-black text-2xl mb-5">My <span style="color:#d4f520;font-style:italic">Bookings</span></h2>
-      <p class="text-[10px] uppercase tracking-widest font-bold mb-3" style="color:#d4f520">Upcoming</p>
-      <div class="bg-surface-container rounded-2xl p-5 mb-5" style="border:1px solid rgba(212,245,32,.15)">
-        <div class="flex items-start justify-between mb-4"><div><h3 class="font-headline font-bold text-lg">The Blade Room</h3><p class="text-xs text-on-surface-variant mt-1">Classic Haircut + Beard Sculpt</p></div><span class="text-[9px] font-black uppercase px-2 py-1 rounded-full" style="background:rgba(212,245,32,.15);color:#d4f520">Confirmed ✓</span></div>
-        <div class="flex flex-wrap gap-3 text-xs text-on-surface-variant mb-4">
-          <div class="flex items-center gap-1"><span class="mso" style="font-size:14px">calendar_today</span>Sat, 29 Mar</div>
-          <div class="flex items-center gap-1"><span class="mso" style="font-size:14px">schedule</span>11:00 AM</div>
-          <div class="flex items-center gap-1"><span class="mso" style="font-size:14px">person</span>Rahul Verma</div>
+  <!-- BARBER PAGE -->
+  <div id="dp-barber" class="dash-page">
+    <div class="page-hero">
+      <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=900&auto=format&fit=crop&q=80" alt="Barbers"/>
+      <div class="page-hero-content">
+        <h1>The <em>Masters</em></h1>
+        <p>Handpicked · Verified · World-class</p>
+      </div>
+    </div>
+    <div class="section-pad">
+      <div class="section-title">Our <span>Artists</span></div>
+      <div class="barber-cards">
+        <div class="barber-card">
+          <div class="barber-card-img"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&auto=format&fit=crop&q=80" alt="Rahul"/></div>
+          <div class="barber-card-body">
+            <h3>Rahul Verma</h3>
+            <p>Master Barber · 8 Years</p>
+            <p class="bio">London-trained. Specialises in skin fades, beard sculpture, and classic cuts. His philosophy: listen first, cut second.</p>
+            <div class="barber-rating"><span class="star">★★★★★</span><span>4.9</span><small>(230 reviews)</small></div>
+            <div class="barber-chips"><span class="barber-chip">Skin Fade</span><span class="barber-chip">Beard Art</span><span class="barber-chip">Classic</span><span class="barber-chip">Hot Towel</span></div>
+            <button class="barber-book-btn" onclick="openBooking()">Book with Rahul</button>
+          </div>
         </div>
-        <div class="flex gap-2.5">
-          <button class="flex-1 border rounded-full py-2 text-xs font-bold uppercase tracking-wide press" style="border-color:rgba(255,255,255,.15);color:#f5f5f0">Reschedule</button>
-          <button class="flex-1 border rounded-full py-2 text-xs font-bold uppercase tracking-wide press" style="border-color:rgba(255,107,71,.3);color:#ff6b47">Cancel</button>
+        <div class="barber-card">
+          <div class="barber-card-img"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&auto=format&fit=crop&q=80" alt="Aryan"/></div>
+          <div class="barber-card-body">
+            <h3>Aryan Singh</h3>
+            <p>Senior Stylist · 5 Years</p>
+            <p class="bio">Expert in textured crops, hair color, and scalp wellness. Consultation-first, transformation guaranteed.</p>
+            <div class="barber-rating"><span class="star">★★★★★</span><span>4.8</span><small>(180 reviews)</small></div>
+            <div class="barber-chips"><span class="barber-chip">Texture</span><span class="barber-chip">Color</span><span class="barber-chip">Scalp Care</span></div>
+            <button class="barber-book-btn" onclick="openBooking()">Book with Aryan</button>
+          </div>
+        </div>
+        <div class="barber-card">
+          <div class="barber-card-img"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80" alt="Karan"/></div>
+          <div class="barber-card-body">
+            <h3>Karan Mehta</h3>
+            <p>Style Director · 10 Years</p>
+            <p class="bio">International experience across Dubai, Singapore & London. Signature transformations only. Book early.</p>
+            <div class="barber-rating"><span class="star">★★★★★</span><span>5.0</span><small>(95 reviews)</small></div>
+            <div class="barber-chips"><span class="barber-chip">Luxury</span><span class="barber-chip">Transform</span><span class="barber-chip">Editorial</span></div>
+            <button class="barber-book-btn" onclick="openBooking()">Book with Karan</button>
+          </div>
         </div>
       </div>
-      <p class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant mb-3">Past</p>
-      <div class="space-y-2.5">
-        <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=80&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div><div class="flex-1"><p class="font-bold text-sm">Studio 9 Salon</p><p class="text-xs text-on-surface-variant">Textured Crop · Mar 15</p></div><div class="flex items-center gap-0.5"><span class="mso-fill mso rev-star" style="font-size:14px">star</span><span class="text-xs font-black">4.9</span></div></div>
-        <div class="bg-surface-container-low rounded-2xl p-4 flex items-center gap-3"><div class="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0"><img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=80&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div><div class="flex-1"><p class="font-bold text-sm">The Blade Room</p><p class="text-xs text-on-surface-variant">Classic Fade · Feb 28</p></div><div class="flex items-center gap-0.5"><span class="mso-fill mso rev-star" style="font-size:14px">star</span><span class="text-xs font-black">5.0</span></div></div>
+    </div>
+  </div>
+
+  <!-- OFFERS PAGE -->
+  <div id="dp-offers" class="dash-page">
+    <div class="offer-hero">
+      <h2>Hot <em>Offers</em></h2>
+      <p>Exclusive deals for TrimHub members only</p>
+    </div>
+    <div class="section-pad">
+      <div class="offer-cards">
+        <div class="offer-card offer-gold-bg">
+          <span class="offer-tag" style="background:rgba(201,168,76,.2);color:var(--gold2)">⭐ Premium Deal</span>
+          <div class="offer-code">GROOMED20</div>
+          <div class="offer-title">20% OFF — First Visit</div>
+          <div class="offer-desc">Pehli booking par poora 20% bachao. Kisi bhi service par valid. Koi minimum nahi.</div>
+          <div class="offer-footer">
+            <span class="offer-expiry">Expires: 30 Apr 2025</span>
+            <button class="copy-btn" onclick="copyOffer('GROOMED20')">Copy Code</button>
+          </div>
+        </div>
+        <div class="offer-card offer-blue-bg">
+          <span class="offer-tag" style="background:rgba(100,180,255,.1);color:#64b4ff">Weekend Special</span>
+          <div class="offer-code" style="color:#64b4ff">WEEKEND30</div>
+          <div class="offer-title">₹30 OFF — Sat & Sun</div>
+          <div class="offer-desc">Har weekend par apply hota hai. Min booking ₹300+</div>
+          <div class="offer-footer">
+            <span class="offer-expiry">Expires: 15 Apr 2025</span>
+            <button class="copy-btn" style="background:#64b4ff" onclick="copyOffer('WEEKEND30')">Copy</button>
+          </div>
+        </div>
+        <div class="offer-card offer-red-bg">
+          <span class="offer-tag" style="background:rgba(192,57,43,.15);color:#e8816e">Combo Deal</span>
+          <div class="offer-code" style="color:#e8816e">ROYAL50</div>
+          <div class="offer-title">₹50 OFF — Royal Treatment</div>
+          <div class="offer-desc">Sirf Royal Treatment par. Limited slots per day.</div>
+          <div class="offer-footer">
+            <span class="offer-expiry">Expires: 10 Apr 2025</span>
+            <button class="copy-btn" style="background:#e8816e" onclick="copyOffer('ROYAL50')">Copy</button>
+          </div>
+        </div>
+        <div class="offer-card" style="background:rgba(245,240,232,0.04);border:1px solid rgba(201,168,76,.12)">
+          <span class="offer-tag" style="background:rgba(201,168,76,.1);color:var(--gold)">Referral</span>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--paper2);margin-bottom:4px">Refer & Earn</div>
+          <div class="offer-title">Dono ko ₹100 Wallet Cash</div>
+          <div class="offer-desc">Apne dost ko invite karo. Dono ki first booking par ₹100 milega each.</div>
+          <button style="width:100%;padding:12px;border:1px solid rgba(201,168,76,.25);border-radius:6px;background:transparent;color:var(--gold);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:none;margin-top:4px" onclick="showToast('Referral link copied!')">Share Referral Link</button>
+        </div>
       </div>
-    </main>
+    </div>
+  </div>
+
+  <!-- ABOUT PAGE -->
+  <div id="dp-about" class="dash-page">
+    <div class="about-hero-img">
+      <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=900&auto=format&fit=crop&q=80" alt="About"/>
+      <div class="about-hero-text">
+        <h2>Built for the<br/><em>Modern Man</em></h2>
+      </div>
+    </div>
+    <div class="about-body">
+      <p>TrimHub ek aise sapne se janam liya jab ek barber ki kursi sirf baalon kaat ne ki jagah nahi, balki self-confidence ki jagah bani. Hum believe karte hain ki ek acha haircut insaan ka pura din badal sakta hai.</p>
+      <p>India se shuru karke, hum ek global grooming platform banana chahte hain jahan har sheher ka banda world-class barber experience paaye — bina bade salon ke chakar kaat ke.</p>
+      <div class="value-list">
+        <div class="value-item"><div class="value-icon"><span class="mso">verified</span></div><div><div class="value-title">Precision Over Speed</div><div class="value-desc">Har cut ke liye proper time. Koi rush nahi, kabhi nahi.</div></div></div>
+        <div class="value-item"><div class="value-icon"><span class="mso">workspace_premium</span></div><div><div class="value-title">Premium Products Only</div><div class="value-desc">International-grade, skin-safe grooming products. Always.</div></div></div>
+        <div class="value-item"><div class="value-icon"><span class="mso">lock</span></div><div><div class="value-title">Stripe-Secured Payments</div><div class="value-desc">Bank-level encryption. Your data stays yours.</div></div></div>
+        <div class="value-item"><div class="value-icon"><span class="mso">rocket_launch</span></div><div><div class="value-title">Startup with Soul</div><div class="value-desc">India se shuru, world mein jaana hai. One booking at a time.</div></div></div>
+      </div>
+      <div class="section-title" style="margin-top:8px">Get in <span>Touch</span></div>
+      <div class="contact-grid">
+        <div class="contact-row"><span class="mso">mail</span><p>hello@trimhub.in</p></div>
+        <div class="contact-row"><span class="mso">phone</span><p>+91 98765 43210</p></div>
+        <div class="contact-row"><span class="mso">location_on</span><p>Bangalore, Mumbai, Delhi & 12 more cities</p></div>
+      </div>
+      <div class="social-row">
+        <button class="social-pill" onclick="showToast('@trimhub on Instagram')"><span class="mso">photo_camera</span>Instagram</button>
+        <button class="social-pill" onclick="showToast('TrimHub on YouTube')"><span class="mso">play_circle</span>YouTube</button>
+        <button class="social-pill" onclick="showToast('@trimhub on X')"><span class="mso">alternate_email</span>Twitter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM TABS -->
+  <nav class="dash-bottom">
+    <button class="dash-tab active" id="dt-service" onclick="switchDashTab('service')">
+      <span class="mso">storefront</span>
+      <span>Service</span>
+    </button>
+    <button class="dash-tab" id="dt-gallery" onclick="switchDashTab('gallery')">
+      <span class="mso">photo_library</span>
+      <span>Gallery</span>
+    </button>
+    <button class="dash-tab" id="dt-barber" onclick="switchDashTab('barber')">
+      <span class="mso">content_cut</span>
+      <span>Barbers</span>
+    </button>
+    <button class="dash-tab" id="dt-offers" onclick="switchDashTab('offers')" style="position:relative">
+      <span class="mso">local_offer</span>
+      <span>Offers</span>
+      <div class="dash-badge" style="top:2px;right:12px">3</div>
+    </button>
+    <button class="dash-tab" id="dt-about" onclick="switchDashTab('about')">
+      <span class="mso">info</span>
+      <span>About</span>
+    </button>
+  </nav>
+
+</div><!-- /dashboard -->
+
+<!-- BOOKING MODAL (Stripe-style bottom sheet) -->
+<div id="booking-modal" onclick="if(event.target===this)closeBooking()">
+  <div class="booking-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Book Your Session</div>
+
+    <span class="sheet-label">Select Service</span>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+      <div onclick="selS(this)" class="svc-item" style="cursor:none;border:1px solid rgba(201,168,76,.3);background:rgba(201,168,76,.04)">
+        <div class="svc-icon"><span class="mso">content_cut</span></div>
+        <div style="flex:1"><div class="svc-name">Classic Haircut</div><div class="svc-desc">40 min</div></div>
+        <div class="svc-price">₹499</div>
+      </div>
+      <div onclick="selS(this)" class="svc-item" style="cursor:none">
+        <div class="svc-icon" style="background:var(--paper3)"><span class="mso" style="color:var(--warm)">auto_awesome</span></div>
+        <div style="flex:1"><div class="svc-name">Royal Treatment</div><div class="svc-desc">90 min</div></div>
+        <div class="svc-price">₹999</div>
+      </div>
+    </div>
+
+    <span class="sheet-label">Choose Date</span>
+    <div class="date-chips">
+      <div class="dchip sel" onclick="selD(this)"><div class="day">Sat</div><div class="num">29</div><div style="font-size:.6rem">Mar</div></div>
+      <div class="dchip" onclick="selD(this)"><div class="day">Sun</div><div class="num">30</div><div style="font-size:.6rem">Mar</div></div>
+      <div class="dchip" onclick="selD(this)"><div class="day">Mon</div><div class="num">31</div><div style="font-size:.6rem">Mar</div></div>
+      <div class="dchip" onclick="selD(this)"><div class="day">Tue</div><div class="num">01</div><div style="font-size:.6rem">Apr</div></div>
+      <div class="dchip" onclick="selD(this)"><div class="day">Wed</div><div class="num">02</div><div style="font-size:.6rem">Apr</div></div>
+    </div>
+
+    <span class="sheet-label">Choose Time</span>
+    <div class="time-grid">
+      <div class="tchip sel" onclick="selT(this)">9:00 AM</div>
+      <div class="tchip" onclick="selT(this)">10:00 AM</div>
+      <div class="tchip" onclick="selT(this)">11:00 AM</div>
+      <div class="tchip" onclick="selT(this)">12:00 PM</div>
+      <div class="tchip off">1:00 PM</div>
+      <div class="tchip" onclick="selT(this)">2:00 PM</div>
+      <div class="tchip" onclick="selT(this)">3:00 PM</div>
+      <div class="tchip" onclick="selT(this)">4:00 PM</div>
+      <div class="tchip" onclick="selT(this)">5:00 PM</div>
+    </div>
+
+    <span class="sheet-label">Payment Method <span style="font-size:.6rem;color:var(--muted);letter-spacing:0;text-transform:none;font-weight:400">(Powered by Stripe)</span></span>
+    <div class="pay-methods">
+      <div class="pay-opt sel" id="pm-cash" onclick="selP('pm-cash')">
+        <div class="pay-opt-icon"><span class="mso">payments</span></div>
+        <div><div class="pay-opt-title">Cash After Service</div><div class="pay-opt-sub">Pay barber directly</div></div>
+        <div class="pay-radio"></div>
+      </div>
+      <div class="pay-opt" id="pm-upi" onclick="selP('pm-upi')">
+        <div class="pay-opt-icon"><span class="mso">smartphone</span></div>
+        <div><div class="pay-opt-title">UPI</div><div class="pay-opt-sub">GPay · PhonePe · Paytm</div></div>
+        <div class="pay-radio"></div>
+      </div>
+      <div class="pay-opt" id="pm-card" onclick="selP('pm-card')">
+        <div class="pay-opt-icon"><span class="mso">credit_card</span></div>
+        <div><div class="pay-opt-title">Card</div><div class="pay-opt-sub">Stripe secure checkout</div></div>
+        <div class="pay-radio"></div>
+      </div>
+    </div>
+
+    <button class="confirm-btn" onclick="confirmBook()">Confirm Booking — ₹499</button>
   </div>
 </div>
-
-<!-- ━━━ PAGE: BOOK NOW ━━━ -->
-<div id="page-booknow" class="page">
-  <main class="px-5 py-5 max-w-2xl mx-auto">
-    <div class="flex items-center gap-3 bg-surface-container rounded-2xl p-4 mb-6">
-      <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 img-zoom"><img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=200&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Salon"/></div>
-      <div class="flex-1"><h3 class="font-headline font-bold text-lg">The Blade Room</h3><div class="flex items-center gap-1 text-xs text-on-surface-variant mt-0.5"><span class="mso" style="font-size:13px">location_on</span>42 MG Road, Bangalore</div><div class="flex items-center gap-1 mt-1"><span class="mso-fill mso rev-star" style="font-size:13px">star</span><span class="text-xs font-black" style="color:#d4f520">4.9</span><span class="text-xs text-on-surface-variant ml-1">· Open Now</span></div></div>
-    </div>
-    <!-- Barber select -->
-    <div class="mb-5">
-      <p class="text-[10px] uppercase tracking-widest font-bold mb-3" style="color:#d4f520">Choose Barber</p>
-      <div class="flex gap-3 overflow-x-auto scroll-x pb-1">
-        <div onclick="selBarber(this)" class="barb-chip flex-shrink-0 flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-primary-container press cursor-pointer" style="background:rgba(212,245,32,.12);border:2px solid #d4f520">
-          <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=80&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div>
-          <p class="text-[10px] font-bold whitespace-nowrap" style="color:#d4f520">Rahul V.</p>
-        </div>
-        <div onclick="selBarber(this)" class="barb-chip flex-shrink-0 flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-surface-container press cursor-pointer" style="border:2px solid transparent">
-          <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=80&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div>
-          <p class="text-[10px] font-bold text-on-surface-variant whitespace-nowrap">Aryan S.</p>
-        </div>
-        <div onclick="selBarber(this)" class="barb-chip flex-shrink-0 flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-surface-container press cursor-pointer" style="border:2px solid transparent">
-          <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://images.unsplash.com/photo-1588776814546-1ffbb171e041?w=80&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div>
-          <p class="text-[10px] font-bold text-on-surface-variant whitespace-nowrap">Dev S.</p>
-        </div>
-        <div onclick="selBarber(this)" class="barb-chip flex-shrink-0 flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-surface-container press cursor-pointer" style="border:2px solid transparent">
-          <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt=""/></div>
-          <p class="text-[10px] font-bold text-on-surface-variant whitespace-nowrap">Karan M.</p>
-        </div>
-      </div>
-    </div>
-    <!-- Service -->
-    <div class="mb-5">
-      <p class="text-[10px] uppercase tracking-widest font-bold mb-3" style="color:#d4f520">Select Service</p>
-      <div class="space-y-2">
-        <div onclick="selSvc(this)" class="svc-card selected rounded-2xl p-4 flex items-center gap-3 cursor-pointer press" style="border:2px solid #d4f520;background:rgba(212,245,32,.07)">
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.15)"><span class="mso" style="color:#d4f520;font-size:17px">content_cut</span></div>
-          <div class="flex-1"><p class="font-bold text-sm">Classic Haircut</p><p class="text-xs text-on-surface-variant">40 min</p></div>
-          <p class="font-black text-sm" style="color:#d4f520">₹499</p>
-        </div>
-        <div onclick="selSvc(this)" class="svc-card rounded-2xl p-4 flex items-center gap-3 cursor-pointer press bg-surface-container-low" style="border:2px solid transparent">
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-surface-container-high"><span class="mso text-on-surface-variant" style="font-size:17px">face_retouching_natural</span></div>
-          <div class="flex-1"><p class="font-bold text-sm">Beard Sculpt</p><p class="text-xs text-on-surface-variant">30 min</p></div>
-          <p class="font-black text-sm" style="color:#d4f520">₹349</p>
-        </div>
-        <div onclick="selSvc(this)" class="svc-card rounded-2xl p-4 flex items-center gap-3 cursor-pointer press bg-surface-container-low relative overflow-hidden" style="border:2px solid transparent">
-          <div class="absolute top-2 right-2 text-[8px] font-black uppercase px-1.5 py-0.5 rounded-full" style="background:#d4f520;color:#1a2600">Best</div>
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-surface-container-high"><span class="mso text-on-surface-variant" style="font-size:17px">auto_awesome</span></div>
-          <div class="flex-1"><p class="font-bold text-sm">Royal Treatment</p><p class="text-xs text-on-surface-variant">90 min</p></div>
-          <p class="font-black text-sm" style="color:#d4f520">₹999</p>
-        </div>
-        <div onclick="selSvc(this)" class="svc-card rounded-2xl p-4 flex items-center gap-3 cursor-pointer press bg-surface-container-low" style="border:2px solid transparent">
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-surface-container-high"><span class="mso text-on-surface-variant" style="font-size:17px">spa</span></div>
-          <div class="flex-1"><p class="font-bold text-sm">Skin Glow Facial</p><p class="text-xs text-on-surface-variant">45 min</p></div>
-          <p class="font-black text-sm" style="color:#d4f520">₹599</p>
-        </div>
-      </div>
-    </div>
-    <!-- Date -->
-    <div class="mb-5">
-      <p class="text-[10px] uppercase tracking-widest font-bold mb-3" style="color:#d4f520">Select Date</p>
-      <div class="flex gap-2 overflow-x-auto scroll-x pb-1">
-        <div onclick="selDate(this)" class="dchip flex-shrink-0 flex flex-col items-center px-4 py-2.5 rounded-xl cursor-pointer press" style="background:#d4f520;color:#1a2600"><span class="text-[9px] font-black uppercase">Sat</span><span class="text-xl font-black font-headline leading-tight">29</span><span class="text-[9px]">Mar</span></div>
-        <div onclick="selDate(this)" class="dchip flex-shrink-0 flex flex-col items-center px-4 py-2.5 rounded-xl cursor-pointer press bg-surface-container text-on-surface-variant hover:bg-surface-container-high"><span class="text-[9px] font-black uppercase">Sun</span><span class="text-xl font-black font-headline leading-tight">30</span><span class="text-[9px]">Mar</span></div>
-        <div onclick="selDate(this)" class="dchip flex-shrink-0 flex flex-col items-center px-4 py-2.5 rounded-xl cursor-pointer press bg-surface-container text-on-surface-variant hover:bg-surface-container-high"><span class="text-[9px] font-black uppercase">Mon</span><span class="text-xl font-black font-headline leading-tight">31</span><span class="text-[9px]">Mar</span></div>
-        <div onclick="selDate(this)" class="dchip flex-shrink-0 flex flex-col items-center px-4 py-2.5 rounded-xl cursor-pointer press bg-surface-container text-on-surface-variant hover:bg-surface-container-high"><span class="text-[9px] font-black uppercase">Tue</span><span class="text-xl font-black font-headline leading-tight">01</span><span class="text-[9px]">Apr</span></div>
-        <div onclick="selDate(this)" class="dchip flex-shrink-0 flex flex-col items-center px-4 py-2.5 rounded-xl cursor-pointer press bg-surface-container text-on-surface-variant hover:bg-surface-container-high"><span class="text-[9px] font-black uppercase">Wed</span><span class="text-xl font-black font-headline leading-tight">02</span><span class="text-[9px]">Apr</span></div>
-        <div onclick="selDate(this)" class="dchip flex-shrink-0 flex flex-col items-center px-4 py-2.5 rounded-xl cursor-pointer press bg-surface-container text-on-surface-variant hover:bg-surface-container-high"><span class="text-[9px] font-black uppercase">Thu</span><span class="text-xl font-black font-headline leading-tight">03</span><span class="text-[9px]">Apr</span></div>
-      </div>
-    </div>
-    <!-- Time -->
-    <div class="mb-7">
-      <p class="text-[10px] uppercase tracking-widest font-bold mb-3" style="color:#d4f520">Select Time</p>
-      <div class="grid grid-cols-3 gap-2">
-        <div onclick="selTime(this)" class="tchip sel rounded-xl py-3 text-xs font-bold text-center press" style="background:#d4f520;color:#1a2600">9:00 AM</div>
-        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">10:00 AM</div>
-        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">11:00 AM</div>
-        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">12:00 PM</div>
-        <div class="tchip disabled rounded-xl py-3 text-xs font-bold text-center text-on-surface-variant">1:00 PM</div>
-        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">2:00 PM</div>
-        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">3:00 PM</div>
-        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">4:00 PM</div>
-        <div onclick="selTime(this)" class="tchip rounded-xl py-3 text-xs font-bold text-center press">5:00 PM</div>
-      </div>
-    </div>
-    <button onclick="goTo('page-payment')" class="w-full fab press py-4 rounded-full font-bold text-sm uppercase tracking-widest" style="color:#1a2600">Next — Payment Mode</button>
-  </main>
-</div>
-
-<!-- ━━━ PAGE: PAYMENT ━━━ -->
-<div id="page-payment" class="page">
-  <main class="px-5 py-5 max-w-2xl mx-auto">
-    <!-- Summary -->
-    <div class="bg-surface-container rounded-2xl p-5 mb-6">
-      <p class="text-[10px] uppercase tracking-widest font-bold mb-4" style="color:#d4f520">Booking Summary</p>
-      <div class="space-y-2.5 text-sm">
-        <div class="flex justify-between"><span class="text-on-surface-variant">Salon</span><span class="font-bold">The Blade Room</span></div>
-        <div class="flex justify-between"><span class="text-on-surface-variant">Service</span><span class="font-bold">Classic Haircut</span></div>
-        <div class="flex justify-between"><span class="text-on-surface-variant">Barber</span><span class="font-bold">Rahul Verma</span></div>
-        <div class="flex justify-between"><span class="text-on-surface-variant">Date & Time</span><span class="font-bold">Sat 29 · 9:00 AM</span></div>
-        <div class="flex justify-between"><span class="text-on-surface-variant">Duration</span><span class="font-bold">40 mins</span></div>
-        <div class="h-px my-1" style="background:rgba(255,255,255,.06)"></div>
-        <div class="flex justify-between"><span class="text-on-surface-variant">Service Fee</span><span class="font-bold">₹499</span></div>
-        <div class="flex justify-between"><span class="text-on-surface-variant">Discount (GROOMED20)</span><span class="font-bold text-green-400">-₹100</span></div>
-        <div class="flex justify-between"><span class="text-on-surface-variant">Platform Fee</span><span class="font-bold">₹0</span></div>
-        <div class="h-px my-1" style="background:rgba(255,255,255,.06)"></div>
-        <div class="flex justify-between items-center"><span class="font-bold">Total Payable</span><span class="font-headline font-black text-xl" style="color:#d4f520">₹399</span></div>
-      </div>
-    </div>
-    <!-- Coupon -->
-    <div class="mb-5">
-      <p class="text-[10px] uppercase tracking-widest font-bold mb-3" style="color:#d4f520">Apply Coupon</p>
-      <div class="flex gap-2"><input class="flex-1 bg-surface-container rounded-xl px-4 py-3 text-sm font-medium placeholder-on-surface-variant focus:outline-none" placeholder="Enter promo code" value="GROOMED20"/><button class="px-5 py-3 rounded-xl text-xs font-bold uppercase press" style="background:rgba(212,245,32,.12);color:#d4f520">Apply</button></div>
-    </div>
-    <!-- Payment -->
-    <div class="mb-7">
-      <p class="text-[10px] uppercase tracking-widest font-bold mb-4" style="color:#d4f520">Payment Mode</p>
-      <div class="space-y-2.5">
-        <div id="pay-cash" onclick="selPay('pay-cash')" class="pay-opt sel rounded-2xl p-4 flex items-center gap-4 cursor-pointer press" style="border:2px solid #d4f520">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(212,245,32,.15)"><span class="mso" style="color:#d4f520">payments</span></div>
-          <div class="flex-1"><p class="font-bold text-sm">Cash After Service</p><p class="text-xs text-on-surface-variant">Pay barber directly in cash</p></div>
-          <div class="pchk w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style="background:#d4f520"><span class="mso" style="color:#1a2600;font-size:13px;font-variation-settings:'FILL' 1,'wght' 400">check</span></div>
-        </div>
-        <div id="pay-upi" onclick="selPay('pay-upi')" class="pay-opt rounded-2xl p-4 flex items-center gap-4 cursor-pointer press" style="border:2px solid transparent">
-          <div class="w-11 h-11 rounded-xl bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="mso text-on-surface-variant">smartphone</span></div>
-          <div class="flex-1"><p class="font-bold text-sm">UPI</p><p class="text-xs text-on-surface-variant">GPay · PhonePe · Paytm</p></div>
-          <div class="pchk w-5 h-5 rounded-full flex-shrink-0" style="border:2px solid #3a3a38"></div>
-        </div>
-        <div id="pay-card" onclick="selPay('pay-card')" class="pay-opt rounded-2xl p-4 flex items-center gap-4 cursor-pointer press" style="border:2px solid transparent">
-          <div class="w-11 h-11 rounded-xl bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="mso text-on-surface-variant">credit_card</span></div>
-          <div class="flex-1"><p class="font-bold text-sm">Card</p><p class="text-xs text-on-surface-variant">Debit · Credit · NetBanking</p></div>
-          <div class="pchk w-5 h-5 rounded-full flex-shrink-0" style="border:2px solid #3a3a38"></div>
-        </div>
-        <div id="pay-wallet" onclick="selPay('pay-wallet')" class="pay-opt rounded-2xl p-4 flex items-center gap-4 cursor-pointer press" style="border:2px solid transparent">
-          <div class="w-11 h-11 rounded-xl bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="mso text-on-surface-variant">account_balance_wallet</span></div>
-          <div class="flex-1"><p class="font-bold text-sm">Groomed Wallet</p><p class="text-xs text-on-surface-variant">Balance: ₹150 available</p></div>
-          <div class="pchk w-5 h-5 rounded-full flex-shrink-0" style="border:2px solid #3a3a38"></div>
-        </div>
-      </div>
-    </div>
-    <button onclick="confirmBooking()" class="w-full fab press py-4 rounded-full font-bold text-sm uppercase tracking-widest" style="color:#1a2600">Confirm Booking</button>
-    <div id="bk-success" class="hidden mt-5 rounded-2xl p-6 text-center" style="background:linear-gradient(135deg,#0d1a00,#162500);border:1px solid rgba(212,245,32,.2)">
-      <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3" style="background:#d4f520"><span class="mso" style="color:#1a2600;font-size:28px;font-variation-settings:'FILL' 1,'wght' 400">check</span></div>
-      <h3 class="font-headline font-black text-2xl mb-1" style="color:#d4f520">Booked!</h3>
-      <p class="text-sm text-on-surface-variant mb-4">The Blade Room · Sat 29 Mar · 9:00 AM</p>
-      <p class="text-xs text-on-surface-variant mb-5">Confirmation sent to your number. Rahul will be ready for you.</p>
-      <button onclick="switchTab('home')" class="px-8 py-3 rounded-full text-xs font-bold uppercase press" style="background:rgba(212,245,32,.12);color:#d4f520">Back to Home</button>
-    </div>
-  </main>
-</div>
-
-</div><!-- end app -->
-
-<!-- ══════════ BOTTOM TAB BAR ══════════ -->
-<nav id="bottom-bar" class="glass fixed bottom-0 inset-x-0 z-50 flex justify-around items-center px-1 pt-2 pb-3 border-t border-outline-variant/15">
-  <button onclick="switchTab('home')" id="tb-home" class="tab-item active-tab flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl">
-    <span class="mso">storefront</span>
-    <span class="text-[9px] font-black uppercase tracking-wider">Service</span>
-  </button>
-  <button onclick="switchTab('gallery')" id="tb-gallery" class="tab-item flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl">
-    <span class="mso">photo_library</span>
-    <span class="text-[9px] font-black uppercase tracking-wider">Gallery</span>
-  </button>
-  <button onclick="switchTab('barber')" id="tb-barber" class="tab-item flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl">
-    <span class="mso">content_cut</span>
-    <span class="text-[9px] font-black uppercase tracking-wider">Barbers</span>
-  </button>
-  <button onclick="switchTab('offers')" id="tb-offers" class="tab-item flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl relative">
-    <span class="mso">local_offer</span>
-    <span class="text-[9px] font-black uppercase tracking-wider">Offers</span>
-    <span class="badge" style="top:-2px;right:2px">3</span>
-  </button>
-  <button onclick="switchTab('about')" id="tb-about" class="tab-item flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl">
-    <span class="mso">info</span>
-    <span class="text-[9px] font-black uppercase tracking-wider">About</span>
-  </button>
-</nav>
 
 <script>
-const TAB_PAGES={'home':'page-home','gallery':'page-gallery','barber':'page-barber','offers':'page-offers','about':'page-about'};
-const SUB_PAGES=['page-editorial','page-booknow','page-payment'];
-const SUB_TITLES={'page-editorial':'Groomed Editorial','page-booknow':'Book Now','page-payment':'Confirm & Pay'};
-let navStack=[];
-let curPage='page-home';
+// ── CURSOR ──
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+document.querySelectorAll('button,a,.svc-item,.gallery-item,.barber-card,.offer-card,.dchip,.tchip,.pay-opt').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';ring.style.width='54px';ring.style.height='54px';ring.style.opacity='.8'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';ring.style.width='36px';ring.style.height='36px';ring.style.opacity='1'});
+});
 
-function anim(el){el.classList.remove('fade-in');void el.offsetWidth;el.classList.add('fade-in')}
+// ── VIEW SWITCHING ──
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+function showAuth(mode){showView('auth-page');toggleForm(mode)}
+function toggleForm(mode){
+  document.getElementById('form-signin').style.display=mode==='signin'?'block':'none';
+  document.getElementById('form-login').style.display=mode==='login'?'block':'none';
+}
+function doLogin(){
+  showView('dashboard');
+  // Simulate scroll scene then show content
+  setTimeout(()=>{
+    document.getElementById('st1').classList.add('visible');
+    setTimeout(()=>{document.getElementById('st1').classList.remove('visible');document.getElementById('st2').classList.add('visible')},1800);
+    setTimeout(()=>{document.getElementById('st2').classList.remove('visible');document.getElementById('st3').classList.add('visible')},3600);
+    setTimeout(()=>{document.getElementById('st3').classList.remove('visible');document.getElementById('st4').classList.add('visible')},5400);
+    // Animate barber orbit
+    let deg=0;
+    const orbitEl=document.getElementById('barber-orbit');
+    if(orbitEl){(function rotateBarber(){deg+=0.5;orbitEl.style.transform=`rotate(${deg}deg)`;requestAnimationFrame(rotateBarber)})()}
+    // Hair cut animation at 4s
+    setTimeout(()=>{
+      const hb=document.getElementById('hair-before');const ha=document.getElementById('hair-after');
+      if(hb&&ha){hb.style.transition='opacity .8s';hb.style.opacity='0';ha.style.transition='opacity .8s .3s';ha.style.opacity='1'}
+    },4000);
+    // Scroll past scene after 7s
+    setTimeout(()=>{
+      const scene=document.getElementById('scroll-scene-wrap');
+      if(scene){scene.style.transition='opacity .8s';scene.style.opacity='0';setTimeout(()=>{scene.style.display='none'},900)}
+    },7000);
+  },300);
+}
+function showDash(){document.getElementById('success-view').classList.remove('show');showView('dashboard')}
 
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const t=document.getElementById(id);
-  if(t){t.classList.add('active');anim(t)}
-  curPage=id;
-  const isSub=SUB_PAGES.includes(id);
-  document.getElementById('back-btn').classList.toggle('hidden',!isSub);
-  document.getElementById('nav-logo').classList.toggle('hidden',isSub);
-  document.getElementById('nav-title').classList.toggle('hidden',!isSub);
-  if(isSub)document.getElementById('nav-title').textContent=SUB_TITLES[id]||'';
-  document.getElementById('bottom-bar').classList.toggle('hidden',isSub&&id!=='page-editorial');
+// ── DASH TABS ──
+function switchDashTab(tab){
+  document.querySelectorAll('.dash-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.dash-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('dt-'+tab).classList.add('active');
+  document.getElementById('dp-'+tab).classList.add('active');
   window.scrollTo(0,0);
 }
 
-function goTo(id){navStack.push(curPage);showPage(id)}
-function goBack(){if(navStack.length>0)showPage(navStack.pop())}
-
-function switchTab(tab){
-  navStack=[];
-  document.querySelectorAll('.tab-item').forEach(b=>b.classList.remove('active-tab'));
-  document.getElementById('tb-'+tab).classList.add('active-tab');
-  showPage(TAB_PAGES[tab]);
+// ── BOOKING ──
+function openBooking(){document.getElementById('booking-modal').classList.add('open')}
+function closeBooking(){document.getElementById('booking-modal').classList.remove('open')}
+function selS(el){document.querySelectorAll('#booking-modal .svc-item').forEach(e=>{e.style.borderColor='rgba(13,10,7,.07)';e.style.background='var(--cream)'});el.style.borderColor='rgba(201,168,76,.4)';el.style.background='rgba(201,168,76,.05)'}
+function selD(el){document.querySelectorAll('.dchip').forEach(e=>e.classList.remove('sel'));el.classList.add('sel')}
+function selT(el){if(el.classList.contains('off'))return;document.querySelectorAll('.tchip').forEach(e=>e.classList.remove('sel'));el.classList.add('sel')}
+function selP(id){
+  ['pm-cash','pm-upi','pm-card'].forEach(pid=>document.getElementById(pid).classList.remove('sel'));
+  document.getElementById(id).classList.add('sel');
+}
+function confirmBook(){
+  closeBooking();
+  document.getElementById('success-view').classList.add('show');
 }
 
-function switchET(id){
-  document.querySelectorAll('.etpage').forEach(p=>p.classList.add('hidden'));
-  const t=document.getElementById(id);
-  if(t){t.classList.remove('hidden');anim(t)}
-  document.querySelectorAll('.etab').forEach(b=>{b.classList.remove('active');});
-  const key=id.replace('et-','');
-  const btn=document.getElementById('etb-'+key);
-  if(btn)btn.classList.add('active');
-}
-
-function filterGallery(btn,cat){
-  document.querySelectorAll('.gchip').forEach(b=>{b.style.background='#171717';b.style.color='#9a9890'});
-  btn.style.background='#d4f520';btn.style.color='#1a2600';
-  document.querySelectorAll('.gallery-item').forEach(item=>{
-    const show=cat==='all'||item.dataset.cat===cat;
-    item.style.display=show?'block':'none';
-    if(show)anim(item);
+// ── GALLERY FILTER ──
+function filterG(btn,cat){
+  document.querySelectorAll('.gfbtn').forEach(b=>{b.style.background='var(--paper2)';b.style.color='var(--warm)';b.style.border='1px solid rgba(13,10,7,.08)'});
+  btn.style.background='var(--ink)';btn.style.color='var(--paper)';btn.style.border='none';
+  document.querySelectorAll('#gallery-grid .gallery-item').forEach(item=>{
+    item.style.display=(cat==='all'||item.dataset.cat===cat)?'block':'none';
   });
 }
 
-function selBarber(el){
-  document.querySelectorAll('.barb-chip').forEach(e=>{e.style.borderColor='transparent';e.style.background='#171717';e.querySelector('p').style.color='#9a9890'});
-  el.style.borderColor='#d4f520';el.style.background='rgba(212,245,32,.12)';el.querySelector('p').style.color='#d4f520';
+// ── TOAST ──
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
 }
+function copyOffer(code){showToast(code+' copied to clipboard!')}
 
-function selSvc(el){
-  document.querySelectorAll('.svc-card').forEach(e=>{e.classList.remove('selected');e.style.borderColor='transparent';e.style.background='#111111'});
-  el.classList.add('selected');el.style.borderColor='#d4f520';el.style.background='rgba(212,245,32,.07)';
-}
-
-function selDate(el){
-  document.querySelectorAll('.dchip').forEach(e=>{e.style.background='#171717';e.style.color='#9a9890'});
-  el.style.background='#d4f520';el.style.color='#1a2600';
-}
-
-function selTime(el){
-  document.querySelectorAll('.tchip:not(.disabled)').forEach(e=>{e.classList.remove('sel');e.style.background='#171717';e.style.color='#f5f5f0'});
-  el.classList.add('sel');el.style.background='#d4f520';el.style.color='#1a2600';
-}
-
-function selPay(id){
-  ['pay-cash','pay-upi','pay-card','pay-wallet'].forEach(pid=>{
-    const el=document.getElementById(pid);
-    const chk=el.querySelector('.pchk');
-    el.classList.remove('sel');el.style.borderColor='transparent';el.style.background='#111111';
-    chk.style.background='';chk.innerHTML='';chk.style.border='2px solid #3a3a38';
-  });
-  const sel=document.getElementById(id);
-  const chk=sel.querySelector('.pchk');
-  sel.classList.add('sel');sel.style.borderColor='#d4f520';sel.style.background='rgba(212,245,32,.08)';
-  chk.style.background='#d4f520';chk.style.border='none';
-  chk.innerHTML='<span class="mso" style="color:#1a2600;font-size:13px;font-variation-settings:\'FILL\' 1,\'wght\' 400">check</span>';
-}
-
-function confirmBooking(){
-  const s=document.getElementById('bk-success');
-  s.classList.remove('hidden');
-  anim(s);
-  s.scrollIntoView({behavior:'smooth',block:'center'});
-}
-
-function copyCode(code){
-  const toast=document.getElementById('copy-toast');
-  toast.textContent=code+' Copied!';
-  toast.classList.remove('hidden');
-  setTimeout(()=>toast.classList.add('hidden'),2000);
-}
+// ── LANDING SCROLL ANIMATIONS ──
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}});
+},{threshold:.15});
+document.querySelectorAll('.feat-card,.stat-item').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(24px)';el.style.transition='opacity .6s ease,transform .6s ease';
+  observer.observe(el);
+});
 </script>
 </body>
 </html>
